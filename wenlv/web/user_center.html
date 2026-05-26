@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>宁夏智慧文旅 - 个人中心</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<header id='header'>
+		<div class='center'>
+			<h1 class="logo">宁夏智慧文旅</h1>
+			<nav>
+				<ul class="link">
+					<li><a href="index.html">首页</a></li>
+					<li><a href="scenic.html">景区服务</a></li>
+					<li><a href="food.html">特色美食</a></li>
+					<li><a href="hotel.html">民宿酒店</a></li>
+					<li><a href="strategy.html">旅游攻略</a></li>
+					<li class="active"><a href="user_center.html">个人中心</a></li>
+					<li><a href="login.html">退出登录</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div id="main-content" class="container">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="user-panel">
+					<div class="avatar-section">
+						<img src="image/logo1.jpg" class="avatar-lg">
+						<h3>游客用户</h3>
+						<p>普通会员</p>
+					</div>
+					<ul class="nav nav-pills nav-stacked">
+						<li class="active"><a href="#orders">我的订单</a></li>
+						<li><a href="#collections">我的收藏</a></li>
+						<li><a href="#comments">我的评论</a></li>
+						<li><a href="#profile">个人信息</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-9">
+				<div id="orders" class="tab-content active">
+					<h2>我的订单</h2>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#all">全部订单</a></li>
+						<li><a href="#pending">待支付</a></li>
+						<li><a href="#completed">已完成</a></li>
+						<li><a href="#cancelled">已取消</a></li>
+					</ul>
+					<div class="order-list">
+						<div class="order-item">
+							<div class="order-header">
+								<span class="order-no">订单号：NXLV20241128001</span>
+								<span class="order-status">待支付</span>
+							</div>
+							<div class="order-content">
+								<img src="image/tour1.jpg" alt="订单商品">
+								<div class="order-info">
+									<h4>沙坡头旅游区门票</h4>
+									<p>成人票 x 2</p>
+									<p>游玩日期：2024-12-15</p>
+								</div>
+								<div class="order-price">
+									<p>¥200</p>
+									<button class="btn btn-danger">立即支付</button>
+								</div>
+							</div>
+						</div>
+						<div class="order-item">
+							<div class="order-header">
+								<span class="order-no">订单号：NXLV20241125002</span>
+								<span class="order-status completed">已完成</span>
+							</div>
+							<div class="order-content">
+								<img src="image/tour9.jpg" alt="订单商品">
+								<div class="order-info">
+									<h4>黄河宿集民宿预订</h4>
+									<p>大床房 x 1</p>
+									<p>入住：2024-11-26 离店：2024-11-27</p>
+								</div>
+								<div class="order-price">
+									<p>¥680</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="collections" class="tab-content hidden">
+					<h2>我的收藏</h2>
+					<div class="collection-list">
+						<div class="collection-item">
+							<img src="image/tour1.jpg" alt="收藏">
+							<div class="collection-info">
+								<h4>沙坡头旅游区</h4>
+								<p>国家5A级景区，沙漠与黄河交汇</p>
+							</div>
+							<button class="btn btn-default" onclick="removeCollection(this)">取消收藏</button>
+						</div>
+						<div class="collection-item">
+							<img src="image/tour9.jpg" alt="收藏">
+							<div class="collection-info">
+								<h4>黄河宿集</h4>
+								<p>黄河边的高端民宿集群</p>
+							</div>
+							<button class="btn btn-default" onclick="removeCollection(this)">取消收藏</button>
+						</div>
+					</div>
+				</div>
+
+				<div id="comments" class="tab-content hidden">
+					<h2>我的评论</h2>
+					<div class="comment-list">
+						<div class="my-comment-item">
+							<h4>沙坡头旅游区</h4>
+							<p class="comment-text">非常棒的景区，沙漠和黄河的完美结合！</p>
+							<span class="comment-date">2024-11-28</span>
+						</div>
+						<div class="my-comment-item">
+							<h4>宁夏三日深度游攻略</h4>
+							<p class="comment-text">写得很详细，收藏了！</p>
+							<span class="comment-date">2024-11-25</span>
+						</div>
+					</div>
+				</div>
+
+				<div id="profile" class="tab-content hidden">
+					<h2>个人信息</h2>
+					<form class="profile-form">
+						<div class="form-group">
+							<label>用户名</label>
+							<input type="text" class="form-control" value="游客用户" disabled>
+						</div>
+						<div class="form-group">
+							<label>手机号</label>
+							<input type="text" class="form-control" value="138****8888">
+						</div>
+						<div class="form-group">
+							<label>邮箱</label>
+							<input type="text" class="form-control" value="user@example.com">
+						</div>
+						<div class="form-group">
+							<label>密码</label>
+							<input type="password" class="form-control" placeholder="请输入新密码">
+						</div>
+						<button type="submit" class="btn btn-success">保存修改</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id='foot'>
+		<div class="top">
+			<div class="block left">
+				<h2>合作伙伴</h2>
+				<hr>
+				<ul>
+					<li>宁夏文化和旅游厅</li>
+					<li>中国东方航空</li>
+					<li>携程旅游</li>
+					<li>去哪儿网</li>
+				</ul>
+			</div>
+			<div class="block center">
+				<h2>联系方式</h2>
+				<hr>
+				<ul>
+					<li>客服热线：400-888-8888</li>
+					<li>邮箱：service@nxwenlv.com</li>
+					<li>地址：银川市金凤区</li>
+				</ul>
+			</div>
+			<div class="block right">
+				<h2>关于我们</h2>
+				<hr>
+				<ul>
+					<li>平台简介</li>
+					<li>用户协议</li>
+					<li>隐私政策</li>
+					<li>帮助中心</li>
+				</ul>
+			</div>
+		</div>
+		<div class="bottom">
+			宁夏智慧文旅服务平台 | www.nxwenlv.com | Copyright 2024
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script>
+		$('.nav-pills li a').click(function(e) {
+			e.preventDefault();
+			$('.tab-content').addClass('hidden');
+			$('.nav-pills li').removeClass('active');
+			$(this).parent().addClass('active');
+			var target = $(this).attr('href');
+			$(target).removeClass('hidden');
+		});
+
+		function removeCollection(el) {
+			$(el).parent().remove();
+			alert('已取消收藏');
+		}
+	</script>
+</body>
+</html>

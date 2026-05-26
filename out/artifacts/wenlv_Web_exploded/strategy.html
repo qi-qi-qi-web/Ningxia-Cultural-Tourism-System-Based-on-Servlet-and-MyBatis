@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>宁夏智慧文旅 - 旅游攻略</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<header id='header'>
+		<div class='center'>
+			<h1 class="logo">宁夏智慧文旅</h1>
+			<nav>
+				<ul class="link">
+					<li><a href="index.html">首页</a></li>
+					<li><a href="scenic.html">景区服务</a></li>
+					<li><a href="food.html">特色美食</a></li>
+					<li><a href="hotel.html">民宿酒店</a></li>
+					<li class="active"><a href="strategy.html">旅游攻略</a></li>
+					<li><a href="user_center.html">个人中心</a></li>
+					<li><a href="login.html">登录</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div id="main-content" class="container">
+		<div class="page-header">
+			<h1>旅游攻略</h1>
+			<p>分享宁夏旅行经验，发现最美风景</p>
+			<button class="btn btn-success pull-right" onclick="showPublishModal()">发布攻略</button>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="filter-panel">
+					<h3>攻略分类</h3>
+					<ul>
+						<li><a href="#" class="active">全部攻略</a></li>
+						<li><a href="#">三日游</a></li>
+						<li><a href="#">五日游</a></li>
+						<li><a href="#">自驾游</a></li>
+						<li><a href="#">亲子游</a></li>
+					</ul>
+					<h3>热门标签</h3>
+					<div class="tags-cloud">
+						<span class="tag">沙坡头</span>
+						<span class="tag">美食</span>
+						<span class="tag">摄影</span>
+						<span class="tag">人文</span>
+						<span class="tag">沙漠</span>
+						<span class="tag">黄河</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-9">
+				<div class="strategy-list">
+					<div class="strategy-item">
+						<div class="strategy-header">
+							<h3><a href="strategy_detail.html">宁夏三日深度游，感受塞上江南之美</a></h3>
+							<div class="meta">
+								<span class="author">旅行达人</span>
+								<span class="date">2024-11-28</span>
+								<span class="view">浏览 1280</span>
+							</div>
+						</div>
+						<p class="summary">分享我在宁夏三日游的精彩行程，从沙坡头到西夏王陵，带你领略宁夏的独特魅力...</p>
+						<div class="strategy-footer">
+							<span class="like-btn" onclick="likeStrategy(this)">
+								<span class="glyphicon glyphicon-thumbs-up"></span> 128
+							</span>
+							<span class="comment-count">
+								<span class="glyphicon glyphicon-comment"></span> 26
+							</span>
+							<div class="tags">
+								<span class="label label-primary">三日游</span>
+								<span class="label label-primary">经典</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="strategy-item">
+						<div class="strategy-header">
+							<h3><a href="strategy_detail.html">宁夏美食全攻略，吃货必看！</a></h3>
+							<div class="meta">
+								<span class="author">美食家小王</span>
+								<span class="date">2024-11-25</span>
+								<span class="view">浏览 2560</span>
+							</div>
+						</div>
+						<p class="summary">盘点宁夏最值得品尝的美食，从手抓羊肉到八宝茶，带你吃遍宁夏...</p>
+						<div class="strategy-footer">
+							<span class="like-btn" onclick="likeStrategy(this)">
+								<span class="glyphicon glyphicon-thumbs-up"></span> 256
+							</span>
+							<span class="comment-count">
+								<span class="glyphicon glyphicon-comment"></span> 48
+							</span>
+							<div class="tags">
+								<span class="label label-primary">美食</span>
+								<span class="label label-primary">推荐</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="strategy-item">
+						<div class="strategy-header">
+							<h3><a href="strategy_detail.html">亲子游宁夏，带娃玩转塞上江南</a></h3>
+							<div class="meta">
+								<span class="author">宝妈小李</span>
+								<span class="date">2024-11-20</span>
+								<span class="view">浏览 1890</span>
+							</div>
+						</div>
+						<p class="summary">带孩子来宁夏怎么玩？这篇攻略告诉你最适合亲子游玩的景点和路线...</p>
+						<div class="strategy-footer">
+							<span class="like-btn" onclick="likeStrategy(this)">
+								<span class="glyphicon glyphicon-thumbs-up"></span> 168
+							</span>
+							<span class="comment-count">
+								<span class="glyphicon glyphicon-comment"></span> 32
+							</span>
+							<div class="tags">
+								<span class="label label-primary">亲子游</span>
+								<span class="label label-primary">攻略</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<nav class="text-center">
+					<ul class="pagination">
+						<li class="disabled"><a href="#">&laquo;</a></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">4</a></li>
+						<li><a href="#">&raquo;</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="publishModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">发布旅游攻略</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label>标题</label>
+							<input type="text" class="form-control" placeholder="请输入攻略标题">
+						</div>
+						<div class="form-group">
+							<label>分类</label>
+							<select class="form-control">
+								<option value="三日游">三日游</option>
+								<option value="五日游">五日游</option>
+								<option value="自驾游">自驾游</option>
+								<option value="亲子游">亲子游</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>内容</label>
+							<textarea class="form-control" rows="6" placeholder="请输入攻略内容"></textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-success" onclick="publishStrategy()">发布</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer id='foot'>
+		<div class="top">
+			<div class="block left">
+				<h2>合作伙伴</h2>
+				<hr>
+				<ul>
+					<li>宁夏文化和旅游厅</li>
+					<li>中国东方航空</li>
+					<li>携程旅游</li>
+					<li>去哪儿网</li>
+				</ul>
+			</div>
+			<div class="block center">
+				<h2>联系方式</h2>
+				<hr>
+				<ul>
+					<li>客服热线：400-888-8888</li>
+					<li>邮箱：service@nxwenlv.com</li>
+					<li>地址：银川市金凤区</li>
+				</ul>
+			</div>
+			<div class="block right">
+				<h2>关于我们</h2>
+				<hr>
+				<ul>
+					<li>平台简介</li>
+					<li>用户协议</li>
+					<li>隐私政策</li>
+					<li>帮助中心</li>
+				</ul>
+			</div>
+		</div>
+		<div class="bottom">
+			宁夏智慧文旅服务平台 | www.nxwenlv.com | Copyright 2024
+		</div>
+	</footer>
+
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+	<script>
+		function showPublishModal() {
+			$('#publishModal').modal('show');
+		}
+		function publishStrategy() {
+			alert('发布成功！');
+			$('#publishModal').modal('hide');
+		}
+		function likeStrategy(el) {
+			el.style.color = '#e63946';
+		}
+	</script>
+</body>
+</html>
