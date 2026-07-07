@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="zh-CN">
+  <head>
+    <title>编辑美食 - 宁夏智慧文旅管理后台</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <style>
+      body { background-color: #f5f7fa; }
+      .admin-sidebar { min-height: 100vh; background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); padding: 20px 0; }
+      .admin-sidebar .logo { text-align: center; color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .admin-sidebar .nav-link { color: rgba(255,255,255,0.8); padding: 12px 20px; border-radius: 0 20px 20px 0; transition: all 0.3s ease; font-size: 14px; }
+      .admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active { background: rgba(255,255,255,0.15); color: #fff; }
+      .admin-main { padding: 20px; }
+      .admin-header { background: #fff; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+      .admin-card { background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 30px; }
+      .admin-card h3 { font-size: 20px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; color: #333; }
+      .form-group { margin-bottom: 20px; }
+      .form-group label { font-weight: 600; margin-bottom: 8px; color: #555; }
+      .form-control { border-radius: 6px; padding: 12px; border: 1px solid #ddd; }
+      .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 12px 30px; font-weight: 600; border-radius: 6px; }
+      .btn-secondary { background: #6c757d; border: none; padding: 12px 30px; font-weight: 600; border-radius: 6px; margin-left: 10px; }
+      .form-actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+      .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3 admin-sidebar">
+          <div class="logo">宁夏智慧文旅管理后台</div>
+          <nav class="nav flex-column">
+            <a class="nav-link" href="admin.html#dashboard" onclick="goToAdmin('dashboard')"><i class="fa fa-tachometer"></i> 数据概览</a>
+            <a class="nav-link" href="admin.html#users" onclick="goToAdmin('users')"><i class="fa fa-users"></i> 用户管理</a>
+            <a class="nav-link" href="admin.html#scenic" onclick="goToAdmin('scenic')"><i class="fa fa-map-marker"></i> 景区管理</a>
+            <a class="nav-link active" href="admin.html#food" onclick="goToAdmin('food')"><i class="fa fa-cutlery"></i> 美食管理</a>
+            <a class="nav-link" href="admin.html#hotel" onclick="goToAdmin('hotel')"><i class="fa fa-bed"></i> 民宿管理</a>
+            <a class="nav-link" href="admin.html#strategy" onclick="goToAdmin('strategy')"><i class="fa fa-file-text"></i> 攻略管理</a>
+            <a class="nav-link" href="admin.html#news" onclick="goToAdmin('news')"><i class="fa fa-newspaper-o"></i> 资讯管理</a>
+            <a class="nav-link" href="admin.html#orders" onclick="goToAdmin('orders')"><i class="fa fa-shopping-cart"></i> 订单管理</a>
+            <a class="nav-link" href="admin.html#comments" onclick="goToAdmin('comments')"><i class="fa fa-comments"></i> 评论管理</a>
+          </nav>
+        </div>
+        <div class="col-md-9 admin-main">
+          <div class="admin-header">
+            <div class="welcome">欢迎, <span id="admin-name">管理员</span></div>
+            <button class="btn btn-sm" style="background:#e74c3c;color:#fff;padding:6px 16px;font-size:13px;" onclick="logout()">退出登录</button>
+          </div>
+          <div class="admin-card">
+            <h3>编辑美食信息</h3>
+            <form id="edit-food-form" onsubmit="return saveFood(event)">
+              <input type="hidden" id="food-id" name="id">
+              <div class="form-group">
+                <label for="name">美食名称</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="请输入美食名称" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="category">分类</label>
+                  <select class="form-control" id="category" name="category">
+                    <option value="肉类">肉类</option>
+                    <option value="饮品">饮品</option>
+                    <option value="小吃">小吃</option>
+                    <option value="主食">主食</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="origin">产地</label>
+                  <input type="text" class="form-control" id="origin" name="origin" placeholder="请输入产地">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description">美食介绍</label>
+                <textarea class="form-control" id="description" name="description" rows="4" placeholder="请输入美食介绍"></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">保存修改</button>
+                <button type="button" class="btn btn-secondary" onclick="goBack()">返回列表</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function goToAdmin(section) { localStorage.setItem('adminSection', section); window.location.href = 'admin.html'; }
+      function logout() { localStorage.removeItem('adminUsername'); localStorage.removeItem('isAdminLoggedIn'); window.location.href = 'index.html'; }
+      function goBack() { window.location.href = 'admin.html#food'; }
+      function saveFood(event) { event.preventDefault(); alert('美食信息修改成功！'); window.location.href = 'admin.html#food'; return false; }
+      window.onload = function() {
+        document.getElementById('admin-name').textContent = localStorage.getItem('adminUsername') || '管理员';
+        if (!localStorage.getItem('isAdminLoggedIn')) { window.location.href = 'index.html'; return; }
+        var params = new URLSearchParams(window.location.search);
+        var id = params.get('id');
+        if (id) {
+          document.getElementById('food-id').value = id;
+          var mockData = {
+            '1': { name: '手抓羊肉', category: '肉类', origin: '盐池县', description: '宁夏盐池滩羊肉质细嫩，无膻味，营养丰富。' },
+            '2': { name: '八宝茶', category: '饮品', origin: '宁夏各地', description: '传统回族茶饮，由八种配料制成，香甜可口。' }
+          };
+          var data = mockData[id];
+          if (data) { Object.keys(data).forEach(key => { document.getElementById(key).value = data[key]; }); }
+        }
+      }
+    </script>
+  </body>
+</html>
