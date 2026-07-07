@@ -1,4 +1,5 @@
-<jsp:include page="Head.jsp">
+<%@include file="Head.jsp"%>
+<%@page contentType="text/html;charset=UTF-8"%>
 
     <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>

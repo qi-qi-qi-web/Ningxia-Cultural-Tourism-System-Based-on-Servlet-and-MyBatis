@@ -1,6 +1,8 @@
-<jsp:include page="Head.jsp">
 
-    <!--Swiper-->
+<%@include file="Head.jsp"%>
+<%@page contentType="text/html;charset=UTF-8"%>
+
+<!--Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-1" data-autoplay="5000" data-swiper='{"simulateTouch":false,"speed":500}'>
         <div class="swiper-wrapper text-center">
             <div class="swiper-slide context-dark" data-slide-bg="images/slider-1-slide-1.jpg">
