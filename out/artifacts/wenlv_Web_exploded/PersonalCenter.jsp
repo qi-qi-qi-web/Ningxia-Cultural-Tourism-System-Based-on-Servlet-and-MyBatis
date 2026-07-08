@@ -1,4 +1,4 @@
-<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=UTF-8"%>
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="zh-CN">
@@ -151,7 +151,7 @@
                             <div class="row row-30">
                                 <div class="col-md-4">
                                     <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-1-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-1-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">沙坡头景区</a></h4>
                                             <p class="post-grid__text">国家5A级景区，沙漠与黄河交汇的奇观</p>
@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-2-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-2-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">黄河宿集</a></h4>
                                             <p class="post-grid__text">网红民宿聚集地，体验慢生活</p>
@@ -175,46 +175,10 @@
                                 </div>
                                 <div class="col-md-4">
                                     <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-3-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-3-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">沙湖景区</a></h4>
                                             <p class="post-grid__text">沙水相依的美景，候鸟的天堂</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-4-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">西夏王陵</a></h4>
-                                            <p class="post-grid__text">神秘的西夏古国遗迹，东方金字塔</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-5-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">镇北堡西部影城</a></h4>
-                                            <p class="post-grid__text">中国电影走向世界的摇篮</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-6-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">贺兰山岩画</a></h4>
-                                            <p class="post-grid__text">远古人类的艺术画廊，世界文化遗产</p>
                                             <div class="post-grid__footer">
                                                 <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
                                             </div>
@@ -264,30 +228,6 @@
                                                         <td><span class="badge badge-info">待支付</span></td>
                                                         <td><button class="button button-xs button-primary">立即支付</button></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>DD20260709003</td>
-                                                        <td><a href="#">沙湖景区</a></td>
-                                                        <td>3</td>
-                                                        <td>￥360.00</td>
-                                                        <td><span class="badge badge-success">已支付</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260710004</td>
-                                                        <td><a href="#">镇北堡西部影城</a></td>
-                                                        <td>2</td>
-                                                        <td>￥160.00</td>
-                                                        <td><span class="badge badge-warning">待使用</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260711005</td>
-                                                        <td><a href="#">贺兰山岩画</a></td>
-                                                        <td>1</td>
-                                                        <td>￥60.00</td>
-                                                        <td><span class="badge badge-danger">已过期</span></td>
-                                                        <td><button class="button button-xs button-primary">重新购买</button></td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -321,30 +261,6 @@
                                                         <td>￥680.00</td>
                                                         <td><span class="badge badge-warning">待确认</span></td>
                                                         <td><button class="button button-xs button-primary">取消订单</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260707003</td>
-                                                        <td><a href="#">银川凯宾斯基酒店</a></td>
-                                                        <td>2026-07-12</td>
-                                                        <td>￥890.00</td>
-                                                        <td><span class="badge badge-success">已入住</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260708004</td>
-                                                        <td><a href="#">漫葡小镇·天沐温泉酒店</a></td>
-                                                        <td>2026-07-18</td>
-                                                        <td>￥560.00</td>
-                                                        <td><span class="badge badge-info">待支付</span></td>
-                                                        <td><button class="button button-xs button-primary">立即支付</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260709005</td>
-                                                        <td><a href="#">银川JW万豪酒店</a></td>
-                                                        <td>2026-07-20</td>
-                                                        <td>￥1180.00</td>
-                                                        <td><span class="badge badge-success">已预订</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
                                                     </tr>
                                                 </tbody>
                                             </table>

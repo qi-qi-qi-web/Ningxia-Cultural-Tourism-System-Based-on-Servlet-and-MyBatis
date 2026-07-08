@@ -1,7 +1,4 @@
-确实，上次的回复被截断了，没有完整输出。这里提供完整的 `PersonalCenter.jsp` 代码：
-
-```jsp
-<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=UTF-8"%>
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="zh-CN">
@@ -16,194 +13,6 @@
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login-styles.css">
-    <style>
-        /* ===== 个人中心表单样式优化 ===== */
-        .profile-form .form-wrap {
-            margin-bottom: 24px;
-        }
-
-        .profile-form .form-label {
-            display: block;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .profile-form .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 15px;
-            background: #fafafa;
-            color: #222;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .profile-form .form-input:focus {
-            border-color: #00a8a8;
-            box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.15);
-            outline: none;
-            background: #fff;
-        }
-
-        .profile-form .form-input::placeholder {
-            color: #999;
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .profile-form textarea.form-input {
-            min-height: 100px;
-            resize: vertical;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .profile-form .form-button .button {
-            padding: 14px 40px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-            border: none;
-            border-radius: 6px;
-            color: #fff;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .profile-form .form-button .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 168, 168, 0.35);
-        }
-
-        /* ===== 收藏卡片样式 ===== */
-        .collection-card .post-grid__body {
-            padding: 20px 18px;
-        }
-
-        .collection-card .post-grid__title {
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
-
-        .collection-card .post-grid__text {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 14px;
-            line-height: 1.6;
-        }
-
-        .collection-card .post-grid__footer .button {
-            padding: 6px 18px;
-            font-size: 12px;
-        }
-
-        /* ===== 订单表格样式 ===== */
-        .table-custom td,
-        .table-custom th {
-            padding: 12px 14px;
-            font-size: 14px;
-            vertical-align: middle;
-        }
-
-        .table-custom .badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
-        .badge-info {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        .badge-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-        .badge-danger {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* ===== 标签切换样式 ===== */
-        .nav-pills .nav-link {
-            padding: 12px 20px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 15px;
-            letter-spacing: 0.05em;
-            color: #555;
-            border-radius: 8px;
-            margin-bottom: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-pills .nav-link:hover {
-            background: #f0f8f8;
-            color: #00a8a8;
-        }
-
-        .nav-pills .nav-link.active {
-            background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-            color: #fff;
-        }
-
-        /* ===== Toast 提示 ===== */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-
-        .toast-custom {
-            padding: 14px 24px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 15px;
-            font-weight: 500;
-            box-shadow: 0 6px 30px rgba(0,0,0,0.2);
-            animation: slideIn 0.4s ease;
-            margin-bottom: 10px;
-            min-width: 200px;
-        }
-
-        .toast-custom.success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-        }
-
-        .toast-custom.info {
-            background: linear-gradient(135deg, #17a2b8, #00bcd4);
-        }
-
-        .toast-custom.error {
-            background: linear-gradient(135deg, #dc3545, #e74c3c);
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* ===== 响应式 ===== */
-        @media (max-width: 768px) {
-            .profile-form .form-button .button {
-                width: 100%;
-                text-align: center;
-            }
-        }
-    </style>
 </head>
 <body>
 <div class="preloader">
@@ -291,45 +100,44 @@
                     </div>
                 </div>
                 <div class="col-xl-9 col-lg-8">
-                    <!-- ===== 基本信息 ===== -->
                     <div id="user-info" class="tab-content">
                         <div class="section-sm">
-                            <h3 style="font-family: 'Oswald', sans-serif; font-weight: 500; margin-bottom: 30px;">基本信息</h3>
-                            <form class="rd-form rd-mailform profile-form" onsubmit="return saveUserInfo(event)">
+                            <h3>基本信息</h3>
+                            <form class="rd-form rd-mailform" onsubmit="return saveUserInfo(event)">
                                 <div class="row row-30">
                                     <div class="col-md-6">
                                         <div class="form-wrap">
-                                            <label class="form-label" for="info-name">👤 用户名</label>
-                                            <input class="form-input" id="info-name" type="text" name="name" placeholder="请输入您的用户名">
+                                            <label class="form-label" for="info-name">用户名</label>
+                                            <input class="form-input" id="info-name" type="text" name="name" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-wrap">
-                                            <label class="form-label" for="info-phone">📱 手机号</label>
-                                            <input class="form-input" id="info-phone" type="tel" name="phone" placeholder="请输入手机号码">
+                                            <label class="form-label" for="info-phone">手机号</label>
+                                            <input class="form-input" id="info-phone" type="tel" name="phone" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-wrap">
-                                            <label class="form-label" for="info-email">✉️ 邮箱</label>
-                                            <input class="form-input" id="info-email" type="email" name="email" placeholder="请输入电子邮箱地址">
+                                            <label class="form-label" for="info-email">邮箱</label>
+                                            <input class="form-input" id="info-email" type="email" name="email" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-wrap">
-                                            <label class="form-label" for="info-birthday">🎂 生日</label>
+                                            <label class="form-label" for="info-birthday">生日</label>
                                             <input class="form-input" id="info-birthday" type="date" name="birthday">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-wrap">
-                                            <label class="form-label" for="info-signature">💬 个性签名</label>
-                                            <textarea class="form-input" id="info-signature" name="signature" rows="3" placeholder="分享你的旅行感悟... ✈️"></textarea>
+                                            <label class="form-label" for="info-signature">个性签名</label>
+                                            <textarea class="form-input" id="info-signature" name="signature" rows="3" placeholder="分享你的旅行感悟..."></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-button">
-                                            <button class="button button-primary" type="submit">💾 保存修改</button>
+                                            <button class="button button-primary" type="submit">保存修改</button>
                                         </div>
                                     </div>
                                 </div>
@@ -337,14 +145,13 @@
                         </div>
                     </div>
 
-                    <!-- ===== 我的收藏 ===== -->
                     <div id="collections" class="tab-content" style="display: none;">
                         <div class="section-sm">
-                            <h3 style="font-family: 'Oswald', sans-serif; font-weight: 500; margin-bottom: 30px;">⭐ 我的收藏</h3>
+                            <h3>我的收藏</h3>
                             <div class="row row-30">
                                 <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-1-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                    <article class="post post-grid">
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-1-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">沙坡头景区</a></h4>
                                             <p class="post-grid__text">国家5A级景区，沙漠与黄河交汇的奇观</p>
@@ -355,8 +162,8 @@
                                     </article>
                                 </div>
                                 <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-2-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                    <article class="post post-grid">
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-2-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">黄河宿集</a></h4>
                                             <p class="post-grid__text">网红民宿聚集地，体验慢生活</p>
@@ -367,47 +174,11 @@
                                     </article>
                                 </div>
                                 <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-3-370x284.jpg" alt="" width="720" height="400"/></a></div>
+                                    <article class="post post-grid">
+                                        <div class="post-grid__media"><a href="#"><img src="images/img-3-720x400.jpg" alt="" width="720" height="400"/></a></div>
                                         <div class="post-grid__body">
                                             <h4 class="post-grid__title"><a href="#">沙湖景区</a></h4>
                                             <p class="post-grid__text">沙水相依的美景，候鸟的天堂</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-4-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">西夏王陵</a></h4>
-                                            <p class="post-grid__text">神秘的西夏古国遗迹，东方金字塔</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-5-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">镇北堡西部影城</a></h4>
-                                            <p class="post-grid__text">中国电影走向世界的摇篮</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid collection-card">
-                                        <div class="post-grid__media"><a href="#"><img src="images/tour-6-370x284.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">贺兰山岩画</a></h4>
-                                            <p class="post-grid__text">远古人类的艺术画廊，世界文化遗产</p>
                                             <div class="post-grid__footer">
                                                 <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
                                             </div>
@@ -418,70 +189,45 @@
                         </div>
                     </div>
 
-                    <!-- ===== 我的订单 ===== -->
                     <div id="orders" class="tab-content" style="display: none;">
                         <div class="section-sm">
-                            <h3 style="font-family: 'Oswald', sans-serif; font-weight: 500; margin-bottom: 30px;">📋 我的订单</h3>
+                            <h3>我的订单</h3>
                             <div class="tabs-custom tabs-horizontal tabs-line">
                                 <ul class="nav nav-tabs">
-                                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-tickets">🎫 景区门票</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-hotels">🏨 酒店民宿</a></li>
+                                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-tickets">景区门票</a></li>
+                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-hotels">酒店民宿</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="tab-tickets">
                                         <div class="table-custom-responsive">
                                             <table class="table-custom table-custom-primary">
                                                 <thead>
-                                                <tr>
-                                                    <th>订单号</th>
-                                                    <th>景区名称</th>
-                                                    <th>数量</th>
-                                                    <th>金额</th>
-                                                    <th>状态</th>
-                                                    <th>操作</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th>订单号</th>
+                                                        <th>景区名称</th>
+                                                        <th>数量</th>
+                                                        <th>金额</th>
+                                                        <th>状态</th>
+                                                        <th>操作</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td>DD20260705001</td>
-                                                    <td><a href="#">沙坡头景区</a></td>
-                                                    <td>2</td>
-                                                    <td>￥280.00</td>
-                                                    <td><span class="badge badge-success">已支付</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>DD20260708002</td>
-                                                    <td><a href="#">西夏王陵</a></td>
-                                                    <td>1</td>
-                                                    <td>￥75.00</td>
-                                                    <td><span class="badge badge-info">待支付</span></td>
-                                                    <td><button class="button button-xs button-primary">立即支付</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>DD20260709003</td>
-                                                    <td><a href="#">沙湖景区</a></td>
-                                                    <td>3</td>
-                                                    <td>￥360.00</td>
-                                                    <td><span class="badge badge-success">已支付</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>DD20260710004</td>
-                                                    <td><a href="#">镇北堡西部影城</a></td>
-                                                    <td>2</td>
-                                                    <td>￥160.00</td>
-                                                    <td><span class="badge badge-warning">待使用</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>DD20260711005</td>
-                                                    <td><a href="#">贺兰山岩画</a></td>
-                                                    <td>1</td>
-                                                    <td>￥60.00</td>
-                                                    <td><span class="badge badge-danger">已过期</span></td>
-                                                    <td><button class="button button-xs button-primary">重新购买</button></td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>DD20260705001</td>
+                                                        <td><a href="#">沙坡头景区</a></td>
+                                                        <td>2</td>
+                                                        <td>￥280.00</td>
+                                                        <td><span class="badge badge-success">已支付</span></td>
+                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>DD20260708002</td>
+                                                        <td><a href="#">西夏王陵</a></td>
+                                                        <td>1</td>
+                                                        <td>￥75.00</td>
+                                                        <td><span class="badge badge-info">待支付</span></td>
+                                                        <td><button class="button button-xs button-primary">立即支付</button></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -490,56 +236,32 @@
                                         <div class="table-custom-responsive">
                                             <table class="table-custom table-custom-primary">
                                                 <thead>
-                                                <tr>
-                                                    <th>订单号</th>
-                                                    <th>酒店名称</th>
-                                                    <th>入住日期</th>
-                                                    <th>金额</th>
-                                                    <th>状态</th>
-                                                    <th>操作</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th>订单号</th>
+                                                        <th>酒店名称</th>
+                                                        <th>入住日期</th>
+                                                        <th>金额</th>
+                                                        <th>状态</th>
+                                                        <th>操作</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td>JD20260705001</td>
-                                                    <td><a href="#">黄河宿集·西坡</a></td>
-                                                    <td>2026-07-10</td>
-                                                    <td>￥1280.00</td>
-                                                    <td><span class="badge badge-success">已预订</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>JD20260706002</td>
-                                                    <td><a href="#">沙湖星空营地</a></td>
-                                                    <td>2026-07-15</td>
-                                                    <td>￥680.00</td>
-                                                    <td><span class="badge badge-warning">待确认</span></td>
-                                                    <td><button class="button button-xs button-primary">取消订单</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>JD20260707003</td>
-                                                    <td><a href="#">银川凯宾斯基酒店</a></td>
-                                                    <td>2026-07-12</td>
-                                                    <td>￥890.00</td>
-                                                    <td><span class="badge badge-success">已入住</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>JD20260708004</td>
-                                                    <td><a href="#">漫葡小镇·天沐温泉酒店</a></td>
-                                                    <td>2026-07-18</td>
-                                                    <td>￥560.00</td>
-                                                    <td><span class="badge badge-info">待支付</span></td>
-                                                    <td><button class="button button-xs button-primary">立即支付</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>JD20260709005</td>
-                                                    <td><a href="#">银川JW万豪酒店</a></td>
-                                                    <td>2026-07-20</td>
-                                                    <td>￥1180.00</td>
-                                                    <td><span class="badge badge-success">已预订</span></td>
-                                                    <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>JD20260705001</td>
+                                                        <td><a href="#">黄河宿集·西坡</a></td>
+                                                        <td>2026-07-10</td>
+                                                        <td>￥1280.00</td>
+                                                        <td><span class="badge badge-success">已预订</span></td>
+                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>JD20260706002</td>
+                                                        <td><a href="#">沙湖星空营地</a></td>
+                                                        <td>2026-07-15</td>
+                                                        <td>￥680.00</td>
+                                                        <td><span class="badge badge-warning">待确认</span></td>
+                                                        <td><button class="button button-xs button-primary">取消订单</button></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -617,10 +339,6 @@
         </div>
     </footer>
 
-    <!-- ===== Toast 提示容器 ===== -->
-    <div class="toast-container" id="toast-container"></div>
-
-    <!-- ===== 登录弹窗 ===== -->
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -660,7 +378,6 @@
         </div>
     </div>
 
-    <!-- ===== 注册弹窗 ===== -->
     <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -673,13 +390,147 @@
                 <div class="modal-body" style="padding: 30px;">
                     <form id="register-form" method="post" action="#" onsubmit="return handleRegister(event)" novalidate style="margin: 0;">
                         <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">👤 用户名</div>
+                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">用户名</div>
                             <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-username" type="text" name="username" placeholder="请输入用户名">
                         </div>
                         <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">📱 手机号</div>
+                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">手机号</div>
                             <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-phone" type="tel" name="phone" placeholder="请输入手机号">
                         </div>
                         <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">🔒 密码</div>
-                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-password"
+                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">密码</div>
+                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-password" type="password" name="password" placeholder="请输入密码（至少6位）">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">确认密码</div>
+                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-confirm-password" type="password" name="confirmPassword" placeholder="请再次输入密码">
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <input style="margin-right: 10px; cursor: pointer;" id="register-agree" type="checkbox" name="agree">
+                            <span style="font-size: 13px; color: #666; cursor: pointer;">我已阅读并同意<a href="#" style="color: #00a8a8; text-decoration: none;">服务条款</a>和<a href="#" style="color: #00a8a8; text-decoration: none;">隐私政策</a></span>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <button style="width: 100%; padding: 14px 30px; font-family: Oswald, sans-serif; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%); border: none; border-radius: 6px; color: #fff; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;" type="submit">注册</button>
+                        </div>
+                        <div style="text-align: center;">
+                            <span style="font-size: 14px; color: #666;">已有账号?</span>
+                            <a href="#" style="font-size: 14px; color: #00a8a8; text-decoration: none; margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#login-modal" data-bs-dismiss="modal">立即登录</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="admin-login-modal" tabindex="-1" role="dialog" aria-labelledby="admin-login-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header admin-header">
+                    <h4 class="modal-title" id="admin-login-modal-label">管理员登录</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="admin-login-form" method="post" action="#" onsubmit="return handleAdminLogin(event)" novalidate>
+                        <div class="form-wrap">
+                            <label class="form-label" for="admin-username">管理员账号</label>
+                            <input class="form-input" id="admin-username" type="text" name="username" placeholder="请输入管理员账号">
+                        </div>
+                        <div class="form-wrap">
+                            <label class="form-label" for="admin-password">密码</label>
+                            <input class="form-input" id="admin-password" type="password" name="password" placeholder="请输入密码">
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="admin-remember" type="checkbox" name="remember">
+                            <label class="form-check-label" for="admin-remember">记住我</label>
+                        </div>
+                        <div class="form-button">
+                            <button class="button button-primary button-block" type="submit">管理员登录</button>
+                        </div>
+                        <div class="form-links">
+                            <a href="#" class="link-default">忘记密码?</a>
+                            <span class="text-separator">|</span>
+                            <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#register-modal">注册账户</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="snackbars" id="form-output-global"></div>
+<script src="js/core.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/login-script.js"></script>
+<script>
+    document.querySelectorAll('.nav-pills .nav-link').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            document.querySelectorAll('.nav-pills .nav-link').forEach(function(item) {
+                item.classList.remove('active');
+            });
+            this.classList.add('active');
+            var targetId = this.getAttribute('href');
+            if (targetId.startsWith('#')) {
+                e.preventDefault();
+                document.querySelectorAll('.tab-content').forEach(function(content) {
+                    content.style.display = 'none';
+                });
+                document.querySelector(targetId).style.display = 'block';
+            }
+        });
+    });
+
+    function loadUserInfo() {
+        var username = localStorage.getItem('userUsername') || localStorage.getItem('userEmail') || '用户';
+        var phone = localStorage.getItem('userPhone') || '';
+        var email = localStorage.getItem('userEmail') || '';
+
+        document.getElementById('user-name').textContent = '欢迎，' + username;
+        document.getElementById('info-name').value = username;
+        document.getElementById('info-phone').value = phone;
+        document.getElementById('info-email').value = email;
+    }
+
+    function saveUserInfo(e) {
+        e.preventDefault();
+        var name = document.getElementById('info-name').value;
+        var phone = document.getElementById('info-phone').value;
+        var email = document.getElementById('info-email').value;
+
+        localStorage.setItem('userUsername', name);
+        localStorage.setItem('userPhone', phone);
+        localStorage.setItem('userEmail', email);
+
+        document.getElementById('user-name').textContent = '欢迎，' + name;
+        showToast('信息保存成功！', 'success');
+        return false;
+    }
+
+    function removeCollection(btn) {
+        var card = btn.closest('.post');
+        card.style.opacity = '0';
+        setTimeout(function() {
+            card.remove();
+            showToast('已取消收藏', 'info');
+        }, 300);
+    }
+
+    function showEditProfile() {
+        document.querySelectorAll('.nav-pills .nav-link').forEach(function(item) {
+            item.classList.remove('active');
+        });
+        document.querySelector('.nav-pills .nav-link[href="#user-info"]').classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(function(content) {
+            content.style.display = 'none';
+        });
+        document.getElementById('user-info').style.display = 'block';
+    }
+
+    window.onload = function() {
+        loadUserInfo();
+        checkLoginStatus();
+    };
+</script>
+</body>
+</html>
