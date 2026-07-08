@@ -31,7 +31,7 @@ function checkLoginStatus() {
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + username + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
             '<a href="admin.html" class="user-dropdown-item">管理后台</a>' +
-            '<a href="#" class="user-dropdown-item">个人中心</a>' +
+            '<a href="PersonalCenter.jsp" class="user-dropdown-item">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
             '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
             '</div>' +
@@ -41,13 +41,13 @@ function checkLoginStatus() {
         container.innerHTML = '<div class="user-dropdown">' +
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + email + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
-            '<a href="#" class="user-dropdown-item">个人中心</a>' +
+            '<a href="PersonalCenter.jsp" class="user-dropdown-item">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
             '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
             '</div>' +
             '</div>';
     } else {
-        container.innerHTML = '<a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a> <a href="#" class="rd-nav-link rd-navbar-admin-login-toggle" data-bs-toggle="modal" data-bs-target="#admin-login-modal">管理</a>';
+        container.innerHTML = '<a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>';
     }
 }
 
