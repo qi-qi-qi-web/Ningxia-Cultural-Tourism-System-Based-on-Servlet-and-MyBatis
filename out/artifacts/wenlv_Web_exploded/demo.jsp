@@ -1,8 +1,113 @@
-
-<%@include file="Head.jsp"%>
-<%@page contentType="text/html;charset=UTF-8"%>
-
-<!--Swiper-->
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="zh-CN">
+<head>
+    <title>首页</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,700%7CMontserrat:400,500,600">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login-styles.css">
+</head>
+<body>
+<div class="preloader">
+    <div class="preloader-body">
+        <div class="cssload-container">
+            <div class="cssload-speeding-wheel"></div>
+        </div>
+        <p>加载中...</p>
+    </div>
+</div>
+<div class="page">
+    <header class="section page-header">
+        <!--RD Navbar-->
+        <div class="rd-navbar-wrap">
+            <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px" data-xxl-stick-up-offset="46px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+                <div class="rd-navbar-main-outer">
+                    <div class="rd-navbar-main">
+                        <!--RD Navbar Panel-->
+                        <div class="rd-navbar-panel">
+                            <!--RD Navbar Toggle-->
+                            <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                            <!--RD Navbar Brand-->
+                            <div class="rd-navbar-brand">
+                                <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                            </div>
+                        </div>
+                        <div class="rd-navbar-main-element">
+                            <div class="rd-navbar-nav-wrap">
+                                <ul class="rd-navbar-nav">
+                                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index.jsp">首页</a>
+                                    </li>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="AboutNingXia.jsp">关于宁夏</a>
+                                    </li>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
+                                        <ul class="rd-menu rd-navbar-dropdown">
+                                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="single-tour.html">景区详情</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Food.jsp">特色美食</a>
+                                        <ul class="rd-menu rd-navbar-dropdown">
+                                            <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="single-service.html">服务详情</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="#">民俗酒店</a>
+                                        <ul class="rd-menu rd-navbar-megamenu">
+                                            <li class="rd-megamenu-item">
+                                                <h6 class="rd-megamenu-title"><a href="Hotel.jsp">页面一</a></h6>
+                                                <ul class="rd-megamenu-list">
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="typography.html">排版展示</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="buttons.html">按钮样式</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="forms.html">表单样式</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tabs-and-accordions.html">标签和手风琴</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="progress-bars.html">进度条</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tables.html">表格</a></li>
+                                                </ul>
+                                            </li>
+                                            <li class="rd-megamenu-item">
+                                                <h6 class="rd-megamenu-title">页面二</h6>
+                                                <ul class="rd-megamenu-list">
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-system.html">网格系统</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="privacy-policy.html">隐私政策</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="search-results.html">搜索结果</a></li>
+                                                    <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="under-construction.html">建设中</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">旅游攻略</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--RD Navbar Search-->
+                            <div class="rd-navbar-search">
+                                <button class="rd-navbar-search-toggle rd-navbar-fixed-element-2" data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
+                                <form class="rd-search" action="search-results.html" data-search-live="rd-search-results-live" method="GET">
+                                    <div class="form-wrap">
+                                        <label class="form-label" for="rd-navbar-search-form-input">搜索...</label>
+                                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off">
+                                        <div class="rd-search-results-live" id="rd-search-results-live"></div>
+                                    </div>
+                                    <button class="rd-search-form-submit fa-search" type="submit"></button>
+                                </form>
+                            </div>
+                            <!--RD Navbar Login-->
+                            <div id="navbar-login-container" class="rd-navbar-login">
+                                <a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!--Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-1" data-autoplay="5000" data-swiper='{"simulateTouch":false,"speed":500}'>
         <div class="swiper-wrapper text-center">
             <div class="swiper-slide context-dark" data-slide-bg="images/slider-1-slide-1.jpg">
@@ -292,6 +397,8 @@
                         <a href="#" class="link-default">忘记密码?</a>
                         <span class="text-separator">|</span>
                         <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#register-modal">注册账户</a>
+                        <span class="text-separator">|</span>
+                        <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#admin-login-modal">管理员登录</a>
                     </div>
                 </form>
             </div>
@@ -382,5 +489,215 @@
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+    function showToast(message, type) {
+        var toast = document.createElement('div');
+        toast.className = 'toast-notification ' + (type || 'success');
+        toast.innerHTML = '<span>' + message + '</span><button onclick="this.parentElement.remove()">×</button>';
+        document.body.appendChild(toast);
+
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.style.opacity = '0';
+                setTimeout(function() {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }
+        }, 3000);
+    }
+
+    function checkLoginStatus() {
+        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var container = document.getElementById('navbar-login-container');
+
+        if (!container) return;
+
+        if (isAdminLoggedIn) {
+            var username = localStorage.getItem('adminUsername') || '管理员';
+            container.innerHTML = '<div class="user-dropdown">' +
+                '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + username + ' <i class="fa fa-caret-down"></i></a>' +
+                '<div class="user-dropdown-menu">' +
+                '<a href="admin.html" class="user-dropdown-item">管理后台</a>' +
+                '<a href="#" class="user-dropdown-item">个人中心</a>' +
+                '<div class="user-dropdown-divider"></div>' +
+                '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
+                '</div>' +
+                '</div>';
+        } else if (isLoggedIn) {
+            var email = localStorage.getItem('userEmail') || localStorage.getItem('userUsername') || '用户';
+            container.innerHTML = '<div class="user-dropdown">' +
+                '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + email + ' <i class="fa fa-caret-down"></i></a>' +
+                '<div class="user-dropdown-menu">' +
+                '<a href="#" class="user-dropdown-item">个人中心</a>' +
+                '<div class="user-dropdown-divider"></div>' +
+                '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
+                '</div>' +
+                '</div>';
+        } else {
+            container.innerHTML = '<a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>';
+        }
+    }
+
+    function toggleUserDropdown(event) {
+        event.preventDefault();
+        var dropdown = event.currentTarget.closest('.user-dropdown');
+        var menu = dropdown.querySelector('.user-dropdown-menu');
+        menu.classList.toggle('show');
+    }
+
+    document.addEventListener('click', function(event) {
+        var dropdowns = document.querySelectorAll('.user-dropdown-menu');
+        dropdowns.forEach(function(menu) {
+            if (!menu.contains(event.target) && !event.target.closest('.user-dropdown')) {
+                menu.classList.remove('show');
+            }
+        });
+    });
+
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('isAdminLoggedIn');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userUsername');
+        localStorage.removeItem('userPhone');
+        localStorage.removeItem('adminUsername');
+        showToast('已退出登录', 'info');
+        checkLoginStatus();
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+
+        var email = document.getElementById('login-email').value;
+        var password = document.getElementById('login-password').value;
+
+        if (!email || !password) {
+            alert('请填写用户名/邮箱和密码');
+            return false;
+        }
+
+        if (email.length < 3) {
+            alert('用户名/邮箱至少需要3个字符');
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert('密码长度不能少于6位');
+            return false;
+        }
+
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        var loginModal = bootstrap.Modal.getInstance(document.getElementById('login-modal'));
+        if (loginModal) {
+            loginModal.hide();
+        }
+
+        showToast('登录成功！欢迎回来', 'success');
+        checkLoginStatus();
+
+        return false;
+    }
+
+    function handleAdminLogin(event) {
+        event.preventDefault();
+
+        var username = document.getElementById('admin-username').value;
+        var password = document.getElementById('admin-password').value;
+
+        if (!username || !password) {
+            alert('请填写管理员账号和密码');
+            return false;
+        }
+
+        if (username.length < 3) {
+            alert('管理员账号至少需要3个字符');
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert('密码长度不能少于6位');
+            return false;
+        }
+
+        localStorage.setItem('adminUsername', username);
+        localStorage.setItem('isAdminLoggedIn', 'true');
+
+        var adminLoginModal = bootstrap.Modal.getInstance(document.getElementById('admin-login-modal'));
+        if (adminLoginModal) {
+            adminLoginModal.hide();
+        }
+
+        showToast('管理员登录成功！', 'success');
+
+        setTimeout(function() {
+            window.location.href = 'admin.html';
+        }, 1000);
+
+        return false;
+    }
+
+    function handleRegister(event) {
+        event.preventDefault();
+
+        var username = document.getElementById('register-username').value;
+        var phone = document.getElementById('register-phone').value;
+        var password = document.getElementById('register-password').value;
+        var confirmPassword = document.getElementById('register-confirm-password').value;
+        var agree = document.getElementById('register-agree').checked;
+
+        if (!username || !phone || !password || !confirmPassword) {
+            alert('请填写所有必填字段');
+            return false;
+        }
+
+        if (username.length < 3) {
+            alert('用户名至少需要3个字符');
+            return false;
+        }
+
+        if (!/^1[3-9]\d{9}$/.test(phone)) {
+            alert('请输入有效的手机号');
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert('密码长度不能少于6位');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert('两次输入的密码不一致');
+            return false;
+        }
+
+        if (!agree) {
+            alert('请阅读并同意服务条款和隐私政策');
+            return false;
+        }
+
+        localStorage.setItem('userUsername', username);
+        localStorage.setItem('userPhone', phone);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        var registerModal = bootstrap.Modal.getInstance(document.getElementById('register-modal'));
+        if (registerModal) {
+            registerModal.hide();
+        }
+
+        showToast('注册成功！欢迎加入', 'success');
+        checkLoginStatus();
+
+        return false;
+    }
+
+    window.onload = function() {
+        checkLoginStatus();
+    };
+</script>
 </body>
 </html>

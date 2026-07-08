@@ -6,7 +6,7 @@
         <div class="container">
             <h4 class="breadcrumbs-custom-title">民宿酒店</h4>
             <ul class="breadcrumbs-custom-path">
-                <li><a href="index.html">首页</a></li>
+                <li><a href="index.jsp">首页</a></li>
                 <li class="active">民宿酒店</li>
             </ul>
         </div>
