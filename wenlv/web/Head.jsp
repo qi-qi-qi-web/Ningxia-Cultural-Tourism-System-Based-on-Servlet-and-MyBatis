@@ -92,10 +92,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="login-form" method="post" action="#" onsubmit="return handleLogin(event)" novalidate>
+                    <form id="login-form" method="post" action="/login" novalidate>
                         <div class="form-wrap">
                             <label class="form-label" for="login-email">用户名/邮箱</label>
-                            <input class="form-input" id="login-email" type="text" name="email" placeholder="请输入用户名或邮箱">
+                            <input class="form-input" id="login-email" type="text" name="phoneOrEmail" placeholder="请输入用户名或邮箱">
                         </div>
                         <div class="form-wrap">
                             <label class="form-label" for="login-password">密码</label>
@@ -106,7 +106,7 @@
                             <label class="form-check-label" for="login-remember">记住我</label>
                         </div>
                         <div class="form-button">
-                            <button class="button button-primary button-block" type="submit">登录</button>
+                            <button class="button button-primary button-block" type="button" onclick="handleLogin()">登录</button>
                         </div>
                         <div class="form-links">
                             <a href="#" class="link-default">忘记密码?</a>

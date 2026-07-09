@@ -12,7 +12,7 @@ import java.util.Date;
 public class User {
     private Long id;
     private String username;
-    private String password;
+    private String passwordHash;
     private String nickname;
     private String email;
     private String phone;

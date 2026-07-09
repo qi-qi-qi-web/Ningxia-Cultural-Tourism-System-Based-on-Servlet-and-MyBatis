@@ -110,12 +110,13 @@ function closeModal(modalId) {
         el.remove();
     });
     document.body.classList.remove('modal-open');
+    // 清除 Bootstrap 弹窗可能遗留的 body 内联样式（padding-right 等）
+    document.body.style.paddingRight = '';
+    document.body.style.overflow = '';
 }
 
-// 普通用户登录提交
-function handleLogin(event) {
-    event.preventDefault();
-
+// 普通用户登录提交——调后端验证
+function handleLogin() {
     var email = document.getElementById('login-email').value;
     var password = document.getElementById('login-password').value;
 
@@ -134,19 +135,38 @@ function handleLogin(event) {
         return false;
     }
 
-    localStorage.setItem('userEmail', email);
-    localStorage.setItem('isLoggedIn', 'true');
+    // 调后端验证
+    var formData = new FormData();
+    formData.append('phoneOrEmail', email);
+    formData.append('password', password);
+    formData.append('_ajax', '1');
 
-    // 调用通用关闭弹窗，清除遮罩
-    closeModal('login-modal');
+    fetch('login', { method: 'POST', body: formData })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+        if (data.success) {
+            // 后端验证通过 → 保存登录态到 localStorage
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userUsername', email);
+            localStorage.setItem('userNickname', email);
+            localStorage.setItem('userPhone', '');
+            localStorage.setItem('isLoggedIn', 'true');
 
-    showToast('登录成功！欢迎回来', 'success');
-    checkLoginStatus();
+            closeModal('login-modal');
+            showToast('登录成功！欢迎回来', 'success');
+            checkLoginStatus();
+        } else {
+            showToast(data.message || '登录失败', 'error');
+        }
+    })
+    .catch(function() {
+        showToast('网络错误，请确认服务器已启动', 'error');
+    });
 
     return false;
 }
 
-// 管理员登录提交
+// 管理员登录提交（纯前端）
 function handleAdminLogin(event) {
     event.preventDefault();
 
@@ -183,7 +203,7 @@ function handleAdminLogin(event) {
     return false;
 }
 
-// 用户注册提交
+// 用户注册提交——调后端注册
 function handleRegister(event) {
     event.preventDefault();
 
@@ -223,15 +243,32 @@ function handleRegister(event) {
         return false;
     }
 
-    localStorage.setItem('userUsername', username);
-    localStorage.setItem('userPhone', phone);
-    localStorage.setItem('isLoggedIn', 'true');
+    // 调后端注册
+    var formData = new FormData();
+    formData.append('action', 'register');
+    formData.append('username', username);
+    formData.append('phone', phone);
+    formData.append('password', password);
 
-    // 关闭注册弹窗，清除遮罩
-    closeModal('register-modal');
+    fetch('login', { method: 'POST', body: formData })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+        if (data.success) {
+            localStorage.setItem('userUsername', username);
+            localStorage.setItem('userPhone', phone);
+            localStorage.setItem('userNickname', username);
+            localStorage.setItem('isLoggedIn', 'true');
 
-    showToast('注册成功！欢迎加入', 'success');
-    checkLoginStatus();
+            closeModal('register-modal');
+            showToast('注册成功！欢迎加入', 'success');
+            checkLoginStatus();
+        } else {
+            showToast(data.message || '注册失败', 'error');
+        }
+    })
+    .catch(function() {
+        showToast('网络错误，请确认服务器已启动', 'error');
+    });
 
     return false;
 }
@@ -246,4 +283,6 @@ window.addEventListener('load', function () {
         el.remove();
     });
     document.body.classList.remove('modal-open');
+    document.body.style.paddingRight = '';
+    document.body.style.overflow = '';
 });

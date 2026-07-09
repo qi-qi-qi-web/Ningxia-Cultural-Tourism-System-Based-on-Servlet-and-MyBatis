@@ -7,7 +7,7 @@
     <resultMap id="UserResultMap" type="com.niit.pojo.User">
         <id property="id" column="id"/>
         <result property="username" column="username"/>
-        <result property="password" column="password"/>
+        <result property="passwordHash" column="password"/>
         <result property="nickname" column="nickname"/>
         <result property="email" column="email"/>
         <result property="phone" column="phone"/>
@@ -39,7 +39,15 @@
         SELECT id, username, password, nickname, email, phone,
                avatar, role, status, created_at, updated_at
         FROM sys_user
-        WHERE phone = #{phoneOrEmail} OR email = #{phoneOrEmail}
+        WHERE phone = #{phoneOrEmail} OR email = #{phoneOrEmail} OR username = #{phoneOrEmail}
+    </select>
+
+    <!-- 按用户名查询 -->
+    <select id="findByUsername" resultMap="UserResultMap">
+        SELECT id, username, password, nickname, email, phone,
+               avatar, role, status, created_at, updated_at
+        FROM sys_user
+        WHERE username = #{username}
     </select>
 
     <!-- 按邮箱查询 -->
@@ -60,8 +68,8 @@
 
     <!-- 新增用户 -->
     <insert id="insertUser" parameterType="com.niit.pojo.User">
-        INSERT INTO sys_user (username, password, nickname, email, phone)
-        VALUES (#{username}, #{password}, #{nickname}, #{email}, #{phone})
+        INSERT INTO sys_user (username, password, nickname, email, phone, avatar, role)
+        VALUES (#{username}, #{passwordHash}, #{nickname}, #{email}, #{phone}, #{avatar}, #{role})
     </insert>
 
     <!-- 删除用户 -->
@@ -72,6 +80,27 @@
     <!-- 更新用户状态 -->
     <update id="updateStatus">
         UPDATE sys_user SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <!-- 更新个人资料 -->
+    <update id="updateProfile">
+        UPDATE sys_user
+        SET nickname = #{nickname}, phone = #{phone}, email = #{email}, updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 修改密码 -->
+    <update id="updatePassword">
+        UPDATE sys_user
+        SET password = #{passwordHash}, updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更换头像 -->
+    <update id="updateAvatar">
+        UPDATE sys_user
+        SET avatar = #{avatar}, updated_at = NOW()
+        WHERE id = #{id}
     </update>
 
 </mapper>

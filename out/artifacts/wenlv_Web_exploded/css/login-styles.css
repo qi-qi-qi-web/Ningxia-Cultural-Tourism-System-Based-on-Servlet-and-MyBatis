@@ -608,6 +608,9 @@
     color: #008a8a;
 }
 
+/* 防止 Bootstrap 弹窗在 body 上残留 padding-right 导致页面偏移 */
+body.modal-open { padding-right: 0 !important; }
+
 .toast-notification {
     position: fixed;
     top: 80px;

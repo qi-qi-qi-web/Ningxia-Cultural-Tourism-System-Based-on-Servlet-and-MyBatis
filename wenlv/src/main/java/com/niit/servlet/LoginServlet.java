@@ -3,7 +3,9 @@ package com.niit.servlet;
 import com.niit.mapper.UserMapper;
 import com.niit.pojo.User;
 import com.niit.utils.DBUtil;
+import com.niit.utils.PasswordUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,19 +14,36 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 @WebServlet("/login")
+@MultipartConfig
 public class LoginServlet extends HttpServlet {
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html;charset=UTF-8");
 
+        String action = request.getParameter("action");
+        if ("register".equals(action)) {
+            handleRegister(request, response);
+            return;
+        }
+
+        handleLogin(request, response);
+    }
+
+    private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String phoneOrEmail = request.getParameter("phoneOrEmail");
         String password = request.getParameter("password");
 
+        boolean isAjax = "1".equals(request.getParameter("_ajax"));
+
         if (phoneOrEmail == null || phoneOrEmail.trim().isEmpty() || password == null || password.trim().isEmpty()) {
-            request.setAttribute("error", "请填写完整的登录信息");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            if (isAjax) {
+                sendJson(response, false, "请填写完整的登录信息");
+            } else {
+                response.sendRedirect("index.jsp?error=" + URLEncoder.encode("请填写完整的登录信息", "UTF-8"));
+            }
             return;
         }
 
@@ -32,18 +51,90 @@ public class LoginServlet extends HttpServlet {
             UserMapper userMapper = session.getMapper(UserMapper.class);
             User user = userMapper.findByPhoneOrEmail(phoneOrEmail);
 
-            if (user != null && user.getPassword().equals(password)) {
-                HttpSession httpSession = request.getSession();
-                httpSession.setAttribute("user", user);
-                response.sendRedirect("index.html");
-            } else {
-                request.setAttribute("error", "账号或密码错误");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
+            if (user == null || !PasswordUtil.verify(password, user.getPasswordHash())) {
+                if (isAjax) {
+                    sendJson(response, false, "账号或密码错误");
+                } else {
+                    response.sendRedirect("index.jsp?error=" + URLEncoder.encode("账号或密码错误", "UTF-8"));
+                }
+                return;
             }
+
+            // 登录成功
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", user);
+            httpSession.setAttribute("isLoggedIn", true);
+
+            if (isAjax) {
+                sendJson(response, true, "登录成功");
+            } else {
+                response.sendRedirect("index.html");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (isAjax) {
+                sendJson(response, false, "服务器错误，请稍后重试");
+            } else {
+                response.sendRedirect("index.jsp?error=" + URLEncoder.encode("服务器错误，请稍后重试", "UTF-8"));
+            }
+        }
+    }
+
+    private void handleRegister(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+
+        if (username == null || username.trim().isEmpty() ||
+                phone == null || phone.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            sendJson(response, false, "请填写所有必填字段");
+            return;
+        }
+
+        try (SqlSession session = DBUtil.getSession(false)) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+
+            if (userMapper.findByUsername(username) != null) {
+                sendJson(response, false, "用户名已被注册");
+                return;
+            }
+            if (userMapper.findByPhone(phone) != null) {
+                sendJson(response, false, "手机号已被注册");
+                return;
+            }
+
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPhone(phone);
+            newUser.setPasswordHash(PasswordUtil.hash(password));
+            newUser.setNickname(username);
+            newUser.setRole("USER");
+
+            int rows = userMapper.insertUser(newUser);
+            session.commit();
+
+            if (rows > 0) {
+                HttpSession httpSession = request.getSession();
+                httpSession.setAttribute("user", newUser);
+                httpSession.setAttribute("isLoggedIn", true);
+                sendJson(response, true, "注册成功");
+            } else {
+                sendJson(response, false, "注册失败，请重试");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendJson(response, false, "服务器错误，请稍后重试");
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
+    private void sendJson(HttpServletResponse response, boolean success, String message) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        String escaped = message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
+        response.getWriter().write("{\"success\":" + success + ",\"message\":\"" + escaped + "\"}");
     }
 }
