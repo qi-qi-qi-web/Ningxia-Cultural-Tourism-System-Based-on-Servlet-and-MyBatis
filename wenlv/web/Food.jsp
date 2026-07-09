@@ -4,10 +4,10 @@
 <!-- Breadcrumbs-->
 <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
     <div class="container">
-        <h4 class="breadcrumbs-custom-title">特色美食</h4>
+        <h4 class="breadcrumbs-custom-title">宁夏特产</h4>
         <ul class="breadcrumbs-custom-path">
             <li><a href="index.jsp">首页</a></li>
-            <li class="active">特色美食</li>
+            <li class="active">宁夏特产</li>
         </ul>
     </div>
 </section>
@@ -23,7 +23,7 @@
                     </a>
                     <h5><a href="Food-detail.jsp">盐池手抓滩羊</a></h5>
                     <p>盐池滩羊无膻味，清水焖煮，肉质细嫩，宁夏必吃招牌硬菜。</p>
-                    <a class="button button-primary-2 button-md" href="Food-detail.jsp>了解更多</a>
+                    <a class="button button-primary-2 button-md" href="Food-detail.jsp">了解更多</a>
                 </article>
             </div>
             <div class="col-lg-4 col-sm-6">
@@ -148,5 +148,3 @@
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
-</body>
-</html>

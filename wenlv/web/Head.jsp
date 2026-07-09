@@ -37,7 +37,7 @@
                             <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                             <!--RD Navbar Brand-->
                             <div class="rd-navbar-brand">
-                                <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             </div>
                         </div>
                         <div class="rd-navbar-main-element">
@@ -49,7 +49,7 @@
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Food.jsp">特色美食</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Food.jsp">宁夏特产</a>
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="Hotel.jsp">民俗酒店</a>
                                     </li>
