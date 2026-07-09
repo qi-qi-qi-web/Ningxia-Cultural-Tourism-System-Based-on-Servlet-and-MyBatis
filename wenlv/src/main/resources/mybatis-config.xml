@@ -19,6 +19,6 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="mapper/UserMapper.xml"/>
+        <mapper resource="com/niit/mapper/UserMapper.xml"/>
     </mappers>
 </configuration>

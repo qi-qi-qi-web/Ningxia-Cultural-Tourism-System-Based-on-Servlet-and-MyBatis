@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS sys_user;
 CREATE TABLE sys_user (
     id              BIGINT          PRIMARY KEY AUTO_INCREMENT  COMMENT '用户ID',
     username        VARCHAR(50)     NOT NULL UNIQUE             COMMENT '用户名',
-    password_hash   VARCHAR(255)    NOT NULL                    COMMENT '密码哈希(BCrypt)',
+    password   VARCHAR(255)    NOT NULL                    COMMENT '密码(明文)',
     nickname        VARCHAR(50)     DEFAULT NULL                COMMENT '昵称',
     email           VARCHAR(100)    DEFAULT NULL                COMMENT '邮箱',
     phone           VARCHAR(20)     DEFAULT NULL                COMMENT '手机号',
@@ -386,10 +386,10 @@ CREATE TABLE favorite (
 
 -- ----------------------------------------------------------------------------
 -- 初始化管理员账号
--- 密码: admin123 (BCrypt加密, 实际项目中使用对应语言的BCrypt库生成)
+-- 密码: admin123 (明文存储)
 -- ----------------------------------------------------------------------------
-INSERT INTO sys_user (username, password_hash, nickname, role) VALUES
-('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '系统管理员', 'ADMIN');
+INSERT INTO sys_user (username, password, nickname, role) VALUES
+('admin', 'admin123', '系统管理员', 'ADMIN');
 
 -- ----------------------------------------------------------------------------
 -- 初始化特产分类（按role/人群角色）

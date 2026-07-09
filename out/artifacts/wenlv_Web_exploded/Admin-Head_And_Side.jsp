@@ -10,16 +10,16 @@
     <!-- 引入 Google Fonts 字体 -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,700|Montserrat:400,500,600">
     <!-- 引入本地样式表 -->
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css">
 </head>
 
 <body>
 
-<script src="js/core.min.js"></script>
-<script src="js/script.js"></script>
-<script src="js/admin.js"></script>
+<script src="${pageContext.request.contextPath}/js/core.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin.js"></script>
 
 <div class="container-fluid">
     <div class="row">
@@ -28,25 +28,25 @@
             <div class="logo">宁夏智慧文旅管理后台</div>
 
             <nav class="nav flex-column">
-                <a class="nav-link" href="Admin-user.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/user">
                     <i class="fa fa-users"></i> 用户管理
                 </a>
-                <a class="nav-link" href="Admin-scenic.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
                     <i class="fa fa-map-marker"></i> 景区管理
                 </a>
-                <a class="nav-link" href="Admin-speciality.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-speciality.jsp">
                     <i class="fa fa-cutlery"></i> 特产管理
                 </a>
-                <a class="nav-link" href="Admin-Hotel.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-Hotel.jsp">
                     <i class="fa fa-bed"></i> 酒店管理
                 </a>
-                <a class="nav-link" href="Admin-strategy.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-strategy.jsp">
                     <i class="fa fa-file-text"></i> 攻略管理
                 </a>
-                <a class="nav-link" href="Admin-order.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-order.jsp">
                     <i class="fa fa-shopping-cart"></i> 订单管理
                 </a>
-                <a class="nav-link" href="Admin-comment.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-comment.jsp">
                     <i class="fa fa-comments"></i> 评论管理
                 </a>
             </nav>

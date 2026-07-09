@@ -35,10 +35,11 @@ window.onload = function () {
         adminNameElement.textContent = adminName || '';
     }
 
-    if (!localStorage.getItem('isAdminLoggedIn')) {
-        window.location.href = 'index.html';
-        return;
-    }
+    // 暂时跳过登录检查，方便开发调试
+    // if (!localStorage.getItem('isAdminLoggedIn')) {
+    //     window.location.href = 'index.html';
+    //     return;
+    // }
 
     const hash = window.location.hash.substring(1);
     if (hash) {
