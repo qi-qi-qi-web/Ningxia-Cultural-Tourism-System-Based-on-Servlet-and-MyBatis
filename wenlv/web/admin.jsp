@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="zh-CN">
+<head>
+    <title>管理员后台 - 宁夏智慧文旅服务平台</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,700%7CMontserrat:400,500,600">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 admin-sidebar">
+            <div class="logo">宁夏智慧文旅管理后台</div>
+            <nav class="nav flex-column">
+                <a class="nav-link active" href="#dashboard" onclick="showSection('dashboard')">
+                    <i class="fa fa-tachometer"></i> 数据概览
+                </a>
+                <a class="nav-link" href="#users" onclick="showSection('users')">
+                    <i class="fa fa-users"></i> 用户管理
+                </a>
+                <a class="nav-link" href="#scenic" onclick="showSection('scenic')">
+                    <i class="fa fa-map-marker"></i> 景区管理
+                </a>
+                <a class="nav-link" href="#food" onclick="showSection('food')">
+                    <i class="fa fa-cutlery"></i> 美食管理
+                </a>
+                <a class="nav-link" href="#hotel" onclick="showSection('hotel')">
+                    <i class="fa fa-bed"></i> 民宿管理
+                </a>
+                <a class="nav-link" href="#strategy" onclick="showSection('strategy')">
+                    <i class="fa fa-file-text"></i> 攻略管理
+                </a>
+                <a class="nav-link" href="#news" onclick="showSection('news')">
+                    <i class="fa fa-newspaper-o"></i> 资讯管理
+                </a>
+                <a class="nav-link" href="#orders" onclick="showSection('orders')">
+                    <i class="fa fa-shopping-cart"></i> 订单管理
+                </a>
+                <a class="nav-link" href="#comments" onclick="showSection('comments')">
+                    <i class="fa fa-comments"></i> 评论管理
+                </a>
+            </nav>
+        </div>
+
+        <div class="col-md-9 admin-main">
+            <div class="admin-header">
+                <div class="welcome">欢迎, <span id="admin-name">管理员</span></div>
+                <button class="btn btn-sm logout-btn" onclick="logout()">退出登录</button>
+            </div>
+
+            <div id="dashboard" class="section" style="display:block;">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">1,234</div>
+                        <div class="stat-label">注册用户</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">56</div>
+                        <div class="stat-label">景区数量</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">89</div>
+                        <div class="stat-label">特色美食</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">民宿酒店</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">旅游攻略</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">892</div>
+                        <div class="stat-label">订单总数</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="users" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>用户管理</h3>
+                        <a href="admin-user-add.html" class="btn btn-primary btn-sm">新增用户</a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>手机号</th>
+                            <th>注册时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>游客张三</td>
+                            <td>138****1234</td>
+                            <td>2024-01-15</td>
+                            <td><span class="badge bg-success">正常</span></td>
+                            <td>
+                                <a href="admin-user-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>游客李四</td>
+                            <td>139****5678</td>
+                            <td>2024-01-16</td>
+                            <td><span class="badge bg-success">正常</span></td>
+                            <td>
+                                <a href="admin-user-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="scenic" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>景区管理</h3>
+                        <a href="admin-scenic-add.html" class="btn btn-primary btn-sm">新增景区</a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>景区名称</th>
+                            <th>门票价格</th>
+                            <th>地址</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>沙湖旅游区</td>
+                            <td>¥60</td>
+                            <td>石嘴山市平罗县</td>
+                            <td><span class="badge bg-success">上架</span></td>
+                            <td>
+                                <a href="admin-scenic-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-warning btn-sm btn-action">下架</button>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>镇北堡西部影城</td>
+                            <td>¥80</td>
+                            <td>银川市西夏区</td>
+                            <td><span class="badge bg-success">上架</span></td>
+                            <td>
+                                <a href="admin-scenic-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-warning btn-sm btn-action">下架</button>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="food" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>美食管理</h3>
+                        <a href="admin-food-add.html" class="btn btn-primary btn-sm">新增美食</a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>美食名称</th>
+                            <th>分类</th>
+                            <th>产地</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>手抓羊肉</td>
+                            <td>肉类</td>
+                            <td>盐池县</td>
+                            <td>
+                                <a href="admin-food-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>八宝茶</td>
+                            <td>饮品</td>
+                            <td>宁夏各地</td>
+                            <td>
+                                <a href="admin-food-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="hotel" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>民宿管理</h3>
+                        <a href="admin-hotel-add.html" class="btn btn-primary btn-sm">新增民宿</a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>民宿名称</th>
+                            <th>价格</th>
+                            <th>位置</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>黄河宿集</td>
+                            <td>¥580/晚</td>
+                            <td>中卫市沙坡头区</td>
+                            <td><span class="badge bg-success">营业中</span></td>
+                            <td>
+                                <a href="admin-hotel-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>星空营地</td>
+                            <td>¥320/晚</td>
+                            <td>银川市贺兰县</td>
+                            <td><span class="badge bg-success">营业中</span></td>
+                            <td>
+                                <a href="admin-hotel-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="strategy" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>攻略管理</h3>
+                        <button class="btn btn-primary btn-sm">审核攻略</button>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>攻略标题</th>
+                            <th>作者</th>
+                            <th>发布时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>宁夏三日游攻略</td>
+                            <td>游客张三</td>
+                            <td>2024-01-15</td>
+                            <td><span class="badge bg-success">已审核</span></td>
+                            <td>
+                                <button class="btn btn-info btn-sm btn-action">查看</button>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>沙坡头游玩指南</td>
+                            <td>游客李四</td>
+                            <td>2024-01-16</td>
+                            <td><span class="badge bg-warning">待审核</span></td>
+                            <td>
+                                <button class="btn btn-success btn-sm btn-action">通过</button>
+                                <button class="btn btn-danger btn-sm btn-action">拒绝</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="news" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>资讯管理</h3>
+                        <a href="admin-news-add.html" class="btn btn-primary btn-sm">发布资讯</a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>资讯标题</th>
+                            <th>发布时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>宁夏旅游旺季即将到来</td>
+                            <td>2024-01-15</td>
+                            <td>
+                                <a href="admin-news-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>沙湖景区新开放项目</td>
+                            <td>2024-01-14</td>
+                            <td>
+                                <a href="admin-news-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="orders" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>订单管理</h3>
+                        <button class="btn btn-primary btn-sm">统计报表</button>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>用户</th>
+                            <th>类型</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ORD20240115001</td>
+                            <td>游客张三</td>
+                            <td>景区门票</td>
+                            <td>¥60</td>
+                            <td><span class="badge bg-success">已完成</span></td>
+                            <td>
+                                <button class="btn btn-info btn-sm btn-action">详情</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>ORD20240116002</td>
+                            <td>游客李四</td>
+                            <td>民宿预订</td>
+                            <td>¥580</td>
+                            <td><span class="badge bg-warning">待支付</span></td>
+                            <td>
+                                <button class="btn btn-info btn-sm btn-action">详情</button>
+                                <button class="btn btn-danger btn-sm btn-action">取消</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="comments" class="section" style="display:none;">
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3>评论管理</h3>
+                        <button class="btn btn-primary btn-sm">批量删除</button>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户</th>
+                            <th>评论内容</th>
+                            <th>关联内容</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>游客张三</td>
+                            <td>景区非常美丽，值得一去...</td>
+                            <td>沙湖旅游区</td>
+                            <td>2024-01-15</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>游客李四</td>
+                            <td>服务很好，下次还来</td>
+                            <td>镇北堡西部影城</td>
+                            <td>2024-01-16</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm btn-action">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/core.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
