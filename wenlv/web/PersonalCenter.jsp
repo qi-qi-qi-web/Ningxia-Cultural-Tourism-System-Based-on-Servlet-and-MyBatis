@@ -1,4 +1,4 @@
- <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="zh-CN">
@@ -14,49 +14,357 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login-styles.css">
     <style>
-        .profile-form-group {
+        .profile-page {
+            min-height: calc(100vh - 200px);
+            background-color: #f5f7fa;
+        }
+        .user-header-card {
+            background: linear-gradient(135deg, #00a8a8 0%, #008a8a 100%);
+            padding: 40px 30px;
+            border-radius: 12px;
+            color: #fff;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .user-header-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        .user-header-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+        .avatar-container {
+            position: relative;
+            z-index: 1;
+        }
+        .avatar-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+        .user-info {
+            position: relative;
+            z-index: 1;
+        }
+        .user-nickname {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .user-role {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        .user-stats {
+            display: flex;
+            gap: 30px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .edit-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .sidebar-nav {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px 0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+        .nav-item-custom {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #555;
+        }
+        .nav-item-custom:hover {
+            background: #f0f8f8;
+            color: #00a8a8;
+        }
+        .nav-item-custom.active {
+            background: linear-gradient(90deg, #e8f7f7 0%, #fff 100%);
+            color: #00a8a8;
+            font-weight: 500;
+        }
+        .nav-item-custom.active::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #00a8a8;
+            border-radius: 2px;
+        }
+        .nav-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        .content-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            min-height: 400px;
+        }
+        .content-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #333;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .form-group-custom {
             margin-bottom: 20px;
         }
-        .profile-form-label {
+        .form-label-custom {
             display: block;
-            font-family: Oswald, sans-serif;
             font-size: 14px;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .form-input-custom {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        .form-input-custom:focus {
+            outline: none;
+            border-color: #00a8a8;
+            box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
+        }
+        .form-input-custom[readonly] {
+            background: #fafafa;
+            color: #999;
+        }
+        .btn-primary-custom {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 168, 168, 0.3);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        .empty-icon {
+            font-size: 64px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .empty-text {
+            font-size: 16px;
+            color: #bbb;
+        }
+        .order-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .order-card:hover {
+            border-color: #00a8a8;
+            box-shadow: 0 2px 8px rgba(0, 168, 168, 0.1);
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .order-no {
+            font-size: 14px;
+            color: #666;
+        }
+        .order-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .order-status.paid {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        .order-status.unpaid {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+        .order-status.used {
+            background: #f5f5f5;
+            color: #999;
+        }
+        .order-content {
+            display: flex;
+            gap: 15px;
+        }
+        .order-img {
+            width: 80px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        .order-info {
+            flex: 1;
+        }
+        .order-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .order-detail {
+            font-size: 13px;
+            color: #999;
+        }
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f5f5f5;
+        }
+        .order-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e74c3c;
+        }
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .collection-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .collection-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        .collection-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .collection-info {
+            padding: 15px;
+        }
+        .collection-title {
+            font-size: 16px;
+            font-weight: 500;
             color: #333;
             margin-bottom: 8px;
         }
-        .profile-form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #fafafa;
-            box-sizing: border-box;
-            color: #333;
-            transition: border-color 0.3s ease;
+        .collection-desc {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 12px;
         }
-        .profile-form-input:focus {
-            outline: none;
-            border-color: #00a8a8;
+        .collection-actions {
+            display: flex;
+            justify-content: flex-end;
         }
-        .profile-form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 15px;
-            background: #fafafa;
-            box-sizing: border-box;
-            color: #333;
-            resize: vertical;
-            min-height: 100px;
+        .collection-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
-        .profile-form-textarea:focus {
-            outline: none;
-            border-color: #00a8a8;
+        .filter-btn {
+            padding: 8px 18px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 20px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover {
+            background: #e8f5f5;
+            color: #00a8a8;
+        }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
+            color: #fff;
+        }
+        .btn-secondary-custom {
+            padding: 6px 14px;
+            background: #f5f5f5;
+            border: none;
+            border-radius: 6px;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary-custom:hover {
+            background: #eee;
+            color: #00a8a8;
         }
     </style>
 </head>
@@ -124,266 +432,313 @@
         </div>
     </section>
 
-    <section class="section section-lg">
+    <section class="profile-page section section-lg">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
-                    <div class="sidebar sidebar-left">
-                        <div class="team-member-box">
-                            <div class="team-member-box__media"><img src="images/team-member-1-370x510.jpg" alt="" width="370" height="370" style="object-fit: cover; border-radius: 50%;"/></div>
-                            <div class="team-member-box__caption">
-                                <h5><a href="#" id="user-name">欢迎，用户</a></h5><span class="subtitle">普通会员</span>
-                                <ul class="social-list">
-                                    <li><a href="#" onclick="showEditProfile()"><span class="icon fa fa-edit"></span></a></li>
-                                </ul>
-                            </div>
+                    <div class="sidebar-nav">
+                        <div class="nav-item-custom active" onclick="showTab('profile', event)">
+                            <span class="nav-icon"><i class="fa fa-user"></i></span>
+                            个人资料
                         </div>
-                        <ul class="nav flex-column nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#user-info">基本信息</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#collections">我的收藏</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#orders">我的订单</a></li>
-                        </ul>
+                        <div class="nav-item-custom" onclick="showTab('posts', event)">
+                            <span class="nav-icon"><i class="fa fa-edit"></i></span>
+                            我的发布
+                        </div>
+                        <div class="nav-item-custom" onclick="showTab('comments', event)">
+                            <span class="nav-icon"><i class="fa fa-comment"></i></span>
+                            我的评论
+                        </div>
+                        <div class="nav-item-custom" onclick="showTab('collections', event)">
+                            <span class="nav-icon"><i class="fa fa-heart"></i></span>
+                            我的收藏
+                        </div>
+                        <div class="nav-item-custom" onclick="showTab('orders', event)">
+                            <span class="nav-icon"><i class="fa fa-shopping-cart"></i></span>
+                            我的订单
+                        </div>
+                        <div class="nav-item-custom" onclick="handleLogout()">
+                            <span class="nav-icon"><i class="fa fa-sign-out"></i></span>
+                            退出登录
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-xl-9 col-lg-8">
-                    <div id="user-info" class="tab-content">
-                        <div class="section-sm">
-                            <h3>基本信息</h3>
-                            <form onsubmit="return saveUserInfo(event)" style="margin-top: 20px;">
-                                <div class="row row-30">
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">用户名</div>
-                                            <input class="profile-form-input" id="info-username" type="text" name="username" placeholder="请输入用户名" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">昵称</div>
-                                            <input class="profile-form-input" id="info-nickname" type="text" name="nickname" placeholder="请输入昵称">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">手机号</div>
-                                            <input class="profile-form-input" id="info-phone" type="tel" name="phone" placeholder="请输入手机号">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">邮箱</div>
-                                            <input class="profile-form-input" id="info-email" type="email" name="email" placeholder="请输入邮箱">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">密码</div>
-                                            <input class="profile-form-input" id="info-password" type="password" name="password" placeholder="请输入密码（至少6位）">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">角色</div>
-                                            <input class="profile-form-input" id="info-role" type="text" name="role" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">状态</div>
-                                            <input class="profile-form-input" id="info-status" type="text" name="status" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">注册时间</div>
-                                            <input class="profile-form-input" id="info-created" type="text" name="created_at" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-form-group">
-                                            <div class="profile-form-label">更新时间</div>
-                                            <input class="profile-form-input" id="info-updated" type="text" name="updated_at" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div style="margin-top: 20px;">
-                                            <button class="button button-primary" type="submit">保存修改</button>
-                                        </div>
+                    <div id="tab-profile" class="tab-content-main">
+                        <div class="user-header-card">
+                            <div class="user-info">
+                                <div class="user-nickname" id="user-nickname">用户</div>
+                                <div class="user-role" id="user-role-tag">普通用户</div>
+                                <div class="user-role" id="user-role-tag">状态正常</div>
+                                <div class="user-role" id="user-role-tag">不可发表</div>
+                            </div>
+                        </div>
+
+                        <div class="content-card" id="profile-content">
+                            <div class="content-title">基本信息</div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <div class="form-label-custom">账号</div>
+                                        <input class="form-input-custom" id="info-username" type="text" name="username" placeholder="请输入用户名" readonly>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <div class="form-label-custom">昵称</div>
+                                        <input class="form-input-custom" id="info-nickname" type="text" name="nickname" placeholder="请输入昵称" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <div class="form-label-custom">手机号</div>
+                                        <input class="form-input-custom" id="info-phone" type="tel" name="phone" placeholder="请输入手机号" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group-custom">
+                                        <div class="form-label-custom">邮箱</div>
+                                        <input class="form-input-custom" id="info-email" type="email" name="email" placeholder="请输入邮箱" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 25px;">
+                                <button class="btn-primary-custom" onclick="openEditModal()">编辑</button>
+                                <button class="btn-primary-custom" onclick="showChangePassword()">修改密码</button>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="collections" class="tab-content" style="display: none;">
-                        <div class="section-sm">
-                            <h3>我的收藏</h3>
-                            <div class="row row-30">
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/img-1-720x400.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">沙坡头景区</a></h4>
-                                            <p class="post-grid__text">国家5A级景区，沙漠与黄河交汇的奇观</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
+                    <div id="tab-posts" class="tab-content-main" style="display: none;">
+                        <div class="content-card">
+                            <div class="content-title">我的攻略</div>
+                            <div class="empty-state">
+                                <div class="empty-icon"><i class="fa fa-pencil"></i></div>
+                                <div class="empty-text">暂无发布内容</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-comments" class="tab-content-main" style="display: none;">
+                        <div class="content-card">
+                            <div class="content-title">我的评论</div>
+                            <div class="empty-state">
+                                <div class="empty-icon"><i class="fa fa-comment"></i></div>
+                                <div class="empty-text">暂无评论</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-collections" class="tab-content-main" style="display: none;">
+                        <div class="content-card">
+                            <div class="content-title">我的收藏</div>
+                            <div class="collection-filter">
+                                <button class="filter-btn active" onclick="switchCollection('scenic')">景区收藏</button>
+                                <button class="filter-btn" onclick="switchCollection('product')">特产收藏</button>
+                                <button class="filter-btn" onclick="switchCollection('hotel')">酒店收藏</button>
+                                <button class="filter-btn" onclick="switchCollection('guide')">攻略收藏</button>
+                            </div>
+                            <div id="collection-scenic" class="collection-grid">
+                                <div class="collection-item">
+                                    <img src="images/img-1-720x400.jpg" alt="沙坡头景区" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">沙坡头景区</div>
+                                        <div class="collection-desc">国家5A级景区，沙漠与黄河交汇的奇观</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
                                         </div>
-                                    </article>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/img-2-720x400.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">黄河宿集</a></h4>
-                                            <p class="post-grid__text">网红民宿聚集地，体验慢生活</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
+                                <div class="collection-item">
+                                    <img src="images/img-2-720x400.jpg" alt="西夏王陵" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">西夏王陵</div>
+                                        <div class="collection-desc">神秘的东方金字塔，探寻西夏文明</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
                                         </div>
-                                    </article>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <article class="post post-grid">
-                                        <div class="post-grid__media"><a href="#"><img src="images/img-3-720x400.jpg" alt="" width="720" height="400"/></a></div>
-                                        <div class="post-grid__body">
-                                            <h4 class="post-grid__title"><a href="#">沙湖景区</a></h4>
-                                            <p class="post-grid__text">沙水相依的美景，候鸟的天堂</p>
-                                            <div class="post-grid__footer">
-                                                <button class="button button-xs button-primary" onclick="removeCollection(this)">取消收藏</button>
-                                            </div>
+                                <div class="collection-item">
+                                    <img src="images/img-3-720x400.jpg" alt="沙湖景区" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">沙湖景区</div>
+                                        <div class="collection-desc">沙水相依的美景，候鸟的天堂</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
                                         </div>
-                                    </article>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collection-product" class="collection-grid" style="display: none;">
+                                <div class="collection-item">
+                                    <img src="images/service-1-370x389.jpg" alt="宁夏枸杞" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">宁夏枸杞</div>
+                                        <div class="collection-desc">中宁特产，滋补养生佳品</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/service-2-370x389.jpg" alt="盐池滩羊肉" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">盐池滩羊肉</div>
+                                        <div class="collection-desc">肉质鲜嫩，无膻味，舌尖上的美味</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/service-3-370x389.jpg" alt="贺兰山东麓葡萄酒" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">贺兰山东麓葡萄酒</div>
+                                        <div class="collection-desc">中国葡萄酒之乡，品质卓越</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collection-hotel" class="collection-grid" style="display: none;">
+                                <div class="collection-item">
+                                    <img src="images/service-4-370x389.jpg" alt="黄河宿集·西坡" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">黄河宿集·西坡</div>
+                                        <div class="collection-desc">网红民宿聚集地，体验慢生活</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/service-5-370x389.jpg" alt="银川凯宾斯基酒店" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">银川凯宾斯基酒店</div>
+                                        <div class="collection-desc">国际品牌，尊享奢华体验</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/service-6-370x389.jpg" alt="腾格里沙漠营地" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">腾格里沙漠营地</div>
+                                        <div class="collection-desc">星空下的沙漠露营，极致体验</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collection-guide" class="collection-grid" style="display: none;">
+                                <div class="collection-item">
+                                    <img src="images/img-1-720x400.jpg" alt="宁夏三日游攻略" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">宁夏三日游攻略</div>
+                                        <div class="collection-desc">经典路线，玩转宁夏精华景点</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/img-2-720x400.jpg" alt="沙漠穿越攻略" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">沙漠穿越攻略</div>
+                                        <div class="collection-desc">挑战自我，征服腾格里沙漠</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collection-item">
+                                    <img src="images/img-3-720x400.jpg" alt="美食探店攻略" class="collection-img">
+                                    <div class="collection-info">
+                                        <div class="collection-title">美食探店攻略</div>
+                                        <div class="collection-desc">寻味宁夏，舌尖上的西北风情</div>
+                                        <div class="collection-actions">
+                                            <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="orders" class="tab-content" style="display: none;">
-                        <div class="section-sm">
-                            <h3>我的订单</h3>
-                            <div class="tabs-custom tabs-horizontal tabs-line">
-                                <ul class="nav nav-tabs">
-                                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-tickets">景区门票</a></li>
-                                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-hotels">酒店民宿</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="tab-tickets">
-                                        <div class="table-custom-responsive">
-                                            <table class="table-custom table-custom-primary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>订单号</th>
-                                                        <th>景区名称</th>
-                                                        <th>数量</th>
-                                                        <th>金额</th>
-                                                        <th>状态</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>DD20260705001</td>
-                                                        <td><a href="#">沙坡头景区</a></td>
-                                                        <td>2</td>
-                                                        <td>￥280.00</td>
-                                                        <td><span class="badge badge-success">已支付</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260708002</td>
-                                                        <td><a href="#">西夏王陵</a></td>
-                                                        <td>1</td>
-                                                        <td>￥75.00</td>
-                                                        <td><span class="badge badge-info">待支付</span></td>
-                                                        <td><button class="button button-xs button-primary">立即支付</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260703003</td>
-                                                        <td><a href="#">贺兰山岩画</a></td>
-                                                        <td>3</td>
-                                                        <td>￥180.00</td>
-                                                        <td><span class="badge badge-success">已支付</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260709004</td>
-                                                        <td><a href="#">沙湖景区</a></td>
-                                                        <td>2</td>
-                                                        <td>￥160.00</td>
-                                                        <td><span class="badge badge-warning">待确认</span></td>
-                                                        <td><button class="button button-xs button-primary">取消订单</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>DD20260702005</td>
-                                                        <td><a href="#">镇北堡西部影城</a></td>
-                                                        <td>4</td>
-                                                        <td>￥320.00</td>
-                                                        <td><span class="badge badge-success">已使用</span></td>
-                                                        <td><button class="button button-xs button-primary-2" disabled>已完成</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                    <div id="tab-orders" class="tab-content-main" style="display: none;">
+                        <div class="content-card">
+                            <div class="content-title">我的订单</div>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-no">订单号: DD20260705001</div>
+                                    <div class="order-status paid">已支付</div>
+                                </div>
+                                <div class="order-content">
+                                    <img src="images/img-1-720x400.jpg" alt="沙坡头景区" class="order-img">
+                                    <div class="order-info">
+                                        <div class="order-title">沙坡头景区门票</div>
+                                        <div class="order-detail">数量: 2张 | 使用日期: 2026-07-10</div>
                                     </div>
-                                    <div class="tab-pane fade" id="tab-hotels">
-                                        <div class="table-custom-responsive">
-                                            <table class="table-custom table-custom-primary">
-                                                <thead>
-                                                    <tr>
-                                                        <th>订单号</th>
-                                                        <th>酒店名称</th>
-                                                        <th>入住日期</th>
-                                                        <th>金额</th>
-                                                        <th>状态</th>
-                                                        <th>操作</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>JD20260705001</td>
-                                                        <td><a href="#">黄河宿集·西坡</a></td>
-                                                        <td>2026-07-10</td>
-                                                        <td>￥1280.00</td>
-                                                        <td><span class="badge badge-success">已预订</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260706002</td>
-                                                        <td><a href="#">沙湖星空营地</a></td>
-                                                        <td>2026-07-15</td>
-                                                        <td>￥680.00</td>
-                                                        <td><span class="badge badge-warning">待确认</span></td>
-                                                        <td><button class="button button-xs button-primary">取消订单</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260704003</td>
-                                                        <td><a href="#">银川凯宾斯基酒店</a></td>
-                                                        <td>2026-07-08</td>
-                                                        <td>￥560.00</td>
-                                                        <td><span class="badge badge-success">已入住</span></td>
-                                                        <td><button class="button button-xs button-primary-2" disabled>已完成</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260709004</td>
-                                                        <td><a href="#">腾格里沙漠营地</a></td>
-                                                        <td>2026-07-20</td>
-                                                        <td>￥880.00</td>
-                                                        <td><span class="badge badge-info">待支付</span></td>
-                                                        <td><button class="button button-xs button-primary">立即支付</button></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>JD20260707005</td>
-                                                        <td><a href="#">永宁古城民宿</a></td>
-                                                        <td>2026-07-12</td>
-                                                        <td>￥320.00</td>
-                                                        <td><span class="badge badge-success">已预订</span></td>
-                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="order-price">￥280.00</div>
+                                    <button class="btn-secondary-custom">查看详情</button>
+                                </div>
+                            </div>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-no">订单号: JD20260705001</div>
+                                    <div class="order-status paid">已预订</div>
+                                </div>
+                                <div class="order-content">
+                                    <img src="images/service-1-370x389.jpg" alt="黄河宿集" class="order-img">
+                                    <div class="order-info">
+                                        <div class="order-title">黄河宿集·西坡</div>
+                                        <div class="order-detail">入住日期: 2026-07-10 | 房型: 精致大床房</div>
                                     </div>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="order-price">￥1280.00</div>
+                                    <button class="btn-secondary-custom">查看详情</button>
+                                </div>
+                            </div>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-no">订单号: DD20260708002</div>
+                                    <div class="order-status unpaid">待支付</div>
+                                </div>
+                                <div class="order-content">
+                                    <img src="images/img-2-720x400.jpg" alt="西夏王陵" class="order-img">
+                                    <div class="order-info">
+                                        <div class="order-title">西夏王陵门票</div>
+                                        <div class="order-detail">数量: 1张 | 使用日期: 2026-07-15</div>
+                                    </div>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="order-price">￥75.00</div>
+                                    <button class="btn-primary-custom">立即支付</button>
+                                </div>
+                            </div>
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-no">订单号: DD20260702005</div>
+                                    <div class="order-status used">已使用</div>
+                                </div>
+                                <div class="order-content">
+                                    <img src="images/img-3-720x400.jpg" alt="镇北堡西部影城" class="order-img">
+                                    <div class="order-info">
+                                        <div class="order-title">镇北堡西部影城门票</div>
+                                        <div class="order-detail">数量: 4张 | 使用日期: 2026-07-02</div>
+                                    </div>
+                                </div>
+                                <div class="order-footer">
+                                    <div class="order-price">￥320.00</div>
+                                    <button class="btn-secondary-custom" disabled>已完成</button>
                                 </div>
                             </div>
                         </div>
@@ -577,6 +932,42 @@
         </div>
     </div>
 
+    <div id="edit-profile-modal" class="modal" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">编辑资料</h4>
+                    <button type="button" class="close" onclick="closeEditModal()">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-profile-form" onsubmit="return saveEditInfo(event)">
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">用户名</div>
+                            <input class="form-input-custom" id="edit-username" type="text" name="username" placeholder="请输入用户名">
+                        </div>
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">昵称</div>
+                            <input class="form-input-custom" id="edit-nickname" type="text" name="nickname" placeholder="请输入昵称">
+                        </div>
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">手机号</div>
+                            <input class="form-input-custom" id="edit-phone" type="tel" name="phone" placeholder="请输入手机号">
+                        </div>
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">邮箱</div>
+                            <input class="form-input-custom" id="edit-email" type="email" name="email" placeholder="请输入邮箱">
+                        </div>
+                        <div style="margin-top: 25px;">
+                            <button class="btn-primary-custom" type="submit">保存修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="change-password-modal" class="modal" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -588,20 +979,20 @@
                 </div>
                 <div class="modal-body">
                     <form id="change-password-form">
-                        <div class="profile-form-group">
-                            <div class="profile-form-label">旧密码</div>
-                            <input class="profile-form-input" id="old-password" type="password" placeholder="请输入旧密码">
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">旧密码</div>
+                            <input class="form-input-custom" id="old-password" type="password" placeholder="请输入旧密码">
                         </div>
-                        <div class="profile-form-group">
-                            <div class="profile-form-label">新密码</div>
-                            <input class="profile-form-input" id="new-password" type="password" placeholder="请输入新密码（至少6位）">
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">新密码</div>
+                            <input class="form-input-custom" id="new-password" type="password" placeholder="请输入新密码（至少6位）">
                         </div>
-                        <div class="profile-form-group">
-                            <div class="profile-form-label">确认密码</div>
-                            <input class="profile-form-input" id="confirm-password" type="password" placeholder="请再次输入新密码">
+                        <div class="form-group-custom">
+                            <div class="form-label-custom">确认密码</div>
+                            <input class="form-input-custom" id="confirm-password" type="password" placeholder="请再次输入新密码">
                         </div>
                         <div style="margin-top: 20px;">
-                            <button class="button button-primary button-block" type="button" onclick="changePassword()">确认修改</button>
+                            <button class="btn-primary-custom" type="button" onclick="changePassword()">确认修改</button>
                         </div>
                     </form>
                 </div>
@@ -618,25 +1009,21 @@
         loadUserInfo();
     });
 
-    document.querySelectorAll('.nav-pills .nav-link').forEach(function(el) {
-        el.addEventListener('click', function(e) {
-            document.querySelectorAll('.nav-pills .nav-link').forEach(function(item) {
-                item.classList.remove('active');
-            });
-            this.classList.add('active');
-            var targetId = this.getAttribute('href');
-            if (targetId.startsWith('#')) {
-                e.preventDefault();
-                document.querySelectorAll('#user-info, #collections, #orders').forEach(function(content) {
-                    content.style.display = 'none';
-                });
-                var target = document.querySelector(targetId);
-                if (target) {
-                    target.style.display = 'block';
-                }
-            }
+    function showTab(tabId, event) {
+        document.querySelectorAll('.nav-item-custom').forEach(function(item) {
+            item.classList.remove('active');
         });
-    });
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        } else {
+            document.querySelector('.nav-item-custom[onclick*="' + tabId + '"]').classList.add('active');
+        }
+
+        document.querySelectorAll('.tab-content-main').forEach(function(content) {
+            content.style.display = 'none';
+        });
+        document.getElementById('tab-' + tabId).style.display = 'block';
+    }
 
     function loadUserInfo() {
         var username = localStorage.getItem('userUsername') || localStorage.getItem('userEmail') || 'user';
@@ -648,7 +1035,8 @@
         var created_at = localStorage.getItem('userCreatedAt') || '';
         var updated_at = localStorage.getItem('userUpdatedAt') || '';
 
-        document.getElementById('user-name').textContent = '欢迎，' + (nickname || username);
+        document.getElementById('user-nickname').textContent = nickname || username;
+        document.getElementById('user-role-tag').textContent = role;
         document.getElementById('info-username').value = username;
         document.getElementById('info-nickname').value = nickname;
         document.getElementById('info-phone').value = phone;
@@ -659,28 +1047,49 @@
         document.getElementById('info-updated').value = updated_at;
     }
 
-    function saveUserInfo(e) {
-        e.preventDefault();
+    function showEditProfile() {
+        showTab('profile');
+    }
+
+    function openEditModal() {
         var username = document.getElementById('info-username').value;
         var nickname = document.getElementById('info-nickname').value;
         var phone = document.getElementById('info-phone').value;
         var email = document.getElementById('info-email').value;
-        var password = document.getElementById('info-password').value;
 
-        if (password && password.length < 6) {
-            showToast('密码长度至少6位', 'error');
-            return false;
-        }
+        document.getElementById('edit-username').value = username;
+        document.getElementById('edit-nickname').value = nickname;
+        document.getElementById('edit-phone').value = phone;
+        document.getElementById('edit-email').value = email;
+
+        document.getElementById('edit-profile-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditModal() {
+        document.getElementById('edit-profile-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function saveEditInfo(e) {
+        e.preventDefault();
+        var username = document.getElementById('edit-username').value;
+        var nickname = document.getElementById('edit-nickname').value;
+        var phone = document.getElementById('edit-phone').value;
+        var email = document.getElementById('edit-email').value;
 
         localStorage.setItem('userUsername', username);
         localStorage.setItem('userNickname', nickname);
         localStorage.setItem('userPhone', phone);
         localStorage.setItem('userEmail', email);
-        if (password) {
-            localStorage.setItem('userPassword', password);
-        }
 
-        document.getElementById('user-name').textContent = '欢迎，' + (nickname || username);
+        document.getElementById('info-username').value = username;
+        document.getElementById('info-nickname').value = nickname;
+        document.getElementById('info-phone').value = phone;
+        document.getElementById('info-email').value = email;
+        document.getElementById('user-nickname').textContent = nickname || username;
+
+        closeEditModal();
         showToast('信息保存成功！', 'success');
         return false;
     }
@@ -721,23 +1130,30 @@
     }
 
     function removeCollection(btn) {
-        var card = btn.closest('.post');
+        var card = btn.closest('.collection-item');
         card.style.opacity = '0';
+        card.style.transform = 'scale(0.9)';
         setTimeout(function() {
             card.remove();
             showToast('已取消收藏', 'info');
         }, 300);
     }
 
-    function showEditProfile() {
-        document.querySelectorAll('.nav-pills .nav-link').forEach(function(item) {
-            item.classList.remove('active');
-        });
-        document.querySelector('.nav-pills .nav-link[href="#user-info"]').classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(function(content) {
-            content.style.display = 'none';
-        });
-        document.getElementById('user-info').style.display = 'block';
+    function handleLogout() {
+        var previousPage = localStorage.getItem('previousPage') || 'index.jsp';
+        
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('userUsername');
+        localStorage.removeItem('userNickname');
+        localStorage.removeItem('userPhone');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userStatus');
+        localStorage.removeItem('userCreatedAt');
+        localStorage.removeItem('userUpdatedAt');
+        localStorage.removeItem('previousPage');
+        
+        window.location.href = previousPage;
     }
 
     window.onload = function() {
@@ -762,6 +1178,23 @@
             }
         });
     };
+
+    function switchCollection(type) {
+        var filters = document.querySelectorAll('.filter-btn');
+        filters.forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+        
+        event.target.classList.add('active');
+        
+        var collections = ['scenic', 'product', 'hotel', 'guide'];
+        collections.forEach(function(col) {
+            var el = document.getElementById('collection-' + col);
+            if (el) {
+                el.style.display = (col === type) ? 'grid' : 'none';
+            }
+        });
+    }
 </script>
 </body>
 </html>

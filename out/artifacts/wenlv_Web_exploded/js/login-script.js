@@ -31,7 +31,7 @@ function checkLoginStatus() {
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + username + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
             '<a href="admin.html" class="user-dropdown-item">管理后台</a>' +
-            '<a href="PersonalCenter.jsp" class="user-dropdown-item">个人中心</a>' +
+            '<a href="#" class="user-dropdown-item" onclick="goToPersonalCenter()">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
             '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
             '</div>' +
@@ -41,7 +41,7 @@ function checkLoginStatus() {
         container.innerHTML = '<div class="user-dropdown">' +
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + email + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
-            '<a href="PersonalCenter.jsp" class="user-dropdown-item">个人中心</a>' +
+            '<a href="#" class="user-dropdown-item" onclick="goToPersonalCenter()">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
             '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
             '</div>' +
@@ -69,16 +69,33 @@ document.addEventListener('click', function (event) {
     });
 });
 
+// 跳转到个人中心，保存当前页面
+function goToPersonalCenter() {
+    var currentUrl = window.location.href;
+    var currentPath = window.location.pathname;
+    var personalCenterPath = '/PersonalCenter.jsp';
+    
+    if (currentPath !== personalCenterPath) {
+        localStorage.setItem('previousPage', currentUrl);
+    }
+    
+    window.location.href = 'PersonalCenter.jsp';
+}
+
 // 退出登录，清空本地存储
 function logout() {
+    var previousPage = localStorage.getItem('previousPage') || 'index.jsp';
+    
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('isAdminLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userUsername');
     localStorage.removeItem('userPhone');
     localStorage.removeItem('adminUsername');
+    localStorage.removeItem('previousPage');
+    
     showToast('已退出登录', 'info');
-    checkLoginStatus();
+    window.location.href = previousPage;
 }
 
 // 通用关闭弹窗，手动清除遮罩
