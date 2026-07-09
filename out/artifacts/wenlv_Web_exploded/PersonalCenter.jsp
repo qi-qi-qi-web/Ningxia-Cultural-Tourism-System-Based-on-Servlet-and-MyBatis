@@ -1,4 +1,4 @@
-<%@page contentType="text/html;charset=UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="zh-CN">
@@ -13,6 +13,52 @@
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login-styles.css">
+    <style>
+        .profile-form-group {
+            margin-bottom: 20px;
+        }
+        .profile-form-label {
+            display: block;
+            font-family: Oswald, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .profile-form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #fafafa;
+            box-sizing: border-box;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+        .profile-form-input:focus {
+            outline: none;
+            border-color: #00a8a8;
+        }
+        .profile-form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 15px;
+            background: #fafafa;
+            box-sizing: border-box;
+            color: #333;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .profile-form-textarea:focus {
+            outline: none;
+            border-color: #00a8a8;
+        }
+    </style>
 </head>
 <body>
 <div class="preloader">
@@ -33,7 +79,7 @@
                         <div class="rd-navbar-panel">
                             <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                             <div class="rd-navbar-brand">
-                                <a class="brand" href="index.html"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                                <a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             </div>
                         </div>
                         <div class="rd-navbar-main-element">
@@ -103,40 +149,40 @@
                     <div id="user-info" class="tab-content">
                         <div class="section-sm">
                             <h3>基本信息</h3>
-                            <form class="rd-form rd-mailform" onsubmit="return saveUserInfo(event)">
+                            <form onsubmit="return saveUserInfo(event)" style="margin-top: 20px;">
                                 <div class="row row-30">
                                     <div class="col-md-6">
-                                        <div class="form-wrap">
-                                            <label class="form-label" for="info-name">用户名</label>
-                                            <input class="form-input" id="info-name" type="text" name="name" value="">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">用户名</div>
+                                            <input class="profile-form-input" id="info-name" type="text" name="name" placeholder="请输入用户名">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-wrap">
-                                            <label class="form-label" for="info-phone">手机号</label>
-                                            <input class="form-input" id="info-phone" type="tel" name="phone" value="">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">手机号</div>
+                                            <input class="profile-form-input" id="info-phone" type="tel" name="phone" placeholder="请输入手机号">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-wrap">
-                                            <label class="form-label" for="info-email">邮箱</label>
-                                            <input class="form-input" id="info-email" type="email" name="email" value="">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">邮箱</div>
+                                            <input class="profile-form-input" id="info-email" type="email" name="email" placeholder="请输入邮箱">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-wrap">
-                                            <label class="form-label" for="info-birthday">生日</label>
-                                            <input class="form-input" id="info-birthday" type="date" name="birthday">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">生日</div>
+                                            <input class="profile-form-input" id="info-birthday" type="date" name="birthday">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-wrap">
-                                            <label class="form-label" for="info-signature">个性签名</label>
-                                            <textarea class="form-input" id="info-signature" name="signature" rows="3" placeholder="分享你的旅行感悟..."></textarea>
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">个性签名</div>
+                                            <textarea class="profile-form-textarea" id="info-signature" name="signature" rows="3" placeholder="分享你的旅行感悟..."></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-button">
+                                        <div style="margin-top: 20px;">
                                             <button class="button button-primary" type="submit">保存修改</button>
                                         </div>
                                     </div>
@@ -322,7 +368,7 @@
                 <div class="row justify-content-between flex-column-reverse flex-md-row row-20">
                     <div class="col-xl-6 col-md-8">
                         <div class="footer-classic-aside__group">
-                            <a class="brand" href="index.html"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                            <a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             <p class="rights"><span>版权</span><span>&nbsp;</span><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>保留所有权利</span></p>
                         </div>
                     </div>
@@ -530,6 +576,24 @@
     window.onload = function() {
         loadUserInfo();
         checkLoginStatus();
+        
+        var currentUrl = window.location.pathname;
+        var currentPage = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        
+        var navItems = document.querySelectorAll('.rd-navbar-nav .rd-nav-item');
+        navItems.forEach(function(item) {
+            item.classList.remove('active');
+        });
+        
+        navItems.forEach(function(item) {
+            var link = item.querySelector('a');
+            if (link) {
+                var href = link.getAttribute('href');
+                if (href && href === currentPage) {
+                    item.classList.add('active');
+                }
+            }
+        });
     };
 </script>
 </body>

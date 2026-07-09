@@ -19,7 +19,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-1-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-1-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">盐池手抓滩羊</a></h5>
                     <p>盐池滩羊无膻味，清水焖煮，肉质细嫩，宁夏必吃招牌硬菜。</p>
@@ -29,7 +29,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-2-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-2-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">吴忠八宝茶</a></h5>
                     <p>枸杞、红枣、桂圆、葡萄干搭配冲泡，解肉腻、润喉养生。</p>
@@ -39,7 +39,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-3-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-3-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">中卫粗粮酿皮</a></h5>
                     <p>粗粮制成筋道面皮，秘制酸辣料汁，本地人气小吃。</p>
@@ -49,7 +49,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-4-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-4-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">贺兰炒糊饽</a></h5>
                     <p>手工面饼切条搭配羊肉爆炒，烟火气十足的西北面食。</p>
@@ -59,7 +59,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-5-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-5-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">黄河鲤鱼</a></h5>
                     <p>黄河野生鲤鱼红烧，肉质肥美，宁夏宴席经典菜品。</p>
@@ -69,7 +69,7 @@
             <div class="col-lg-4 col-sm-6">
                 <article class="card-classic">
                     <a class="card-classic__media" href="Food-detail.jsp">
-                        <img src="images/food-6-370x389.jpg" alt="" width="370" height="389"/>
+                        <img src="images/service-6-370x389.jpg" alt="" width="370" height="389"/>
                     </a>
                     <h5><a href="Food-detail.jsp">油香馓子</a></h5>
                     <p>回族传统油炸面点，香酥可口，节庆待客必备点心。</p>
