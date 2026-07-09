@@ -11,8 +11,8 @@
                         <div class="row justify-content-lg-center">
                             <div class="col-lg-8">
                                 <div class="intro-box">
-                                    <div class="intro-box__floating-text">旅程</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">探索</span><span data-caption-animate="fadeInUp" data-caption-delay="300">世界</span></div>
+                                    <div class="intro-box__floating-text">宁夏</div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">塞上</span><span data-caption-animate="fadeInUp" data-caption-delay="300">江南</span></div>
                                     <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
                                 </div>
                             </div>
@@ -26,8 +26,8 @@
                         <div class="row justify-content-lg-center">
                             <div class="col-lg-8">
                                 <div class="intro-box">
-                                    <div class="intro-box__floating-text">旅程</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">最佳</span><span data-caption-animate="fadeInUp" data-caption-delay="300">目的地</span></div>
+                                    <div class="intro-box__floating-text">宁夏</div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">神奇</span><span data-caption-animate="fadeInUp" data-caption-delay="300">宁夏</span></div>
                                     <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
                                 </div>
                             </div>
@@ -41,8 +41,8 @@
                         <div class="row justify-content-lg-center">
                             <div class="col-lg-8">
                                 <div class="intro-box">
-                                    <div class="intro-box__floating-text">旅程</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">难忘</span><span data-caption-animate="fadeInUp" data-caption-delay="300">体验</span></div>
+                                    <div class="intro-box__floating-text">宁夏</div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">黄河</span><span data-caption-animate="fadeInUp" data-caption-delay="300">金岸</span></div>
                                     <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
                                 </div>
                             </div>
@@ -62,9 +62,9 @@
         <div class="container">
             <div class="row row-30">
                 <div class="col-xl-5 position-relative">
-                    <h2><span class="wow fadeInLeft d-xl-block">探索不同的</span><span class="wow fadeInLeft d-xl-block" data-wow-delay=".2s">旅行方式</span></h2>
-                    <p class="wow fadeInLeft offset-xl" data-wow-delay=".3s">与背包故事一起发现新文化，享受美好假期！选择您想去的国家，告诉我们的旅行顾问预计时间——他们会为您找到最合适的旅游线路和酒店。</p>
-                    <p class="wow fadeInLeft" data-wow-delay=".4s">在我们的工作中，我们为客户组织了无数次旅程。我们从一个小型旅行社起步，很快就扩展了我们的服务范围。今天，我们拥有丰富的旅行经验，可以为您推荐最美丽的度假胜地、城市和国家！</p>
+                    <h2><span class="wow fadeInLeft d-xl-block">畅游宁夏</span><span class="wow fadeInLeft d-xl-block" data-wow-delay=".2s">感受丝路风情</span></h2>
+                    <p class="wow fadeInLeft offset-xl" data-wow-delay=".3s">与宁夏文旅一起探索塞上江南的独特魅力！沙坡头的沙漠与黄河交织，西夏王陵诉说千年历史，贺兰山岩画见证远古文明，带您领略不一样的西北风情。</p>
+                    <p class="wow fadeInLeft" data-wow-delay=".4s">宁夏，中国唯一的省级回族自治区，拥有丰富的自然景观和人文历史。从腾格里沙漠到六盘山森林，从古老的丝绸之路到现代的黄河金岸，这里是您旅途中不可错过的一站！</p>
                     <div class="offset-top-25 wow fadeInUp" data-wow-delay=".5s"><img src="images/signature-1-113x66.png" alt="" width="113" height="66"/>
                     </div>
                 </div>
@@ -98,16 +98,16 @@
         <div class="container">
             <div class="row row-30">
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".2s">
-                    <h2><a href="#">01. 顶级酒店</a></h2>
-                    <p class="offset-xl">我们保证提供最好的酒店和非常舒适的客房，这将受到每位旅行者的赞赏。您一定会对酒店感到满意，并在那里度过一个美好的假期。</p>
+                    <h2><a href="Hotel.jsp">01. 特色民宿</a></h2>
+                    <p class="offset-xl">体验宁夏独特的民宿文化，黄河宿集、沙湖星空营地等特色住宿，让您的旅程更加难忘。</p>
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".3s">
-                    <h2><a href="#">02. 旅游指南</a></h2>
-                    <p class="offset-xl">我们为客户提供旅游指南服务。其主要目标是在任何需要的时候为人们提供所有必要的信息。这项服务类似于客户支持，但重点放在旅行方面。</p>
+                    <h2><a href="TravelGuide.jsp">02. 旅游攻略</a></h2>
+                    <p class="offset-xl">我们为您提供详细的宁夏旅游攻略，包括最佳旅游路线、美食推荐、特色活动等实用信息。</p>
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".4s">
-                    <h2><a href="#">03. 机票预订</a></h2>
-                    <p class="offset-xl">您可以通过我们的预订系统在线预订任何航班的机票。在这里，您有机会选择您的运输运营商。我们的代表将帮助您处理细节。</p>
+                    <h2><a href="ScenicService.jsp">03. 景区服务</a></h2>
+                    <p class="offset-xl">一站式预订宁夏各大景区门票，沙坡头、西夏王陵、沙湖等热门景点，便捷出行无忧。</p>
                 </div>
             </div>
         </div>
@@ -119,23 +119,23 @@
                 <div class="row row-30 justify-content-center" data-lightgallery="group">
                     <div class="d-flex col-sm-6 col-lg-4 ordex-xl-1 order-1 wow fadeInLeft"><a class="info-box-classic" href="images/home-gallery-1-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-1-370x510.jpg" alt="" width="370" height="510"/>
                         <div class="info-box-classic__description">
-                            <div class="heading-4">加拿大</div><span>起价</span><span class="price">$540</span>
+                            <div class="heading-4">沙坡头</div><span>起价</span><span class="price">￥140</span>
                         </div></a></div>
                     <div class="col-sm-12 col-lg-4 order-3 order-xl-2">
                         <div class="row row-30">
                             <div class="col-lg-12 col-sm-6 wow fadeInUp" data-wow-delay=".2s"><a class="info-box-classic" href="images/home-gallery-2-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-2-370x240.jpg" alt="" width="370" height="240"/>
                                 <div class="info-box-classic__description">
-                                    <div class="heading-4">印度</div><span>起价</span><span class="price">$330</span>
+                                    <div class="heading-4">西夏王陵</div><span>起价</span><span class="price">￥75</span>
                                 </div></a></div>
                             <div class="col-lg-12 col-sm-6 wow fadeInUp" data-wow-delay=".3s"><a class="info-box-classic" href="images/home-gallery-3-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-3-370x240.jpg" alt="" width="370" height="240"/>
                                 <div class="info-box-classic__description">
-                                    <div class="heading-4">中国</div><span>起价</span><span class="price">$500</span>
+                                    <div class="heading-4">沙湖景区</div><span>起价</span><span class="price">￥130</span>
                                 </div></a></div>
                         </div>
                     </div>
                     <div class="d-flex col-sm-6 col-lg-4 ordex-xl-3 order-md-2 wow fadeInRight" data-wow-delay=".4s"><a class="info-box-classic" href="images/home-gallery-4-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-4-370x510.jpg" alt="" width="370" height="510"/>
                         <div class="info-box-classic__description">
-                            <div class="heading-4">巴黎</div><span>起价</span><span class="price">$720</span>
+                            <div class="heading-4">贺兰山岩画</div><span>起价</span><span class="price">￥60</span>
                         </div></a></div>
                 </div>
             </div>
@@ -144,27 +144,27 @@
     <!--Info Section-->
     <section class="section section-md bg-default">
         <div class="container">
-            <h2>开始您的旅程！</h2>
+            <h2>开启宁夏之旅！</h2>
             <div class="row row-40 offset-lg">
                 <div class="col-xl-6 wow fadeInLeft">
-                    <p>让我们为您策划一次令人振奋的体验，您可以在专业导游的陪同下享受个性化主题的冒险之旅，满足您的兴趣需求。无论是一日游还是多日游，您都将有幸享受这种终极奢华，与专家一起探索欧洲，还能从直升机上俯瞰欧洲独特的鸟瞰美景，包括罗马、达尔马提亚海岸、巴黎、布拉格等20个顶级目的地。</p>
+                    <p>让我们为您策划一次难忘的宁夏之旅，您可以在专业导游的陪同下探索塞上江南的独特魅力。无论是沙漠探险、历史探秘还是美食体验，我们都能满足您的需求。从沙坡头的黄河漂流到西夏王陵的历史追溯，从贺兰山的壮丽风光到宁夏美食的味蕾盛宴，带您领略不一样的西北风情。</p>
                 </div>
                 <div class="col-xl-3 col-sm-6 wow fadeInUp">
                     <ul class="list-marked">
-                        <li>头等舱航班</li>
-                        <li>五星级住宿</li>
-                        <li>全包套餐</li>
-                        <li>租车服务</li>
-                        <li>精选酒店</li>
+                        <li>沙坡头沙漠体验</li>
+                        <li>西夏王陵探秘</li>
+                        <li>黄河文化之旅</li>
+                        <li>贺兰山岩画</li>
+                        <li>特色民宿体验</li>
                     </ul>
                 </div>
                 <div class="col-xl-3 col-sm-6 wow fadeInUp">
                     <ul class="list-marked">
-                        <li>休闲旅行</li>
-                        <li>旅行保险</li>
-                        <li>紧急服务</li>
-                        <li>奖励计划</li>
-                        <li>签证办理</li>
+                        <li>宁夏美食之旅</li>
+                        <li>丝路风情游</li>
+                        <li>亲子研学游</li>
+                        <li>摄影采风团</li>
+                        <li>定制旅行</li>
                     </ul>
                 </div>
             </div>
@@ -185,29 +185,29 @@
     <!--Blog Post-->
     <section class="section section-lg">
         <div class="container">
-            <h2 class="text-center text-md-start">我们的博客文章</h2>
+            <h2 class="text-center text-md-start">宁夏旅游资讯</h2>
             <div class="row row-30">
                 <div class="col-lg-4 col-md-6">
                     <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-1-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>January 1, 2024</span>
-                            <h5><a href="#">今年冬天必去的5个地方</a></h5>
-                            <p>新年和圣诞节假期是旅行的好时机。您可以和家人或朋友一起去，甚至可以独自旅行……</p>
+                        <div class="post-classic-caption"><span>2024年7月9日</span>
+                            <h5><a href="#">宁夏沙坡头旅游全攻略</a></h5>
+                            <p>沙坡头，中国最美的沙漠旅游目的地之一。这里有黄河与沙漠的完美结合，滑沙、黄河漂流、沙漠骆驼……</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-2-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>January 1, 2024</span>
-                            <h5><a href="#">寒假经济旅行</a></h5>
-                            <p>经济旅行并不意味着无聊！即使您没有太多钱，也有很多值得参观的地方。佛罗里达和加利福尼亚的金色沙滩……</p>
+                        <div class="post-classic-caption"><span>2024年7月8日</span>
+                            <h5><a href="#">探秘西夏王陵：千年王朝的遗迹</a></h5>
+                            <p>西夏王陵，被誉为"东方金字塔"。走进这片神秘的王陵群，感受西夏王朝曾经的辉煌与沧桑……</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-3-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>January 1, 2024</span>
-                            <h5><a href="#">徒步秘鲁马丘比丘</a></h5>
-                            <p>马丘比丘对于所有访问秘鲁的游客来说都是一个神秘而迷人的地方。如果您同意走这条路，您需要了解更多信息……</p>
+                        <div class="post-classic-caption"><span>2024年7月7日</span>
+                            <h5><a href="#">宁夏美食推荐：舌尖上的塞上江南</a></h5>
+                            <p>宁夏美食融合了西北风味与回族特色，手抓羊肉、酿皮子、八宝茶……每一道都是独特的味蕾体验……</p>
                         </div>
                     </div>
                 </div>
@@ -224,8 +224,8 @@
                 </div>
                 <div class="col-lg-6 wow fadeInRight" data-wow-delay=".2s">
                     <div class="footer-classic_subscribe">
-                        <h2>订阅新闻通讯</h2>
-                        <h5 class="text-primary">立即注册，获取热门优惠和最佳旅游线路信息！</h5>
+                        <h2>订阅宁夏文旅资讯</h2>
+                        <h5 class="text-primary">立即注册，获取宁夏旅游最新资讯和优惠！</h5>
                         <form class="rd-form rd-mailform rd-form-inline subscribe-form" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="bat/rd-mailform.php">
                             <div class="form-wrap">
                                 <input class="form-input" id="subscribe-form-email-5" type="email" name="email" data-constraints="@Email @Required">
@@ -244,7 +244,7 @@
                 <div class="row justify-content-between flex-column-reverse flex-md-row row-20">
                     <div class="col-xl-6 col-md-8">
                         <div class="footer-classic-aside__group">
-                            <!--Brand--><a class="brand" href="index.html"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                            <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             <p class="rights"><span>版权</span><span>&nbsp;</span><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>保留所有权利</span> <a target="_blank" href="https://www.mobanwang.com/" title="网站模板">网站模板</a></p>
                         </div>
                     </div>

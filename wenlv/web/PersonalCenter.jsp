@@ -1,4 +1,4 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+ <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html class="wide wow-animation" lang="zh-CN">
@@ -154,7 +154,13 @@
                                     <div class="col-md-6">
                                         <div class="profile-form-group">
                                             <div class="profile-form-label">用户名</div>
-                                            <input class="profile-form-input" id="info-name" type="text" name="name" placeholder="请输入用户名">
+                                            <input class="profile-form-input" id="info-username" type="text" name="username" placeholder="请输入用户名" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">昵称</div>
+                                            <input class="profile-form-input" id="info-nickname" type="text" name="nickname" placeholder="请输入昵称">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -171,14 +177,32 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-form-group">
-                                            <div class="profile-form-label">生日</div>
-                                            <input class="profile-form-input" id="info-birthday" type="date" name="birthday">
+                                            <div class="profile-form-label">密码</div>
+                                            <input class="profile-form-input" id="info-password" type="password" name="password" placeholder="请输入密码（至少6位）">
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="profile-form-group">
-                                            <div class="profile-form-label">个性签名</div>
-                                            <textarea class="profile-form-textarea" id="info-signature" name="signature" rows="3" placeholder="分享你的旅行感悟..."></textarea>
+                                            <div class="profile-form-label">角色</div>
+                                            <input class="profile-form-input" id="info-role" type="text" name="role" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">状态</div>
+                                            <input class="profile-form-input" id="info-status" type="text" name="status" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">注册时间</div>
+                                            <input class="profile-form-input" id="info-created" type="text" name="created_at" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-form-group">
+                                            <div class="profile-form-label">更新时间</div>
+                                            <input class="profile-form-input" id="info-updated" type="text" name="updated_at" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -274,6 +298,30 @@
                                                         <td><span class="badge badge-info">待支付</span></td>
                                                         <td><button class="button button-xs button-primary">立即支付</button></td>
                                                     </tr>
+                                                    <tr>
+                                                        <td>DD20260703003</td>
+                                                        <td><a href="#">贺兰山岩画</a></td>
+                                                        <td>3</td>
+                                                        <td>￥180.00</td>
+                                                        <td><span class="badge badge-success">已支付</span></td>
+                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>DD20260709004</td>
+                                                        <td><a href="#">沙湖景区</a></td>
+                                                        <td>2</td>
+                                                        <td>￥160.00</td>
+                                                        <td><span class="badge badge-warning">待确认</span></td>
+                                                        <td><button class="button button-xs button-primary">取消订单</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>DD20260702005</td>
+                                                        <td><a href="#">镇北堡西部影城</a></td>
+                                                        <td>4</td>
+                                                        <td>￥320.00</td>
+                                                        <td><span class="badge badge-success">已使用</span></td>
+                                                        <td><button class="button button-xs button-primary-2" disabled>已完成</button></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -307,6 +355,30 @@
                                                         <td>￥680.00</td>
                                                         <td><span class="badge badge-warning">待确认</span></td>
                                                         <td><button class="button button-xs button-primary">取消订单</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>JD20260704003</td>
+                                                        <td><a href="#">银川凯宾斯基酒店</a></td>
+                                                        <td>2026-07-08</td>
+                                                        <td>￥560.00</td>
+                                                        <td><span class="badge badge-success">已入住</span></td>
+                                                        <td><button class="button button-xs button-primary-2" disabled>已完成</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>JD20260709004</td>
+                                                        <td><a href="#">腾格里沙漠营地</a></td>
+                                                        <td>2026-07-20</td>
+                                                        <td>￥880.00</td>
+                                                        <td><span class="badge badge-info">待支付</span></td>
+                                                        <td><button class="button button-xs button-primary">立即支付</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>JD20260707005</td>
+                                                        <td><a href="#">永宁古城民宿</a></td>
+                                                        <td>2026-07-12</td>
+                                                        <td>￥320.00</td>
+                                                        <td><span class="badge badge-success">已预订</span></td>
+                                                        <td><button class="button button-xs button-primary">查看详情</button></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -504,12 +576,48 @@
             </div>
         </div>
     </div>
+
+    <div id="change-password-modal" class="modal" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">修改密码</h4>
+                    <button type="button" class="close" onclick="closeChangePassword()">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="change-password-form">
+                        <div class="profile-form-group">
+                            <div class="profile-form-label">旧密码</div>
+                            <input class="profile-form-input" id="old-password" type="password" placeholder="请输入旧密码">
+                        </div>
+                        <div class="profile-form-group">
+                            <div class="profile-form-label">新密码</div>
+                            <input class="profile-form-input" id="new-password" type="password" placeholder="请输入新密码（至少6位）">
+                        </div>
+                        <div class="profile-form-group">
+                            <div class="profile-form-label">确认密码</div>
+                            <input class="profile-form-input" id="confirm-password" type="password" placeholder="请再次输入新密码">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button class="button button-primary button-block" type="button" onclick="changePassword()">确认修改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/login-script.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUserInfo();
+    });
+
     document.querySelectorAll('.nav-pills .nav-link').forEach(function(el) {
         el.addEventListener('click', function(e) {
             document.querySelectorAll('.nav-pills .nav-link').forEach(function(item) {
@@ -519,38 +627,97 @@
             var targetId = this.getAttribute('href');
             if (targetId.startsWith('#')) {
                 e.preventDefault();
-                document.querySelectorAll('.tab-content').forEach(function(content) {
+                document.querySelectorAll('#user-info, #collections, #orders').forEach(function(content) {
                     content.style.display = 'none';
                 });
-                document.querySelector(targetId).style.display = 'block';
+                var target = document.querySelector(targetId);
+                if (target) {
+                    target.style.display = 'block';
+                }
             }
         });
     });
 
     function loadUserInfo() {
-        var username = localStorage.getItem('userUsername') || localStorage.getItem('userEmail') || '用户';
+        var username = localStorage.getItem('userUsername') || localStorage.getItem('userEmail') || 'user';
+        var nickname = localStorage.getItem('userNickname') || '';
         var phone = localStorage.getItem('userPhone') || '';
         var email = localStorage.getItem('userEmail') || '';
+        var role = localStorage.getItem('userRole') || '普通用户';
+        var status = localStorage.getItem('userStatus') || '正常';
+        var created_at = localStorage.getItem('userCreatedAt') || '';
+        var updated_at = localStorage.getItem('userUpdatedAt') || '';
 
-        document.getElementById('user-name').textContent = '欢迎，' + username;
-        document.getElementById('info-name').value = username;
+        document.getElementById('user-name').textContent = '欢迎，' + (nickname || username);
+        document.getElementById('info-username').value = username;
+        document.getElementById('info-nickname').value = nickname;
         document.getElementById('info-phone').value = phone;
         document.getElementById('info-email').value = email;
+        document.getElementById('info-role').value = role;
+        document.getElementById('info-status').value = status;
+        document.getElementById('info-created').value = created_at;
+        document.getElementById('info-updated').value = updated_at;
     }
 
     function saveUserInfo(e) {
         e.preventDefault();
-        var name = document.getElementById('info-name').value;
+        var username = document.getElementById('info-username').value;
+        var nickname = document.getElementById('info-nickname').value;
         var phone = document.getElementById('info-phone').value;
         var email = document.getElementById('info-email').value;
+        var password = document.getElementById('info-password').value;
 
-        localStorage.setItem('userUsername', name);
+        if (password && password.length < 6) {
+            showToast('密码长度至少6位', 'error');
+            return false;
+        }
+
+        localStorage.setItem('userUsername', username);
+        localStorage.setItem('userNickname', nickname);
         localStorage.setItem('userPhone', phone);
         localStorage.setItem('userEmail', email);
+        if (password) {
+            localStorage.setItem('userPassword', password);
+        }
 
-        document.getElementById('user-name').textContent = '欢迎，' + name;
+        document.getElementById('user-name').textContent = '欢迎，' + (nickname || username);
         showToast('信息保存成功！', 'success');
         return false;
+    }
+
+    function showChangePassword() {
+        document.getElementById('change-password-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeChangePassword() {
+        document.getElementById('change-password-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function changePassword() {
+        var oldPassword = document.getElementById('old-password').value;
+        var newPassword = document.getElementById('new-password').value;
+        var confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            showToast('请填写所有字段', 'error');
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            showToast('两次输入的密码不一致', 'error');
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            showToast('密码长度至少6位', 'error');
+            return;
+        }
+
+        showToast('密码修改成功！', 'success');
+        closeChangePassword();
+        document.getElementById('change-password-form').reset();
     }
 
     function removeCollection(btn) {

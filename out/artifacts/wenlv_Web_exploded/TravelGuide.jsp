@@ -21,11 +21,11 @@
             <!-- 攻略1 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".1s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-1-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏5日4晚经典游玩攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏5日4晚经典游玩攻略</a></h5>
                         <p>覆盖沙坡头、沙湖、西夏王陵、镇北堡影城，第一次来宁夏必看路线</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-clock3"></span><span>5天4晚</span></li>
@@ -39,11 +39,11 @@
             <!-- 攻略2 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".2s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-2-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏沙漠自驾全攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏沙漠自驾全攻略</a></h5>
                         <p>详细路线、加油点、露营装备、沙漠驾驶技巧，自驾必备</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-car"></span><span>自驾推荐</span></li>
@@ -57,11 +57,11 @@
             <!-- 攻略3 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-3-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏必吃美食攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏必吃美食攻略</a></h5>
                         <p>手抓羊肉、蒿子面、辣糊糊、羊杂碎，本地人私藏店铺</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-restaurant"></span><span>12种特色美食</span></li>
@@ -75,11 +75,11 @@
             <!-- 攻略4 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".4s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-4-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏亲子游3日攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏亲子游3日攻略</a></h5>
                         <p>轻松不累，适合带孩子，动物园、沙湖、影城孩子超喜欢</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-baby"></span><span>亲子专属</span></li>
@@ -93,11 +93,11 @@
             <!-- 攻略5 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-5-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏网红拍照攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏网红拍照攻略</a></h5>
                         <p>沙漠星空、黄河落日、影视城打卡，最佳机位+拍摄时间</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-camera"></span><span>摄影圣地</span></li>
@@ -111,11 +111,11 @@
             <!-- 攻略6 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".6s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="single-tour.html">
+                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
                         <img src="images/tour-6-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="single-tour.html">宁夏住宿全攻略</a></h5>
+                        <h5><a href="ScenicService-detail.jsp">宁夏住宿全攻略</a></h5>
                         <p>市区酒店、沙漠帐篷、中卫网红民宿，高性价比推荐</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-hotel"></span><span>高中低档</span></li>

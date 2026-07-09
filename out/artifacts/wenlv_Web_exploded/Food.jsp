@@ -125,7 +125,7 @@
             <div class="row justify-content-between flex-column-reverse flex-md-row row-20">
                 <div class="col-xl-6 col-md-8">
                     <div class="footer-classic-aside__group">
-                        <a class="brand" href="index.html">
+                        <a class="brand" href="index.jsp">
                             <img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/>
                             <img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/>
                         </a>

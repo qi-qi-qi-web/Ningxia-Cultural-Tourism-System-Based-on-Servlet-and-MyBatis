@@ -1,14 +1,13 @@
 <%@include file="Head.jsp"%>
 <%@page contentType="text/html;charset=UTF-8"%>
-
-    <!-- Breadcrumbs面包屑导航 -->
+    <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
         <div class="container">
-            <h4 class="breadcrumbs-custom-title">美食详情</h4>
+            <h4 class="breadcrumbs-custom-title">酒店详情</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="index.jsp">首页</a></li>
-                <li><a href="Food.jsp">特色美食</a></li>
-                <li class="active">美食详情</li>
+                <li><a href="Hotel.jsp">民宿酒店</a></li>
+                <li class="active">酒店详情</li>
             </ul>
         </div>
     </section>
@@ -17,35 +16,33 @@
             <div class="row">
                 <div class="col-12">
                     <div class="blog-post-classic">
-                        <h2>盐池手抓滩羊</h2><img src="images/food-detail-1-1170x544.jpg" alt="" width="1170" height="544"/>
-                        <p class="fw-sbold">盐池滩羊是宁夏国家地理标志名优食材，肉质细嫩、无膻味，是西北宴席头号招牌特色美食。</p>
-                        <p class="offset-md">盐池县地处宁夏东部草原地带，得天独厚的盐碱草原环境，牧草富含沙蒿、甘草、苦豆子等中草药植被。滩羊自然散养采食天然牧草，从根源消除羊肉腥膻味，肉质肥瘦均匀、鲜嫩多汁。</p>
-                        <p class="fw-sbold offset-xl">传统宁夏清水手抓做法，无过多重调料，最大程度保留羊肉本身鲜香，老少皆宜。</p>
-                        <p class="offset-md">正宗宁夏手抓羊肉采用清水慢火焖煮工艺，仅加入生姜、花椒简单去腥调味。出锅羊肉色泽乳白，肉质松软不柴，蘸干料或蒜泥醋食用风味绝佳。常搭配吴忠八宝茶同食，解腻暖胃，是来宁夏旅游必打卡的地标美食。本地各大餐馆宴席、游客聚餐首选菜品。</p>
-                        <!-- 美食图集板块 -->
+                        <h2>黄河宿集</h2><img src="images/blog-post-1-1170x544.jpg" alt="" width="1170" height="544"/>
+                        <p class="fw-sbold">黄河宿集位于宁夏中卫市黄河岸边，是一处融合传统与现代的高端民宿集群。这里不仅是一处住宿之地，更是一种生活方式的体验。</p>
+                        <p class="offset-md">黄河宿集由多家知名民宿品牌共同打造，包括大乐之野、西坡、墟里、南岸等。每家民宿都有独特的设计风格，但都共同秉承着对自然的尊重和对品质的追求。在这里，您可以感受到黄河文化的深厚底蕴，体验田园生活的宁静美好。</p>
+                        <p class="fw-sbold offset-xl">在黄河宿集，您将体验到与众不同的住宿体验，远离城市喧嚣，回归自然本真。</p>
+                        <p class="offset-md">黄河宿集提供多种房型选择，从温馨的大床房到宽敞的家庭套房，满足不同客人的需求。每间客房都采用高品质的家具和用品，确保您的入住体验舒适惬意。此外，宿集还提供丰富的活动体验，包括黄河漂流、沙漠探险、枸杞采摘、星空观测等，让您的宁夏之旅更加丰富多彩。</p>
                         <div class="blog-post-classic__media-group">
                             <div class="row row-30 justify-content-center">
-                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/food-img-1-270x260.jpg" alt="" width="270" height="260"/>
+                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/single-service-1-270x260.jpg" alt="" width="270" height="260"/>
                                     <div class="info-box-classic__description">
-                                        <div class="heading-4">成品菜品</div>
+                                        <div class="heading-4">客房</div>
                                     </div></a></div>
-                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/food-img-2-270x260.jpg" alt="" width="270" height="260"/>
+                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/single-service-2-270x260.jpg" alt="" width="270" height="260"/>
                                     <div class="info-box-classic__description">
-                                        <div class="heading-4">食材原料</div>
+                                        <div class="heading-4">餐厅</div>
                                     </div></a></div>
-                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/food-img-3-270x260.jpg" alt="" width="270" height="260"/>
+                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/single-service-3-270x260.jpg" alt="" width="270" height="260"/>
                                     <div class="info-box-classic__description">
-                                        <div class="heading-4">特色蘸料</div>
+                                        <div class="heading-4">庭院</div>
                                     </div></a></div>
-                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/food-img-4-270x260.jpg" alt="" width="270" height="260"/>
+                                <div class="col-lg-3 col-md-4 col-sm-6"><a class="info-box-classic" href="#"><img src="images/single-service-4-270x260.jpg" alt="" width="270" height="260"/>
                                     <div class="info-box-classic__description">
-                                        <div class="heading-4">搭配八宝茶</div>
+                                        <div class="heading-4">黄河景观</div>
                                     </div></a></div>
                             </div>
                         </div>
-                        <!-- 用户美食评价板块 和酒店评价样式完全一致 -->
                         <div class="blog-post-classic__reviews">
-                            <h2>食客评价</h2>
+                            <h2>住客评价</h2>
                             <div class="row row-30">
                                 <div class="col-12">
                                     <div class="blog-post-classic__comment">
@@ -54,28 +51,28 @@
                                             </div>
                                             <div class="col-lg-10">
                                                 <h5>张明</h5>
-                                                <p>来宁夏第一顿必吃手抓羊肉！完全没有羊膻味，肉质软烂入味，配上八宝茶解腻，味道绝了，强烈推荐外地游客品尝！</p>
+                                                <p>黄河宿集真的太美了！坐在院子里就能看到黄河，晚上还能看到满天星空。服务非常贴心，早餐也很美味，强烈推荐！</p>
                                                 <div class="list-group">
                                                     <ul class="list-raiting">
-                                                        <li><span>口味</span>
+                                                        <li><span>住宿</span>
                                                             <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
-                                                        <li><span>食材品质</span>
+                                                        <li><span>餐饮</span>
                                                             <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                         <li><span>性价比</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-half-o"></span></div>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                     </ul>
                                                     <ul class="list-raiting">
-                                                        <li><span>就餐环境</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-o"></span></div>
+                                                        <li><span>服务</span>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
-                                                        <li><span>服务体验</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-o"></span></div>
+                                                        <li><span>环境</span>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                         <li><span>总体评价</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-half-o"></span></div>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -90,25 +87,25 @@
                                             </div>
                                             <div class="col-lg-10">
                                                 <h5>李婷</h5>
-                                                <p>正宗盐池滩羊名不虚传！肉质特别鲜嫩，老人小孩都能吃，本地特色蘸料锦上添花。来宁夏旅游一定要打卡这道特色招牌美食！</p>
+                                                <p>这是我住过最有特色的民宿！设计感十足，每个角落都充满了艺术气息。管家服务非常周到，帮我们安排了沙漠和黄河的体验活动，非常难忘的一次旅行！</p>
                                                 <div class="list-group">
                                                     <ul class="list-raiting">
-                                                        <li><span>口味</span>
+                                                        <li><span>住宿</span>
                                                             <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
-                                                        <li><span>食材品质</span>
+                                                        <li><span>餐饮</span>
                                                             <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                         <li><span>性价比</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-o"></span></div>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                     </ul>
                                                     <ul class="list-raiting">
-                                                        <li><span>就餐环境</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-o"></span></div>
+                                                        <li><span>服务</span>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
-                                                        <li><span>服务体验</span>
-                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star-half-o"></span></div>
+                                                        <li><span>环境</span>
+                                                            <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
                                                         </li>
                                                         <li><span>总体评价</span>
                                                             <div class="star-group"><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span><span class="icon fa fa-star"></span></div>
@@ -126,7 +123,7 @@
             </div>
         </div>
     </section>
-    <!--Footer底部和原页面完全一致-->
+    <!--Footer-->
     <footer class="section footer-classic context-dark">
         <div class="container">
             <div class="row row-narrow-40 row-30">
@@ -137,7 +134,7 @@
                 <div class="col-lg-6 wow fadeInRight" data-wow-delay=".2s">
                     <div class="footer-classic_subscribe">
                         <h2>订阅宁夏旅游资讯</h2>
-                        <h5 class="text-primary">立即注册，获取宁夏最新旅游资讯和美食优惠信息！</h5>
+                        <h5 class="text-primary">立即注册，获取宁夏最新旅游资讯和优惠信息！</h5>
                         <form class="rd-form rd-mailform rd-form-inline subscribe-form" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="bat/rd-mailform.php">
                             <div class="form-wrap">
                                 <input class="form-input" id="subscribe-form-email-5" type="email" name="email" data-constraints="@Email @Required">

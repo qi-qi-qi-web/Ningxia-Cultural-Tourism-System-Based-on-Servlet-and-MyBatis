@@ -17,39 +17,39 @@
             <h2 class="text-center text-sm-start">宁夏特色民宿</h2>
             <div class="row row-40 offset-lg">
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-1-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">黄河宿集</a></h5>
-                        <p>坐落于黄河岸边，融合传统与现代的高端民宿集群。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-1-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">黄河宿集</a></h5>
+                        <p>坐落于黄河岸边，融合传统与现代的高端民宿集群。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-2-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">星空营地</a></h5>
-                        <p>沙漠中的星空营地，体验极致的观星体验。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-2-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">星空营地</a></h5>
+                        <p>沙漠中的星空营地，体验极致的观星体验。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-3-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">贺兰山房</a></h5>
-                        <p>依山而建，享受宁静的山间度假时光。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-3-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">贺兰山房</a></h5>
+                        <p>依山而建，享受宁静的山间度假时光。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-4-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">枸杞庄园</a></h5>
-                        <p>田园风光中的特色民宿，体验采摘乐趣。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-4-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">枸杞庄园</a></h5>
+                        <p>田园风光中的特色民宿，体验采摘乐趣。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-5-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">沙漠酒店</a></h5>
-                        <p>沙漠腹地的奢华体验，感受大漠孤烟的壮美。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-5-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">沙漠酒店</a></h5>
+                        <p>沙漠腹地的奢华体验，感受大漠孤烟的壮美。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="single-service.html"><img src="images/service-6-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="single-service.html">古镇客栈</a></h5>
-                        <p>穿越时光的古镇体验，感受历史的韵味。</p><a class="button button-primary-2 button-md" href="single-service.html">了解更多</a>
+                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-6-370x389.jpg" alt="" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp">古镇客栈</a></h5>
+                        <p>穿越时光的古镇体验，感受历史的韵味。</p><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a>
                     </article>
                 </div>
             </div>
