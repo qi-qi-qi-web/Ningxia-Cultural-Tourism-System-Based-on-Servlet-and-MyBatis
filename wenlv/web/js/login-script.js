@@ -237,15 +237,13 @@ function handleRegister(event) {
 }
 
 // 页面加载完成执行登录状态检测
-window.onload = function () {
+window.addEventListener('load', function () {
     checkLoginStatus();
-    // 页面渲染完成后，移除所有下拉的show类，强制隐藏
     document.querySelectorAll('.user-dropdown-menu').forEach(function(menu) {
         menu.classList.remove('show');
     });
-    // 页面加载时兜底清除残留遮罩
     document.querySelectorAll('.modal-backdrop').forEach(function(el) {
         el.remove();
     });
     document.body.classList.remove('modal-open');
-};
+});
