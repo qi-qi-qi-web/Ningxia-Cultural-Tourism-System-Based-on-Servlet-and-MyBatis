@@ -21,6 +21,15 @@
 <script src="${pageContext.request.contextPath}/js/script.js"></script>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
 
+<%-- 覆盖 admin.js 中的 logout，使用绝对路径确保跳转正确 --%>
+<script>
+var _adminLogout = logout;
+logout = function() {
+    localStorage.clear();
+    window.location.href = '${pageContext.request.contextPath}/index.jsp';
+};
+</script>
+
 <div class="container-fluid">
     <div class="row">
         <!-- 左侧侧边栏 -->
@@ -30,6 +39,9 @@
             <nav class="nav flex-column">
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/user">
                     <i class="fa fa-users"></i> 用户管理
+                </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-news.jsp">
+                    <i class="fa fa-users"></i> 资讯管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
                     <i class="fa fa-map-marker"></i> 景区管理

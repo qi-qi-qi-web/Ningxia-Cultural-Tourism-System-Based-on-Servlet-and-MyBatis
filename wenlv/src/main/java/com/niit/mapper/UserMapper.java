@@ -31,6 +31,12 @@ public interface UserMapper {
     /** 删除用户 */
     int deleteById(Long id);
 
+    /** 删除后将后续所有ID前移一位（ID重排） */
+    int shiftIdsDown(@Param("afterId") Long afterId);
+
+    /** 查询当前最大ID */
+    Long findMaxId();
+
     /** 更新用户状态（0=禁用, 1=正常） */
     int updateStatus(@Param("id") Long id, @Param("status") Integer status);
 

@@ -30,7 +30,7 @@ function checkLoginStatus() {
         container.innerHTML = '<div class="user-dropdown">' +
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + username + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
-            '<a href="admin.html" class="user-dropdown-item">管理后台</a>' +
+            '<a href="admin/user" class="user-dropdown-item">管理后台</a>' +
             '<a href="#" class="user-dropdown-item" onclick="goToPersonalCenter()">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
             '<a href="#" class="user-dropdown-item" onclick="logout()">退出登录</a>' +
@@ -166,7 +166,7 @@ function handleLogin() {
     return false;
 }
 
-// 管理员登录提交（纯前端）
+// 管理员登录提交——调后端验证
 function handleAdminLogin(event) {
     event.preventDefault();
 
@@ -188,17 +188,33 @@ function handleAdminLogin(event) {
         return false;
     }
 
-    localStorage.setItem('adminUsername', username);
-    localStorage.setItem('isAdminLoggedIn', 'true');
+    // 调后端验证
+    var formData = new FormData();
+    formData.append('action', 'adminLogin');
+    formData.append('username', username);
+    formData.append('password', password);
 
-    // 关闭弹窗清除遮罩
-    closeModal('admin-login-modal');
+    fetch('login', { method: 'POST', body: formData })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+        if (data.success) {
+            // 后端验证通过 → 保存登录态
+            localStorage.setItem('adminUsername', username);
+            localStorage.setItem('isAdminLoggedIn', 'true');
 
-    showToast('管理员登录成功！', 'success');
+            closeModal('admin-login-modal');
+            showToast('管理员登录成功！', 'success');
 
-    setTimeout(function () {
-        window.location.href = 'admin.html';
-    }, 1000);
+            setTimeout(function () {
+                window.location.href = 'admin/user';
+            }, 800);
+        } else {
+            showToast(data.message || '管理员登录失败', 'error');
+        }
+    })
+    .catch(function() {
+        showToast('网络错误，请确认服务器已启动', 'error');
+    });
 
     return false;
 }

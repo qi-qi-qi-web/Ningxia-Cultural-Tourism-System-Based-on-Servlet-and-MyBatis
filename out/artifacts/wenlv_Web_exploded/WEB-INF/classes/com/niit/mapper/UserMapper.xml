@@ -66,16 +66,26 @@
         WHERE phone = #{phone}
     </select>
 
-    <!-- 新增用户 -->
-    <insert id="insertUser" parameterType="com.niit.pojo.User">
-        INSERT INTO sys_user (username, password, nickname, email, phone, avatar, role)
-        VALUES (#{username}, #{passwordHash}, #{nickname}, #{email}, #{phone}, #{avatar}, #{role})
+    <!-- 新增用户（显式指定ID = 当前最大ID + 1） -->
+    <insert id="insertUser">
+        INSERT INTO sys_user (id, username, password, nickname, email, phone, avatar, role)
+        VALUES (#{id}, #{username}, #{passwordHash}, #{nickname}, #{email}, #{phone}, #{avatar}, #{role})
     </insert>
 
     <!-- 删除用户 -->
     <delete id="deleteById">
         DELETE FROM sys_user WHERE id = #{id}
     </delete>
+
+    <!-- 删除后将后续ID全部前移一位（ID重排） -->
+    <update id="shiftIdsDown">
+        UPDATE sys_user SET id = id - 1 WHERE id &gt; #{afterId}
+    </update>
+
+    <!-- 查询当前最大ID -->
+    <select id="findMaxId" resultType="java.lang.Long">
+        SELECT COALESCE(MAX(id), 0) FROM sys_user
+    </select>
 
     <!-- 更新用户状态 -->
     <update id="updateStatus">

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.ibatis.session.SqlSession;
 
 import java.io.IOException;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -84,9 +85,18 @@ public class AdminUserServlet extends HttpServlet {
                     if ("ADMIN".equals(user.getRole())) {
                         return "不允许删除管理员账号";
                     }
-                    mapper.deleteById(id);
+                    // 关外键检查 → 删除 → 后续ID前移 → 重置自增 → 恢复
+                    try (Statement stmt = session.getConnection().createStatement()) {
+                        stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
+                        mapper.deleteById(id);
+                        mapper.shiftIdsDown(id);
+                        // 重置 AUTO_INCREMENT 为当前最大ID+1
+                        Long maxId = mapper.findMaxId();
+                        stmt.execute("ALTER TABLE sys_user AUTO_INCREMENT = " + (maxId + 1));
+                        stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
+                    }
                     session.commit();
-                    return "用户「" + user.getUsername() + "」已删除";
+                    return "用户「" + user.getUsername() + "」已删除.";
 
                 case "toggle":
                     if ("ADMIN".equals(user.getRole())) {

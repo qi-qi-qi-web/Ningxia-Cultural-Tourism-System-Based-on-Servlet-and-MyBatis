@@ -28,6 +28,10 @@ public class LoginServlet extends HttpServlet {
             handleRegister(request, response);
             return;
         }
+        if ("adminLogin".equals(action)) {
+            handleAdminLogin(request, response);
+            return;
+        }
 
         handleLogin(request, response);
     }
@@ -68,7 +72,7 @@ public class LoginServlet extends HttpServlet {
             if (isAjax) {
                 sendJson(response, true, "登录成功");
             } else {
-                response.sendRedirect("index.html");
+                response.sendRedirect("index.jsp");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,6 +114,8 @@ public class LoginServlet extends HttpServlet {
             newUser.setPasswordHash(PasswordUtil.hash(password));
             newUser.setNickname(username);
             newUser.setRole("USER");
+            // ID = 当前最大ID + 1（不依赖 AUTO_INCREMENT）
+            newUser.setId(userMapper.findMaxId() + 1);
 
             int rows = userMapper.insertUser(newUser);
             session.commit();
@@ -122,6 +128,52 @@ public class LoginServlet extends HttpServlet {
             } else {
                 sendJson(response, false, "注册失败，请重试");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendJson(response, false, "服务器错误，请稍后重试");
+        }
+    }
+
+    /**
+     * 管理员登录：验证账号密码 + 检查角色是否为 ADMIN
+     */
+    private void handleAdminLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        if (username == null || username.trim().isEmpty() ||
+                password == null || password.trim().isEmpty()) {
+            sendJson(response, false, "请填写管理员账号和密码");
+            return;
+        }
+
+        try (SqlSession session = DBUtil.getSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User user = userMapper.findByUsername(username.trim());
+
+            if (user == null) {
+                sendJson(response, false, "管理员账号不存在");
+                return;
+            }
+
+            if (!"ADMIN".equals(user.getRole())) {
+                sendJson(response, false, "该账号不是管理员");
+                return;
+            }
+
+            if (!PasswordUtil.verify(password, user.getPasswordHash())) {
+                sendJson(response, false, "密码错误");
+                return;
+            }
+
+            // 管理员登录成功：写入 session
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("user", user);
+            httpSession.setAttribute("isLoggedIn", true);
+            httpSession.setAttribute("isAdmin", true);
+
+            sendJson(response, true, "管理员登录成功");
+
         } catch (Exception e) {
             e.printStackTrace();
             sendJson(response, false, "服务器错误，请稍后重试");
