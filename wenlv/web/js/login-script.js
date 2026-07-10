@@ -73,13 +73,13 @@ document.addEventListener('click', function (event) {
 function goToPersonalCenter() {
     var currentUrl = window.location.href;
     var currentPath = window.location.pathname;
-    var personalCenterPath = '/PersonalCenter.jsp';
+    var personalCenterPath = '/personalCenter';
     
-    if (currentPath !== personalCenterPath) {
+    if (currentPath !== personalCenterPath && currentPath !== '/PersonalCenter.jsp') {
         localStorage.setItem('previousPage', currentUrl);
     }
     
-    window.location.href = 'PersonalCenter.jsp';
+    window.location.href = 'personalCenter';
 }
 
 // 退出登录，清空本地存储
