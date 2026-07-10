@@ -8,6 +8,54 @@
         alert('请先登录！');
         window.location.href = 'index.jsp';
     }
+
+    // 从服务端获取的用户数据（由 PersonalCenterServlet 设置）
+    var serverUser = {
+        avatar: '${user.avatar}',
+        username: '${user.username}',
+        nickname: '${user.nickname}',
+        phone: '${user.phone}',
+        email: '${user.email}',
+        role: '${user.role}'
+    };
+
+    // 如果直接访问 PersonalCenter.jsp 而没有经过 servlet，重定向到 /personalCenter
+    if (!serverUser.username && isLoggedIn) {
+        window.location.href = 'personalCenter';
+    }
+
+    // 页面加载后从后端获取最新的用户信息（含头像），确保与数据库同步
+    function fetchServerUser() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/personalCenter?action=me', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var data = JSON.parse(xhr.responseText);
+                        console.log('fetchServerUser 响应:', data);
+                        if (data.avatar && data.avatar.length > 0) {
+                            serverUser.avatar = data.avatar;
+                            serverUser.nickname = data.nickname || '';
+                            serverUser.username = data.username || '';
+                            serverUser.phone = data.phone || '';
+                            serverUser.email = data.email || '';
+                            serverUser.role = data.role || '';
+                            // 重新加载用户信息（会从 serverUser 读取最新头像）
+                            loadUserInfo();
+                        } else {
+                            console.log('fetchServerUser: 服务端返回的头像为空');
+                        }
+                    } catch(e) {
+                        console.error('fetchServerUser 解析失败:', e);
+                    }
+                } else {
+                    console.error('fetchServerUser 请求失败:', xhr.status);
+                }
+            }
+        };
+        xhr.send();
+    }
 </script>
 
 <style>
@@ -483,8 +531,11 @@
                     <div class="content-card" id="profile-content">
                         <div class="content-title">基本信息</div>
                         <div style="display: flex; align-items: flex-start; margin-bottom: 25px;">
-                            <div style="margin-right: 25px;">
-                                <img src="images/avatar-default.jpg" alt="头像" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0;">
+                            <div style="margin-right: 25px; text-align: center;">
+                                <img id="profile-avatar-img" src="images/avatar-1.png" alt="头像" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e0e0; cursor: pointer;" onclick="openAvatarModal()">
+                                <div style="margin-top: 8px;">
+                                    <button class="btn-secondary-custom" onclick="openAvatarModal()" style="font-size: 12px; padding: 4px 10px;">更换头像</button>
+                                </div>
                             </div>
                             <div style="flex: 1;">
                                 <div style="display: flex; align-items: center; margin-bottom: 8px;">
@@ -840,6 +891,52 @@
     </div>
 </div>
 
+<!-- 头像选择弹窗 -->
+<div id="avatar-modal" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">选择头像</h4>
+                <button type="button" class="close" onclick="closeAvatarModal()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="color: #999; font-size: 13px; margin-bottom: 18px;">点击选择一个你喜欢的头像</p>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; justify-items: center;">
+                    <div class="avatar-option" data-avatar="images/avatar-1.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-1.png" alt="头像1" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-2.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-2.png" alt="头像2" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-3.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-3.png" alt="头像3" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-4.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-4.png" alt="头像4" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-5.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-5.png" alt="头像5" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-6.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-6.png" alt="头像6" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-7.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-7.png" alt="头像7" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="avatar-option" data-avatar="images/avatar-8.png" onclick="selectAvatar(this)" style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; cursor: pointer; transition: all 0.3s ease;">
+                        <img src="images/avatar-8.png" alt="头像8" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <div style="margin-top: 25px; text-align: center;">
+                    <button class="btn-primary-custom" id="confirm-avatar-btn" onclick="confirmAvatar()" disabled style="opacity: 0.5; cursor: not-allowed;">确认更换</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function showTab(tabName, event) {
         var tabs = ['profile', 'posts', 'comments', 'collections', 'orders'];
@@ -910,7 +1007,8 @@
         if (phoneText) phoneText.textContent = phone;
         if (emailText) emailText.textContent = email;
         
-        document.getElementById('user-nickname').textContent = nickname || username;
+        var userNicknameEl = document.getElementById('user-nickname');
+        if (userNicknameEl) userNicknameEl.textContent = nickname || username;
 
         closeEditModal();
         showToastLocal('信息保存成功！', 'success');
@@ -944,14 +1042,21 @@
     }
 
     function loadUserInfo() {
-        var username = localStorage.getItem('userUsername') || 'admin';
-        var nickname = localStorage.getItem('userNickname') || 'admin';
-        var phone = localStorage.getItem('userPhone') || '12312312312';
-        var email = localStorage.getItem('userEmail') || '';
-        if (!email || email === 'admin') {
-            email = '2383921983@qq.com';
+        // 优先使用服务端数据，其次 localStorage，最后默认值
+        var username = serverUser && serverUser.username ? serverUser.username : (localStorage.getItem('userUsername') || 'admin');
+        var nickname = serverUser && serverUser.nickname ? serverUser.nickname : (localStorage.getItem('userNickname') || username);
+        var phone = serverUser && serverUser.phone ? serverUser.phone : (localStorage.getItem('userPhone') || '');
+        var email = serverUser && serverUser.email ? serverUser.email : (localStorage.getItem('userEmail') || '');
+        var role = serverUser && serverUser.role ? (serverUser.role === 'ADMIN' ? '管理员' : '普通用户') : (localStorage.getItem('userRole') || '普通用户');
+
+        // 将服务端数据回写到 localStorage，保证后续刷新也有效
+        if (serverUser && serverUser.username) {
+            localStorage.setItem('userUsername', username);
+            localStorage.setItem('userNickname', nickname);
+            localStorage.setItem('userPhone', phone);
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userRole', serverUser.role === 'ADMIN' ? '管理员' : '普通用户');
         }
-        var role = localStorage.getItem('userRole') || '普通用户';
 
         var usernameText = document.getElementById('info-username-text');
         var nicknameText = document.getElementById('info-nickname-text');
@@ -963,8 +1068,28 @@
         if (phoneText) phoneText.textContent = phone;
         if (emailText) emailText.textContent = email;
         
-        document.getElementById('user-nickname').textContent = nickname || username;
-        document.getElementById('user-role').textContent = role;
+        // 这些元素可能不在页面上，需要判空
+        var userNicknameEl = document.getElementById('user-nickname');
+        if (userNicknameEl) userNicknameEl.textContent = nickname || username;
+        var userRoleEl = document.getElementById('user-role');
+        if (userRoleEl) userRoleEl.textContent = role;
+
+        // 加载头像：服务端 > localStorage > 默认
+        var profileImg = document.getElementById('profile-avatar-img');
+        var avatarSrc = null;
+
+        if (serverUser && serverUser.avatar && serverUser.avatar.length > 0) {
+            avatarSrc = serverUser.avatar;
+            localStorage.setItem('userAvatar', avatarSrc);
+            console.log('使用服务器头像:', avatarSrc);
+        } else {
+            avatarSrc = localStorage.getItem('userAvatar') || 'images/avatar-1.png';
+            console.log('无服务器头像，使用:', avatarSrc, 'serverUser.avatar=', serverUser && serverUser.avatar);
+        }
+
+        if (profileImg) {
+            profileImg.src = avatarSrc;
+        }
     }
 
     function showToastLocal(message, type) {
@@ -1015,8 +1140,102 @@
         document.body.style.overflow = '';
     }
 
+    /* ========== 头像选择功能 ========== */
+    var selectedAvatar = null;
+
+    function openAvatarModal() {
+        selectedAvatar = null;
+        document.getElementById('confirm-avatar-btn').disabled = true;
+        document.getElementById('confirm-avatar-btn').style.opacity = '0.5';
+        document.getElementById('confirm-avatar-btn').style.cursor = 'not-allowed';
+
+        // 清除所有选中状态
+        document.querySelectorAll('.avatar-option').forEach(function(el) {
+            el.style.borderColor = 'transparent';
+        });
+
+        // 高亮当前正在使用的头像
+        var currentAvatar = document.getElementById('profile-avatar-img').src;
+        var currentPath = currentAvatar.substring(currentAvatar.lastIndexOf('/images/'));
+        document.querySelectorAll('.avatar-option').forEach(function(el) {
+            var avatarPath = el.getAttribute('data-avatar');
+            if (avatarPath && currentPath.indexOf(avatarPath) !== -1) {
+                el.style.borderColor = '#00a8a8';
+                selectedAvatar = avatarPath;
+            }
+        });
+
+        document.getElementById('avatar-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeAvatarModal() {
+        document.getElementById('avatar-modal').style.display = 'none';
+        document.body.style.overflow = '';
+        selectedAvatar = null;
+    }
+
+    function selectAvatar(element) {
+        // 清除其他选中
+        document.querySelectorAll('.avatar-option').forEach(function(el) {
+            el.style.borderColor = 'transparent';
+        });
+        // 高亮当前选中
+        element.style.borderColor = '#00a8a8';
+        selectedAvatar = element.getAttribute('data-avatar');
+
+        // 启用确认按钮
+        document.getElementById('confirm-avatar-btn').disabled = false;
+        document.getElementById('confirm-avatar-btn').style.opacity = '1';
+        document.getElementById('confirm-avatar-btn').style.cursor = 'pointer';
+    }
+
+    function confirmAvatar() {
+        if (!selectedAvatar) {
+            showToastLocal('请先选择一个头像', 'error');
+            return;
+        }
+
+        // 先更新本地显示（乐观更新）
+        var profileImg = document.getElementById('profile-avatar-img');
+        if (profileImg) {
+            profileImg.src = selectedAvatar;
+        }
+        localStorage.setItem('userAvatar', selectedAvatar);
+
+        // 发送 AJAX 请求到后端保存
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/personalCenter', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var resp = JSON.parse(xhr.responseText);
+                        if (resp.success) {
+                            showToastLocal('头像更换成功！', 'success');
+                        } else {
+                            showToastLocal(resp.message || '头像更换失败', 'error');
+                        }
+                    } catch (e) {
+                        // 解析失败说明后端返回了非 JSON 内容（可能是错误页）
+                        console.error('头像保存响应解析失败:', xhr.responseText.substring(0, 200));
+                        showToastLocal('服务器返回异常，请刷新后重试', 'error');
+                    }
+                } else {
+                    console.error('头像保存请求失败:', xhr.status, xhr.statusText);
+                    showToastLocal('网络错误（' + xhr.status + '），请重试', 'error');
+                }
+            }
+        };
+        xhr.send('action=changeAvatar&avatar=' + encodeURIComponent(selectedAvatar));
+
+        closeAvatarModal();
+    }
+
     window.addEventListener('load', function() {
         loadUserInfo();
+        fetchServerUser();
         checkLoginStatus();
         
         var currentUrl = window.location.pathname;
