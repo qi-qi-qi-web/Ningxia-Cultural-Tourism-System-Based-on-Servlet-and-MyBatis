@@ -40,26 +40,32 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/user">
                     <i class="fa fa-users"></i> 用户管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-news.jsp">
-                    <i class="fa fa-users"></i> 资讯管理
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/news">
+                    <i class="fa fa-newspaper-o"></i> 新闻动态
+                </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/notice">
+                    <i class="fa fa-bullhorn"></i> 通知公告
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
                     <i class="fa fa-map-marker"></i> 景区管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-speciality.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/specialty">
                     <i class="fa fa-cutlery"></i> 特产管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-Hotel.jsp">
                     <i class="fa fa-bed"></i> 酒店管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-strategy.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/strategy">
                     <i class="fa fa-file-text"></i> 攻略管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-order.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/order">
                     <i class="fa fa-shopping-cart"></i> 订单管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-comment.jsp">
                     <i class="fa fa-comments"></i> 评论管理
+                </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/log">
+                    <i class="fa fa-history"></i> 平台日志
                 </a>
             </nav>
         </div>

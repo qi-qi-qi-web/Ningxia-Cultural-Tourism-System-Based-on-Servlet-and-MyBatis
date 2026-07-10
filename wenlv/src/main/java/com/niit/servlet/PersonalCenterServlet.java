@@ -16,9 +16,7 @@ public class PersonalCenterServlet extends HttpServlet {
 
     private UserService userService = new UserService();
 
-    /**
-     * GET 请求：进入个人中心页面 / 处理退出登录 / 获取用户JSON数据
-     */
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -38,7 +36,6 @@ public class PersonalCenterServlet extends HttpServlet {
             return;
         }
 
-        // 默认行为：进入个人中心
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
@@ -47,7 +44,6 @@ public class PersonalCenterServlet extends HttpServlet {
 
         User sessionUser = (User) session.getAttribute("user");
 
-        // 从数据库查询最新用户信息
         User latestUser = userService.findById(sessionUser.getId());
         if (latestUser == null) {
             session.invalidate();
@@ -55,14 +51,10 @@ public class PersonalCenterServlet extends HttpServlet {
             return;
         }
 
-        // 将最新用户信息放入 request，供 JSP 渲染
         request.setAttribute("user", latestUser);
         request.getRequestDispatcher("PersonalCenter.jsp").forward(request, response);
     }
 
-    /**
-     * 返回当前登录用户的 JSON 数据（前端 AJAX 拉取用）
-     */
     private void handleGetMe(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
 
@@ -80,7 +72,6 @@ public class PersonalCenterServlet extends HttpServlet {
             return;
         }
 
-        // 手动拼接 JSON
         String avatar = latestUser.getAvatar() != null ? latestUser.getAvatar() : "";
         String nickname = latestUser.getNickname() != null ? latestUser.getNickname() : "";
         String username = latestUser.getUsername() != null ? latestUser.getUsername() : "";
@@ -88,7 +79,6 @@ public class PersonalCenterServlet extends HttpServlet {
         String email = latestUser.getEmail() != null ? latestUser.getEmail() : "";
         String role = latestUser.getRole() != null ? latestUser.getRole() : "";
 
-        // 转义特殊字符
         String json = "{" +
             "\"avatar\":\"" + escapeJson(avatar) + "\"," +
             "\"username\":\"" + escapeJson(username) + "\"," +
@@ -104,9 +94,6 @@ public class PersonalCenterServlet extends HttpServlet {
         return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
     }
 
-    /**
-     * POST 请求：修改个人资料 / 修改密码
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -132,9 +119,6 @@ public class PersonalCenterServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 处理修改个人资料
-     */
     private void handleUpdateProfile(HttpServletRequest request, HttpServletResponse response, User sessionUser) throws IOException {
         String nickname = request.getParameter("nickname");
         String phone = request.getParameter("phone");
@@ -160,9 +144,6 @@ public class PersonalCenterServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 处理修改密码
-     */
     private void handleChangePassword(HttpServletRequest request, HttpServletResponse response, User sessionUser) throws IOException {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
@@ -186,9 +167,6 @@ public class PersonalCenterServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 处理更换头像
-     */
     private void handleChangeAvatar(HttpServletRequest request, HttpServletResponse response, User sessionUser) throws IOException {
         String avatar = request.getParameter("avatar");
 
@@ -212,9 +190,6 @@ public class PersonalCenterServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 手动拼接 JSON 返回（不引入 Jackson 依赖）
-     */
     private void sendJson(HttpServletResponse response, boolean success, String message) throws IOException {
         // 转义 message 中的特殊字符，防止 JSON 注入
         String escaped = message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");

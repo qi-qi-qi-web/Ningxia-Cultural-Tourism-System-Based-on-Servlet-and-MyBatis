@@ -134,9 +134,6 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 管理员登录：验证账号密码 + 检查角色是否为 ADMIN
-     */
     private void handleAdminLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -166,7 +163,6 @@ public class LoginServlet extends HttpServlet {
                 return;
             }
 
-            // 管理员登录成功：写入 session
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("user", user);
             httpSession.setAttribute("isLoggedIn", true);
