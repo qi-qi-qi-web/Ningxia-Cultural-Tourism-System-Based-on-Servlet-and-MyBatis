@@ -4,10 +4,10 @@
     <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
         <div class="container">
-            <h4 class="breadcrumbs-custom-title">景区线路</h4>
+            <h4 class="breadcrumbs-custom-title">景区服务</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="index.jsp">首页</a></li>
-                <li class="active">景区线路</li>
+                <li class="active">景区服务</li>
             </ul>
         </div>
     </section>
