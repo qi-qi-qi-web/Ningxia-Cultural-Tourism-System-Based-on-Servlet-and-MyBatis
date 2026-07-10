@@ -25,7 +25,7 @@ function showSection(sectionId) {
 function logout() {
     localStorage.removeItem('adminUsername');
     localStorage.removeItem('isAdminLoggedIn');
-    window.location.href = 'index.html';
+    window.location.href = 'index.jsp';
 }
 
 window.onload = function () {

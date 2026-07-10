@@ -74,13 +74,22 @@ public class AdminSpecialtyServlet extends HttpServlet {
         try (SqlSession s = DBUtil.getSession(false)) {
             SpecialtyMapper m = s.getMapper(SpecialtyMapper.class);
             Specialty sp = new Specialty();
-            sp.setCategoryId(Long.parseLong(request.getParameter("categoryId")));
+
+            String catId = request.getParameter("categoryId");
+            if (catId == null || catId.isEmpty()) {
+                request.getSession().setAttribute("msg", "请选择分类");
+                response.sendRedirect(request.getContextPath() + "/admin/specialty");
+                return;
+            }
+            sp.setCategoryId(Long.parseLong(catId));
             sp.setName(request.getParameter("name"));
             sp.setDescription(request.getParameter("description"));
             sp.setPrice(new BigDecimal(request.getParameter("price")));
             sp.setStock(Integer.parseInt(request.getParameter("stock")));
-            sp.setMainImage(request.getParameter("mainImage"));
-            sp.setImages(request.getParameter("images"));
+            sp.setMainImage(emptyToNull(request.getParameter("mainImage")));
+            // JSON 字段不接受空字符串
+            String imgJson = request.getParameter("images");
+            sp.setImages(imgJson != null && !imgJson.isEmpty() ? imgJson : null);
             sp.setStatus(Integer.parseInt(request.getParameter("status") != null ? request.getParameter("status") : "1"));
 
             if (idStr != null && !idStr.isEmpty()) {
@@ -133,5 +142,9 @@ public class AdminSpecialtyServlet extends HttpServlet {
     private String esc(String s) {
         if (s == null) return "";
         return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
+    }
+
+    private String emptyToNull(String s) {
+        return (s == null || s.isEmpty()) ? null : s;
     }
 }

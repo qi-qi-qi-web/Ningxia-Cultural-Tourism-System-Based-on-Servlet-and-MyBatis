@@ -15,6 +15,11 @@
             request.setAttribute("error", "加载失败：" + e.getMessage());
         }
     }
+    if (request.getAttribute("categoryMap") == null) {
+        try (SqlSession s = DBUtil.getSession()) {
+            request.setAttribute("categoryMap", s.getMapper(SpecialtyMapper.class).selectCategories());
+        } catch (Exception e) {}
+    }
 %>
 
 <%@ include file="Admin-Head_And_Side.jsp" %>
@@ -76,7 +81,14 @@
         <form method="post" action="${pageContext.request.contextPath}/admin/specialty">
             <input type="hidden" name="action" value="save"><input type="hidden" name="id" id="sp-id">
             <div class="mb-2"><label>名称</label><input class="form-control" name="name" id="sp-name" required></div>
-            <div class="mb-2"><label>分类</label><input class="form-control" name="categoryId" id="sp-cat" placeholder="分类ID (1-5)" required></div>
+            <div class="mb-2"><label>分类</label>
+                <select class="form-control" name="categoryId" id="sp-cat" required>
+                    <option value="">-- 请选择分类 --</option>
+                    <c:forEach items="${categoryMap}" var="cat">
+                        <option value="${cat['id']}">${cat['name']}</option>
+                    </c:forEach>
+                </select>
+            </div>
             <div class="mb-2"><label>描述</label><textarea class="form-control" name="description" id="sp-desc" rows="3"></textarea></div>
             <div class="row mb-2">
                 <div class="col-4"><label>价格</label><input class="form-control" name="price" id="sp-price" step="0.01" required></div>

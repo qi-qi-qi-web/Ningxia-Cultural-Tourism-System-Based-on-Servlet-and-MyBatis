@@ -15,4 +15,5 @@ public interface SpecialtyMapper {
     int shiftIdsDown(@Param("afterId") Long afterId);
     Long findMaxId();
     int toggleStatus(@Param("id") Long id, @Param("status") Integer status);
+    java.util.List<java.util.Map<String,Object>> selectCategories();
 }

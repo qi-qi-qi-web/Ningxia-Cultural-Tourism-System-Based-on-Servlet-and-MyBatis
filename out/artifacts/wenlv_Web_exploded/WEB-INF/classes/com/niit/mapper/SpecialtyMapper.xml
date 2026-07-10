@@ -64,4 +64,8 @@
     <update id="toggleStatus">
         UPDATE specialty SET status=#{status} WHERE id=#{id}
     </update>
+
+    <select id="selectCategories" resultType="java.util.HashMap">
+        SELECT id, name FROM specialty_category ORDER BY sort_order
+    </select>
 </mapper>
