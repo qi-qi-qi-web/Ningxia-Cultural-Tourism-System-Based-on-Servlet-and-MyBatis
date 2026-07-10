@@ -1,51 +1,120 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="Admin-Head_And_Side.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.niit.utils.DBUtil" %>
+<%@ page import="com.niit.mapper.SpecialtyMapper" %>
+<%@ page import="com.niit.pojo.Specialty" %>
+<%@ page import="org.apache.ibatis.session.SqlSession" %>
+<%@ page import="java.util.List" %>
 
-                <div id="food" class="section" style="display:none;">
-                    <div class="admin-card">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h3>美食管理</h3>
-                            <a href="admin-food-add.html" class="btn btn-primary btn-sm">新增美食</a>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>美食名称</th>
-                                <th>分类</th>
-                                <th>产地</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>手抓羊肉</td>
-                                <td>肉类</td>
-                                <td>盐池县</td>
-                                <td>
-                                    <a href="admin-food-edit.html?id=1" class="btn btn-info btn-sm btn-action">编辑</a>
-                                    <button class="btn btn-danger btn-sm btn-action">删除</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>八宝茶</td>
-                                <td>饮品</td>
-                                <td>宁夏各地</td>
-                                <td>
-                                    <a href="admin-food-edit.html?id=2" class="btn btn-info btn-sm btn-action">编辑</a>
-                                    <button class="btn btn-danger btn-sm btn-action">删除</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<%
+    if (request.getAttribute("specialtyList") == null) {
+        try (SqlSession s = DBUtil.getSession()) {
+            request.setAttribute("specialtyList", s.getMapper(SpecialtyMapper.class).findAllWithCategory());
+        } catch (Exception e) {
+            request.setAttribute("error", "加载失败：" + e.getMessage());
+        }
+    }
+%>
 
-            </div>
-        </div>
+<%@ include file="Admin-Head_And_Side.jsp" %>
+
+<div class="admin-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>特产管理</h3>
+        <button class="btn btn-primary btn-sm" onclick="openEdit()">+ 新增特产</button>
     </div>
-</body>
-</html>
+
+    <c:if test="${not empty sessionScope.msg}">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            ${sessionScope.msg}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <c:remove var="msg" scope="session"/>
+    </c:if>
+
+    <table class="table table-striped table-hover">
+        <thead><tr>
+            <th>ID</th><th>名称</th><th>分类</th><th>价格</th><th>库存</th><th>销量</th><th>状态</th><th>操作</th>
+        </tr></thead>
+        <tbody>
+            <c:forEach items="${specialtyList}" var="s">
+            <tr>
+                <td>${s.id}</td>
+                <td><strong>${s.name}</strong></td>
+                <td>${s.categoryName}</td>
+                <td>¥${s.price}</td>
+                <td>${s.stock}</td>
+                <td>${s.salesCount}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${s.status == 1}"><span class="badge bg-success">上架</span></c:when>
+                        <c:otherwise><span class="badge bg-warning">下架</span></c:otherwise>
+                    </c:choose>
+                </td>
+                <td style="white-space:nowrap;">
+                    <button class="btn btn-info btn-sm" onclick="openEdit(${s.id})">编辑</button>
+                    <c:choose>
+                        <c:when test="${s.status == 1}">
+                            <a href="${pageContext.request.contextPath}/admin/specialty?action=down&id=${s.id}" class="btn btn-warning btn-sm">下架</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/admin/specialty?action=up&id=${s.id}" class="btn btn-success btn-sm">上架</a>
+                        </c:otherwise>
+                    </c:choose>
+                    <a href="${pageContext.request.contextPath}/admin/specialty?action=delete&id=${s.id}" class="btn btn-danger btn-sm" onclick="return confirm('确认删除？')">删除</a>
+                </td>
+            </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
+
+<div id="edit-modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);">
+    <div style="background:#fff;border-radius:8px;max-width:650px;margin:5% auto;padding:25px;max-height:80vh;overflow-y:auto;">
+        <h4 id="modal-title">新增特产</h4>
+        <form method="post" action="${pageContext.request.contextPath}/admin/specialty">
+            <input type="hidden" name="action" value="save"><input type="hidden" name="id" id="sp-id">
+            <div class="mb-2"><label>名称</label><input class="form-control" name="name" id="sp-name" required></div>
+            <div class="mb-2"><label>分类</label><input class="form-control" name="categoryId" id="sp-cat" placeholder="分类ID (1-5)" required></div>
+            <div class="mb-2"><label>描述</label><textarea class="form-control" name="description" id="sp-desc" rows="3"></textarea></div>
+            <div class="row mb-2">
+                <div class="col-4"><label>价格</label><input class="form-control" name="price" id="sp-price" step="0.01" required></div>
+                <div class="col-4"><label>库存</label><input class="form-control" name="stock" id="sp-stock" type="number" required></div>
+                <div class="col-4"><label>状态</label><select class="form-control" name="status" id="sp-status"><option value="1">上架</option><option value="0">下架</option></select></div>
+            </div>
+            <div class="mb-2"><label>主图URL</label><input class="form-control" name="mainImage" id="sp-img"></div>
+            <div class="mb-3"><label>图片列表(JSON)</label><input class="form-control" name="images" id="sp-images" placeholder='["url1","url2"]'></div>
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('edit-modal').style.display='none'">取消</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function openEdit(id) {
+    document.getElementById('edit-modal').style.display = 'block';
+    if (id) {
+        document.getElementById('modal-title').textContent = '编辑特产';
+        fetch('${pageContext.request.contextPath}/admin/specialty?action=edit&id=' + id)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            document.getElementById('sp-id').value = d.id;
+            document.getElementById('sp-name').value = d.name;
+            document.getElementById('sp-desc').value = d.description || '';
+            document.getElementById('sp-cat').value = d.categoryId;
+            document.getElementById('sp-price').value = d.price;
+            document.getElementById('sp-stock').value = d.stock;
+            document.getElementById('sp-img').value = d.mainImage || '';
+            document.getElementById('sp-images').value = d.images || '';
+            document.getElementById('sp-status').value = d.status;
+        })
+        .catch(function(){ alert('加载失败'); });
+    } else {
+        document.getElementById('modal-title').textContent = '新增特产';
+        ['sp-id','sp-name','sp-desc','sp-price','sp-stock','sp-img','sp-images'].forEach(function(f){ document.getElementById(f).value = ''; });
+        document.getElementById('sp-cat').value = ''; document.getElementById('sp-status').value = '1';
+    }
+}
+</script>
+</div></div></div></body></html>

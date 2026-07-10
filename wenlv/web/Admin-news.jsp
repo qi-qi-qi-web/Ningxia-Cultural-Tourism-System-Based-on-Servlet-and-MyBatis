@@ -26,7 +26,11 @@
     </div>
 
     <c:if test="${not empty sessionScope.msg}">
-        <div class="alert alert-info">${sessionScope.msg}<c:remove var="msg" scope="session"/></div>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            ${sessionScope.msg}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <c:remove var="msg" scope="session"/>
     </c:if>
 
     <table class="table table-striped table-hover">
@@ -95,8 +99,18 @@ function openNewsEdit(id) {
     document.getElementById('news-modal').style.display = 'block';
     if (id) {
         document.getElementById('news-modal-title').textContent = '编辑新闻';
-        document.getElementById('news-id').value = id;
-        fetch('${pageContext.request.contextPath}/admin/news/edit?id=' + id).catch(function(){});
+        fetch('${pageContext.request.contextPath}/admin/news?action=edit&id=' + id)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            document.getElementById('news-id').value = d.id;
+            document.getElementById('news-title').value = d.title;
+            document.getElementById('news-content').value = d.content;
+            document.getElementById('news-cover').value = d.coverImage || '';
+            document.getElementById('news-source').value = d.source || '';
+            document.getElementById('news-author').value = d.authorName || '';
+            document.getElementById('news-publish').value = d.isPublished;
+        })
+        .catch(function(){ alert('加载失败'); });
     } else {
         document.getElementById('news-modal-title').textContent = '新增新闻';
         ['news-id','news-title','news-content','news-cover','news-source','news-author'].forEach(function(f){

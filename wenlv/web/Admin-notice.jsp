@@ -26,7 +26,11 @@
     </div>
 
     <c:if test="${not empty sessionScope.msg}">
-        <div class="alert alert-info">${sessionScope.msg}<c:remove var="msg" scope="session"/></div>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            ${sessionScope.msg}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <c:remove var="msg" scope="session"/>
     </c:if>
 
     <table class="table table-striped table-hover">
@@ -112,7 +116,18 @@ function openNoticeEdit(id) {
     document.getElementById('notice-modal').style.display = 'block';
     if (id) {
         document.getElementById('notice-modal-title').textContent = '编辑公告';
-        document.getElementById('notice-id').value = id;
+        fetch('${pageContext.request.contextPath}/admin/notice?action=edit&id=' + id)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            document.getElementById('notice-id').value = d.id;
+            document.getElementById('notice-title').value = d.title;
+            document.getElementById('notice-content').value = d.content;
+            document.getElementById('notice-cover').value = d.coverImage || '';
+            document.getElementById('notice-spot').value = d.scenicSpotId || '';
+            document.getElementById('notice-top').value = d.isTop;
+            document.getElementById('notice-publish').value = d.isPublished;
+        })
+        .catch(function(){ alert('加载失败'); });
     } else {
         document.getElementById('notice-modal-title').textContent = '新增公告';
         ['notice-id','notice-title','notice-content','notice-cover','notice-spot'].forEach(function(f){

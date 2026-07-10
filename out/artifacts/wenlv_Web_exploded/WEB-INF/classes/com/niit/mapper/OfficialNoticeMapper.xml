@@ -18,7 +18,7 @@
     </resultMap>
 
     <select id="findAll" resultMap="NoticeMap">
-        SELECT * FROM official_notice ORDER BY is_top DESC, created_at DESC
+        SELECT * FROM official_notice ORDER BY id ASC
     </select>
 
     <select id="findById" resultMap="NoticeMap">
@@ -26,8 +26,8 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO official_notice (title, content, scenic_spot_id, cover_image, is_top, is_published, published_at, created_by)
-        VALUES (#{title}, #{content}, #{scenicSpotId}, #{coverImage}, #{isTop}, #{isPublished}, NOW(), #{createdBy})
+        INSERT INTO official_notice (id, title, content, scenic_spot_id, cover_image, is_top, is_published, published_at, created_by)
+        VALUES (#{id}, #{title}, #{content}, #{scenicSpotId}, #{coverImage}, #{isTop}, #{isPublished}, NOW(), #{createdBy})
     </insert>
 
     <update id="update">
@@ -42,6 +42,14 @@
     <delete id="deleteById">
         DELETE FROM official_notice WHERE id = #{id}
     </delete>
+
+    <update id="shiftIdsDown">
+        UPDATE official_notice SET id = id - 1 WHERE id &gt; #{afterId}
+    </update>
+
+    <select id="findMaxId" resultType="java.lang.Long">
+        SELECT COALESCE(MAX(id), 0) FROM official_notice
+    </select>
 
     <update id="togglePublish">
         UPDATE official_notice SET is_published = #{status},

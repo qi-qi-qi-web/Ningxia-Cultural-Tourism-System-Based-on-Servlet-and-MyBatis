@@ -11,5 +11,7 @@ public interface NewsDynamicMapper {
     int insert(NewsDynamic news);
     int update(NewsDynamic news);
     int deleteById(Long id);
+    int shiftIdsDown(@Param("afterId") Long afterId);
+    Long findMaxId();
     int togglePublish(@Param("id") Long id, @Param("status") Integer status);
 }

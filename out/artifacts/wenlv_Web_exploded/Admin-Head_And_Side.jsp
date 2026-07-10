@@ -49,16 +49,16 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
                     <i class="fa fa-map-marker"></i> 景区管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-speciality.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/specialty">
                     <i class="fa fa-cutlery"></i> 特产管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-Hotel.jsp">
                     <i class="fa fa-bed"></i> 酒店管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-strategy.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/strategy">
                     <i class="fa fa-file-text"></i> 攻略管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-order.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/order">
                     <i class="fa fa-shopping-cart"></i> 订单管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-comment.jsp">

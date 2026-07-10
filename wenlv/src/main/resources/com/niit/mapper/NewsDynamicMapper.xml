@@ -19,7 +19,7 @@
     </resultMap>
 
     <select id="findAll" resultMap="NewsDynamicMap">
-        SELECT * FROM news_dynamic ORDER BY created_at DESC
+        SELECT * FROM news_dynamic ORDER BY id ASC
     </select>
 
     <select id="findById" resultMap="NewsDynamicMap">
@@ -27,8 +27,8 @@
     </select>
 
     <insert id="insert">
-        INSERT INTO news_dynamic (title, content, cover_image, source, author_name, is_published, published_at, created_by)
-        VALUES (#{title}, #{content}, #{coverImage}, #{source}, #{authorName}, #{isPublished}, NOW(), #{createdBy})
+        INSERT INTO news_dynamic (id, title, content, cover_image, source, author_name, is_published, published_at, created_by)
+        VALUES (#{id}, #{title}, #{content}, #{coverImage}, #{source}, #{authorName}, #{isPublished}, NOW(), #{createdBy})
     </insert>
 
     <update id="update">
@@ -44,6 +44,14 @@
     <delete id="deleteById">
         DELETE FROM news_dynamic WHERE id = #{id}
     </delete>
+
+    <update id="shiftIdsDown">
+        UPDATE news_dynamic SET id = id - 1 WHERE id &gt; #{afterId}
+    </update>
+
+    <select id="findMaxId" resultType="java.lang.Long">
+        SELECT COALESCE(MAX(id), 0) FROM news_dynamic
+    </select>
 
     <update id="togglePublish">
         UPDATE news_dynamic SET is_published = #{status},

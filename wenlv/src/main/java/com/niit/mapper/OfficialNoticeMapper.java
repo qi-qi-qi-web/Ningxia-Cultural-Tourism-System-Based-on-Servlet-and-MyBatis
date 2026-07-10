@@ -11,6 +11,8 @@ public interface OfficialNoticeMapper {
     int insert(OfficialNotice notice);
     int update(OfficialNotice notice);
     int deleteById(Long id);
+    int shiftIdsDown(@Param("afterId") Long afterId);
+    Long findMaxId();
     int togglePublish(@Param("id") Long id, @Param("status") Integer status);
     int toggleTop(@Param("id") Long id, @Param("top") Integer top);
 }
