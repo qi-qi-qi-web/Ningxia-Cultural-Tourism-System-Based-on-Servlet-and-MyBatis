@@ -17,7 +17,7 @@ public class PersonalCenterServlet extends HttpServlet {
     private UserService userService = new UserService();
 
     /**
-     * GET 请求：进入个人中心页面 / 处理退出登录
+     * GET 请求：进入个人中心页面 / 处理退出登录 / 获取用户JSON数据
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,6 +30,11 @@ public class PersonalCenterServlet extends HttpServlet {
                 session.invalidate();
             }
             response.sendRedirect("index.jsp");
+            return;
+        }
+
+        if ("me".equals(action)) {
+            handleGetMe(request, response);
             return;
         }
 
@@ -53,6 +58,50 @@ public class PersonalCenterServlet extends HttpServlet {
         // 将最新用户信息放入 request，供 JSP 渲染
         request.setAttribute("user", latestUser);
         request.getRequestDispatcher("PersonalCenter.jsp").forward(request, response);
+    }
+
+    /**
+     * 返回当前登录用户的 JSON 数据（前端 AJAX 拉取用）
+     */
+    private void handleGetMe(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.getWriter().write("{\"error\":\"not_logged_in\"}");
+            return;
+        }
+
+        User sessionUser = (User) session.getAttribute("user");
+        User latestUser = userService.findById(sessionUser.getId());
+
+        if (latestUser == null) {
+            response.getWriter().write("{\"error\":\"user_not_found\"}");
+            return;
+        }
+
+        // 手动拼接 JSON
+        String avatar = latestUser.getAvatar() != null ? latestUser.getAvatar() : "";
+        String nickname = latestUser.getNickname() != null ? latestUser.getNickname() : "";
+        String username = latestUser.getUsername() != null ? latestUser.getUsername() : "";
+        String phone = latestUser.getPhone() != null ? latestUser.getPhone() : "";
+        String email = latestUser.getEmail() != null ? latestUser.getEmail() : "";
+        String role = latestUser.getRole() != null ? latestUser.getRole() : "";
+
+        // 转义特殊字符
+        String json = "{" +
+            "\"avatar\":\"" + escapeJson(avatar) + "\"," +
+            "\"username\":\"" + escapeJson(username) + "\"," +
+            "\"nickname\":\"" + escapeJson(nickname) + "\"," +
+            "\"phone\":\"" + escapeJson(phone) + "\"," +
+            "\"email\":\"" + escapeJson(email) + "\"," +
+            "\"role\":\"" + escapeJson(role) + "\"" +
+            "}";
+        response.getWriter().write(json);
+    }
+
+    private String escapeJson(String s) {
+        return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
     }
 
     /**
