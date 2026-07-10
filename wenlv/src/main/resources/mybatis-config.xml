@@ -20,5 +20,8 @@
     </environments>
     <mappers>
         <mapper resource="com/niit/mapper/UserMapper.xml"/>
+        <mapper resource="com/niit/mapper/NewsDynamicMapper.xml"/>
+        <mapper resource="com/niit/mapper/OfficialNoticeMapper.xml"/>
+        <mapper resource="com/niit/mapper/PlatformLogMapper.xml"/>
     </mappers>
 </configuration>

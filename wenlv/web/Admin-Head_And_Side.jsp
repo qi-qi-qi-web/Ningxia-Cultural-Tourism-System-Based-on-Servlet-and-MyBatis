@@ -40,8 +40,11 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/user">
                     <i class="fa fa-users"></i> 用户管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-news.jsp">
-                    <i class="fa fa-users"></i> 资讯管理
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/news">
+                    <i class="fa fa-newspaper-o"></i> 新闻动态
+                </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/notice">
+                    <i class="fa fa-bullhorn"></i> 通知公告
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
                     <i class="fa fa-map-marker"></i> 景区管理
@@ -60,6 +63,9 @@ logout = function() {
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/Admin-comment.jsp">
                     <i class="fa fa-comments"></i> 评论管理
+                </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/log">
+                    <i class="fa fa-history"></i> 平台日志
                 </a>
             </nav>
         </div>

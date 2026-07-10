@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niit.mapper.NewsDynamicMapper">
+
+    <resultMap id="NewsDynamicMap" type="com.niit.pojo.NewsDynamic">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="source" column="source"/>
+        <result property="authorName" column="author_name"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="isPublished" column="is_published"/>
+        <result property="publishedAt" column="published_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="NewsDynamicMap">
+        SELECT * FROM news_dynamic ORDER BY created_at DESC
+    </select>
+
+    <select id="findById" resultMap="NewsDynamicMap">
+        SELECT * FROM news_dynamic WHERE id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO news_dynamic (title, content, cover_image, source, author_name, is_published, published_at, created_by)
+        VALUES (#{title}, #{content}, #{coverImage}, #{source}, #{authorName}, #{isPublished}, NOW(), #{createdBy})
+    </insert>
+
+    <update id="update">
+        UPDATE news_dynamic SET
+            title = #{title}, content = #{content}, cover_image = #{coverImage},
+            source = #{source}, author_name = #{authorName},
+            is_published = #{isPublished},
+            published_at = IF(#{isPublished}=1 AND is_published=0, NOW(), published_at),
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM news_dynamic WHERE id = #{id}
+    </delete>
+
+    <update id="togglePublish">
+        UPDATE news_dynamic SET is_published = #{status},
+            published_at = IF(#{status}=1, NOW(), published_at)
+        WHERE id = #{id}
+    </update>
+</mapper>
