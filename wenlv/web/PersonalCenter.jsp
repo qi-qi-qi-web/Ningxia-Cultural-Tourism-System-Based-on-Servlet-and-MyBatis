@@ -835,8 +835,8 @@
             <div class="modal-body">
                 <form id="edit-profile-form" onsubmit="return saveEditInfo(event)">
                     <div class="form-group-custom">
-                        <div class="form-label-custom">账号</div>
-                        <input class="form-input-custom" id="edit-username" type="text" name="username" placeholder="请输入账号">
+                        <div class="form-label-custom">账号（不可修改）</div>
+                        <input class="form-input-custom" id="edit-username" type="text" name="username" readonly placeholder="请输入账号">
                     </div>
                     <div class="form-group-custom">
                         <div class="form-label-custom">昵称</div>
@@ -987,11 +987,17 @@
 
     function saveEditInfo(e) {
         e.preventDefault();
-        var username = document.getElementById('edit-username').value;
         var nickname = document.getElementById('edit-nickname').value;
         var phone = document.getElementById('edit-phone').value;
         var email = document.getElementById('edit-email').value;
 
+        if (!nickname || nickname.trim() === '') {
+            showToastLocal('昵称不能为空', 'error');
+            return false;
+        }
+
+        // 先乐观更新本地显示
+        var username = document.getElementById('edit-username').value;
         localStorage.setItem('userUsername', username);
         localStorage.setItem('userNickname', nickname);
         localStorage.setItem('userPhone', phone);
@@ -1010,8 +1016,35 @@
         var userNicknameEl = document.getElementById('user-nickname');
         if (userNicknameEl) userNicknameEl.textContent = nickname || username;
 
+        // 发送 AJAX 到后端保存
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/personalCenter', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var resp = JSON.parse(xhr.responseText);
+                        if (resp.success) {
+                            showToastLocal('资料保存成功！', 'success');
+                        } else {
+                            showToastLocal(resp.message || '保存失败', 'error');
+                        }
+                    } catch (e) {
+                        console.error('保存资料响应解析失败:', xhr.responseText.substring(0, 200));
+                        showToastLocal('服务器返回异常', 'error');
+                    }
+                } else {
+                    console.error('保存资料请求失败:', xhr.status);
+                    showToastLocal('网络错误（' + xhr.status + '），请重试', 'error');
+                }
+            }
+        };
+        xhr.send('action=updateProfile&nickname=' + encodeURIComponent(nickname.trim())
+            + '&phone=' + encodeURIComponent(phone.trim())
+            + '&email=' + encodeURIComponent(email.trim()));
+
         closeEditModal();
-        showToastLocal('信息保存成功！', 'success');
         return false;
     }
 
@@ -1130,9 +1163,33 @@
             return;
         }
 
-        localStorage.setItem('userPassword', newPassword);
-        closeChangePassword();
-        showToastLocal('密码修改成功！', 'success');
+        // 发送 AJAX 到后端修改密码
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/personalCenter', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var resp = JSON.parse(xhr.responseText);
+                        if (resp.success) {
+                            closeChangePassword();
+                            showToastLocal('密码修改成功！', 'success');
+                        } else {
+                            showToastLocal(resp.message || '密码修改失败', 'error');
+                        }
+                    } catch (e) {
+                        console.error('修改密码响应解析失败:', xhr.responseText.substring(0, 200));
+                        showToastLocal('服务器返回异常', 'error');
+                    }
+                } else {
+                    console.error('修改密码请求失败:', xhr.status);
+                    showToastLocal('网络错误（' + xhr.status + '），请重试', 'error');
+                }
+            }
+        };
+        xhr.send('action=changePassword&oldPassword=' + encodeURIComponent(oldPassword)
+            + '&newPassword=' + encodeURIComponent(newPassword));
     }
 
     function closeChangePassword() {

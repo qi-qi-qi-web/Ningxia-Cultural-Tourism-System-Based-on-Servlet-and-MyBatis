@@ -4,10 +4,10 @@
     <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
         <div class="container">
-            <h4 class="breadcrumbs-custom-title">关于宁夏</h4>
+            <h4 class="breadcrumbs-custom-title">咨询</h4>
             <ul class="breadcrumbs-custom-path">
                 <li><a href="index.jsp">首页</a></li>
-                <li class="active">关于宁夏</li>
+                <li class="active">咨询</li>
             </ul>
         </div>
     </section>
@@ -23,9 +23,36 @@
                     </div>
                 </div>
                 <div class="col-xl-5">
-                    <h2><span class="wow fadeInRight d-xl-block">塞上江南</span><span class="wow fadeInRight d-xl-block" data-wow-delay=".2s">神奇宁夏</span></h2>
-                    <p class="wow fadeInRight offset-xl fw-sbold" data-wow-delay=".3s">宁夏，位于中国西北内陆，是一片充满魅力的土地。这里既有雄浑的大漠风光，又有秀美的塞上江南景色。</p>
-                    <p class="wow fadeInRight" data-wow-delay=".4s">宁夏是中华文明的重要发祥地之一，拥有丰富的历史文化遗产。古老的黄河文化、神秘的西夏文明、独特的回族风情，构成了宁夏多元的文化画卷。这里有被誉为"东方金字塔"的西夏王陵，有中国四大石窟之一的须弥山石窟，还有浓郁伊斯兰风情的南关清真大寺。</p>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><span class="wow fadeInRight d-xl-block">新闻动态</span></h2>
+                        <a href="news-list.jsp" style="font-size: 14px; color: #00a8a8; text-decoration: none;">更多>></a>
+                    </div>
+                    <div id="news-list-container" class="news-list"></div>
+                    <style>
+                        .news-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+                        .news-item:last-child { border-bottom: none; }
+                        .news-number { width: 24px; height: 24px; background: #00a8a8; color: white; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 12px; margin-right: 12px; flex-shrink: 0; }
+                        .news-title { flex-grow: 1; font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                        .news-date { font-size: 12px; color: #999; margin-left: 12px; flex-shrink: 0; }
+                    </style>
+                    <script>
+                        var newsData = [
+                            { title: '宁夏夏季旅游旺季即将到来，各大景区准备就绪', date: '2026-06-12' },
+                            { title: '沙湖景区新开放水上项目，吸引游客体验', date: '2026-06-08' },
+                            { title: '宁夏旅游文化节盛大开幕，展现塞上江南魅力', date: '2026-06-01' },
+                            { title: '镇北堡西部影城推出暑期优惠活动', date: '2026-05-28' },
+                            { title: '中卫沙漠旅游度假区升级改造完成', date: '2026-05-20' }
+                        ];
+                        var container = document.getElementById('news-list-container');
+                        newsData.forEach(function(item, index) {
+                            var newsItem = document.createElement('div');
+                            newsItem.className = 'news-item';
+                            newsItem.innerHTML = '<span class="news-number">' + (index + 1) + '</span>' +
+                                '<span class="news-title">' + item.title + '</span>' +
+                                '<span class="news-date">' + item.date + '</span>';
+                            container.appendChild(newsItem);
+                        });
+                    </script>
                 </div>
             </div>
         </div>
@@ -33,215 +60,40 @@
     <!--特色亮点-->
     <section class="section section-lg bg-image-6">
         <div class="container">
-            <h2 class="text-center text-md-start">宁夏旅游特色</h2>
-        </div>
-        <div class="creative-bg">
-            <div class="container">
-                <div class="row row-30 justify-content-center">
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".1s">
-                        <div class="team-member-box">
-                            <div class="team-member-box__media"><img src="images/team-member-1-370x510.jpg" alt="" width="370" height="510"/>
-                            </div>
-                            <div class="team-member-box__caption">
-                                <h5><a href="#">大漠风光</a></h5><span class="subtitle">沙湖、沙坡头</span>
-                                <ul class="social-list">
-                                    <li><a href="#"><span class="icon fa fa-facebook"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-instagram"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-pinterest"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".3s">
-                        <div class="team-member-box">
-                            <div class="team-member-box__media"><img src="images/team-member-2-370x510.jpg" alt="" width="370" height="510"/>
-                            </div>
-                            <div class="team-member-box__caption">
-                                <h5><a href="#">西夏文化</a></h5><span class="subtitle">西夏王陵</span>
-                                <ul class="social-list">
-                                    <li><a href="#"><span class="icon fa fa-facebook"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-instagram"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-pinterest"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6 wow fadeInUp" data-wow-delay=".3s">
-                        <div class="team-member-box">
-                            <div class="team-member-box__media"><img src="images/team-member-3-370x510.jpg" alt="" width="370" height="510"/>
-                            </div>
-                            <div class="team-member-box__caption">
-                                <h5><a href="#">回族风情</a></h5><span class="subtitle">清真美食</span>
-                                <ul class="social-list">
-                                    <li><a href="#"><span class="icon fa fa-facebook"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-instagram"></span></a></li>
-                                    <li><a href="#"><span class="icon fa fa-pinterest"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--特色体验-->
-    <section class="section section-lg bg-default">
-        <div class="container">
-            <h2>宁夏特色体验</h2>
-            <div class="row row-30 offset-lg">
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".1s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-umbrella2"></div>
-                        </div>
-                        <h5><a href="#">沙漠探险</a></h5>
-                        <p>体验沙漠冲浪、骑骆驼穿越沙海的刺激与浪漫。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".2s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-boat"></div>
-                        </div>
-                        <h5><a href="#">黄河漂流</a></h5>
-                        <p>乘坐羊皮筏子漂流黄河，感受母亲河的壮阔。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".3s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-car"></div>
-                        </div>
-                        <h5><a href="#">西夏探秘</a></h5>
-                        <p>探访西夏王陵，揭开神秘西夏文明的面纱。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".4s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-luggage-weight"></div>
-                        </div>
-                        <h5><a href="#">塞上江南</a></h5>
-                        <p>欣赏宁夏平原的田园风光，感受鱼米之乡的魅力。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".5s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-bicycle"></div>
-                        </div>
-                        <h5><a href="#">骑行观光</a></h5>
-                        <p>骑行穿越宁夏，探索沿途的自然风光与人文景观。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".6s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-lifebuoy"></div>
-                        </div>
-                        <h5><a href="#">温泉度假</a></h5>
-                        <p>享受天然温泉，放松身心，体验养生之旅。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".7s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-landscape"></div>
-                        </div>
-                        <h5><a href="#">枸杞采摘</a></h5>
-                        <p>参观枸杞园，体验采摘乐趣，品尝正宗宁夏枸杞。</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4 col-sm-6 wow fadeInUp" data-wow-delay=".8s">
-                    <div class="box-value">
-                        <div class="box-value__icon">
-                            <div class="icon linearicons-road"></div>
-                        </div>
-                        <h5><a href="#">美食之旅</a></h5>
-                        <p>品尝宁夏特色美食，感受独特的清真风味。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--Brands-->
-    <section class="section section-lg bg-image-7">
-        <div class="container">
             <div class="row">
-                <div class="col-12 column-bg-3 wow fadeInUp">
-                    <div class="row row-30 text-center">
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-1.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-2.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-3.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-4.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-5.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-6.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-5.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-10.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-9.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-8.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-7.png" alt=""/></a></div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6"><a href="#"><img class="brand-img" src="images/brand-4.png" alt=""/></a></div>
+                <div class="col-xl-6">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><span class="wow fadeInRight d-xl-block">通知公告</span></h2>
+                        <a href="notice-list.jsp" style="font-size: 14px; color: #00a8a8; text-decoration: none;">更多>></a>
                     </div>
+                    <div id="notice-list-container"></div>
+                    <style>
+                        #notice-list-container { padding-left: 0; }
+                        .notice-item { display: flex; align-items: center; padding: 8px 0; }
+                        .notice-badge { background: #00a8a8; color: white; font-size: 12px; padding: 2px 6px; border-radius: 3px; margin-right: 12px; flex-shrink: 0; }
+                        .notice-title { font-size: 14px; color: #333; }
+                    </style>
+                    <script>
+                        var noticeData = [
+                            { badge: '公告', title: '宁夏旅游景区门票价格调整通知' },
+                            { badge: '公告', title: '暑期旅游安全提示' },
+                            { badge: '公告', title: '部分景区临时闭园维护通知' },
+                            { badge: '公告', title: '宁夏旅游惠民政策解读' }
+                        ];
+                        var container = document.getElementById('notice-list-container');
+                        noticeData.forEach(function(item) {
+                            var noticeItem = document.createElement('div');
+                            noticeItem.className = 'notice-item';
+                            noticeItem.innerHTML = '<span class="notice-badge">' + item.badge + '</span>' +
+                                '<span class="notice-title">' + item.title + '</span>';
+                            container.appendChild(noticeItem);
+                        });
+                    </script>
                 </div>
             </div>
         </div>
     </section>
-    <!--统计数据-->
-    <section class="section section-lg">
-        <div class="container">
-            <h2 class="text-center text-md-start">宁夏旅游数据</h2>
-            <ul class="step-list row offset-lg row-30">
-                <li class="col-lg-3 col-sm-6"><span class="icon linearicons-walk"></span>
-                    <div class="divider-step"></div>
-                    <!--Counter-->
-                    <div class="box-counter">
-                        <div class="box-counter-main">
-                            <div class="counter">500</div>
-                        </div>
-                        <div class="box-counter-divider"></div>
-                        <p class="box-counter-title">万游客/年</p>
-                    </div>
-                </li>
-                <li class="col-lg-3 col-sm-6"><span class="icon linearicons-plane"></span>
-                    <div class="divider-step"></div>
-                    <!--Counter-->
-                    <div class="box-counter">
-                        <div class="box-counter-main">
-                            <div class="counter">50</div>
-                        </div>
-                        <div class="box-counter-divider"></div>
-                        <p class="box-counter-title">A级景区</p>
-                    </div>
-                </li>
-                <li class="col-lg-3 col-sm-6"><span class="icon linearicons-apartment"></span>
-                    <div class="divider-step"></div>
-                    <!--Counter-->
-                    <div class="box-counter">
-                        <div class="box-counter-main">
-                            <div class="counter">2000</div>
-                        </div>
-                        <div class="box-counter-divider"></div>
-                        <p class="box-counter-title">特色民宿</p>
-                    </div>
-                </li>
-                <li class="col-lg-3 col-sm-6"><span class="icon linearicons-ship"></span>
-                    <div class="divider-step"></div>
-                    <!--Counter-->
-                    <div class="box-counter">
-                        <div class="box-counter-main">
-                            <div class="counter">100</div>
-                        </div>
-                        <div class="box-counter-divider"></div>
-                        <p class="box-counter-title">精品线路</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
+
     <!--Footer-->
     <footer class="section footer-classic context-dark">
         <div class="container">
