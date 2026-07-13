@@ -37,9 +37,11 @@ function checkLoginStatus() {
             '</div>' +
             '</div>';
     } else if (isLoggedIn) {
-        var email = localStorage.getItem('userEmail') || localStorage.getItem('userUsername') || '用户';
+        var nickname = localStorage.getItem('userNickname');
+        var username = localStorage.getItem('userUsername') || '用户';
+        var displayName = (nickname && nickname.trim() !== '') ? nickname : username;
         container.innerHTML = '<div class="user-dropdown">' +
-            '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + email + ' <i class="fa fa-caret-down"></i></a>' +
+            '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + displayName + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
             '<a href="#" class="user-dropdown-item" onclick="goToPersonalCenter()">个人中心</a>' +
             '<div class="user-dropdown-divider"></div>' +
@@ -47,7 +49,8 @@ function checkLoginStatus() {
             '</div>' +
             '</div>';
     } else {
-        container.innerHTML = '<a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>';
+        // 未登录时保留页面初始 HTML 中的登录链接，不替换 innerHTML
+        // （否则会破坏 Bootstrap 的 data-bs-toggle 事件绑定）
     }
 }
 
@@ -90,7 +93,9 @@ function logout() {
     localStorage.removeItem('isAdminLoggedIn');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userUsername');
+    localStorage.removeItem('userNickname');
     localStorage.removeItem('userPhone');
+    localStorage.removeItem('userAvatar');
     localStorage.removeItem('adminUsername');
     localStorage.removeItem('previousPage');
     
@@ -146,10 +151,11 @@ function handleLogin() {
     .then(function(data) {
         if (data.success) {
             // 后端验证通过 → 保存登录态到 localStorage
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userUsername', email);
-            localStorage.setItem('userNickname', email);
-            localStorage.setItem('userPhone', '');
+            localStorage.setItem('userUsername', data.username || email);
+            localStorage.setItem('userNickname', data.nickname || '');
+            localStorage.setItem('userPhone', data.phone || '');
+            localStorage.setItem('userEmail', data.email || '');
+            localStorage.setItem('userAvatar', data.avatar || '');
             localStorage.setItem('isLoggedIn', 'true');
 
             closeModal('login-modal');
@@ -224,7 +230,6 @@ function handleRegister(event) {
     var phone = document.getElementById('register-phone').value;
     var password = document.getElementById('register-password').value;
     var confirmPassword = document.getElementById('register-confirm-password').value;
-    var agree = document.getElementById('register-agree').checked;
 
     if (!username || !phone || !password || !confirmPassword) {
         alert('请填写所有必填字段');
@@ -251,11 +256,6 @@ function handleRegister(event) {
         return false;
     }
 
-    if (!agree) {
-        alert('请阅读并同意服务条款和隐私政策');
-        return false;
-    }
-
     // 调后端注册
     var formData = new FormData();
     formData.append('action', 'register');
@@ -267,9 +267,11 @@ function handleRegister(event) {
     .then(function(res) { return res.json(); })
     .then(function(data) {
         if (data.success) {
-            localStorage.setItem('userUsername', username);
-            localStorage.setItem('userPhone', phone);
-            localStorage.setItem('userNickname', username);
+            localStorage.setItem('userUsername', data.username || username);
+            localStorage.setItem('userNickname', '');  // 新注册用户未设置昵称
+            localStorage.setItem('userPhone', data.phone || phone);
+            localStorage.setItem('userEmail', '');  // 新注册用户未设置邮箱
+            localStorage.setItem('userAvatar', '');
             localStorage.setItem('isLoggedIn', 'true');
 
             closeModal('register-modal');

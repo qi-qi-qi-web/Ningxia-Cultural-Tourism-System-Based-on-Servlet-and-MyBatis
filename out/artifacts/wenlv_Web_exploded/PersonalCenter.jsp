@@ -34,14 +34,14 @@
                     try {
                         var data = JSON.parse(xhr.responseText);
                         console.log('fetchServerUser 响应:', data);
-                        if (data.avatar && data.avatar.length > 0) {
-                            serverUser.avatar = data.avatar;
+                        if (data.username) {
+                            serverUser.avatar = data.avatar || '';
                             serverUser.nickname = data.nickname || '';
                             serverUser.username = data.username || '';
                             serverUser.phone = data.phone || '';
                             serverUser.email = data.email || '';
                             serverUser.role = data.role || '';
-                            // 重新加载用户信息（会从 serverUser 读取最新头像）
+                            // 重新加载用户信息（会从 serverUser 读取最新数据）
                             loadUserInfo();
                         } else {
                             console.log('fetchServerUser: 服务端返回的头像为空');
@@ -961,15 +961,11 @@
     }
 
     function openEditModal() {
-        var usernameText = document.getElementById('info-username-text');
-        var nicknameText = document.getElementById('info-nickname-text');
-        var phoneText = document.getElementById('info-phone-text');
-        var emailText = document.getElementById('info-email-text');
-        
-        var username = usernameText ? usernameText.textContent : 'admin';
-        var nickname = nicknameText ? nicknameText.textContent : 'admin';
-        var phone = phoneText ? phoneText.textContent : '';
-        var email = emailText ? emailText.textContent : '';
+        // 从 serverUser 或 localStorage 读取真实数据，避免将 "未填写" 带入编辑框
+        var username = (serverUser && serverUser.username) ? serverUser.username : (localStorage.getItem('userUsername') || '');
+        var nickname = (serverUser && serverUser.nickname) ? serverUser.nickname : (localStorage.getItem('userNickname') || '');
+        var phone = (serverUser && serverUser.phone) ? serverUser.phone : (localStorage.getItem('userPhone') || '');
+        var email = (serverUser && serverUser.email) ? serverUser.email : (localStorage.getItem('userEmail') || '');
 
         document.getElementById('edit-username').value = username;
         document.getElementById('edit-nickname').value = nickname;
@@ -1003,15 +999,23 @@
         localStorage.setItem('userPhone', phone);
         localStorage.setItem('userEmail', email);
 
+        // 同步更新 serverUser
+        if (serverUser) {
+            serverUser.username = username;
+            serverUser.nickname = nickname;
+            serverUser.phone = phone;
+            serverUser.email = email;
+        }
+
         var usernameText = document.getElementById('info-username-text');
         var nicknameText = document.getElementById('info-nickname-text');
         var phoneText = document.getElementById('info-phone-text');
         var emailText = document.getElementById('info-email-text');
         
         if (usernameText) usernameText.textContent = username;
-        if (nicknameText) nicknameText.textContent = nickname;
-        if (phoneText) phoneText.textContent = phone;
-        if (emailText) emailText.textContent = email;
+        if (nicknameText) nicknameText.textContent = nickname || '未填写';
+        if (phoneText) phoneText.textContent = phone || '未填写';
+        if (emailText) emailText.textContent = email || '未填写';
         
         var userNicknameEl = document.getElementById('user-nickname');
         if (userNicknameEl) userNicknameEl.textContent = nickname || username;
@@ -1027,6 +1031,7 @@
                         var resp = JSON.parse(xhr.responseText);
                         if (resp.success) {
                             showToastLocal('资料保存成功！', 'success');
+                            checkLoginStatus();  // 刷新右上角导航栏显示
                         } else {
                             showToastLocal(resp.message || '保存失败', 'error');
                         }
@@ -1065,6 +1070,7 @@
         localStorage.removeItem('userNickname');
         localStorage.removeItem('userPhone');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userAvatar');
         localStorage.removeItem('userRole');
         localStorage.removeItem('userStatus');
         localStorage.removeItem('userCreatedAt');
@@ -1077,7 +1083,7 @@
     function loadUserInfo() {
         // 优先使用服务端数据，其次 localStorage，最后默认值
         var username = serverUser && serverUser.username ? serverUser.username : (localStorage.getItem('userUsername') || 'admin');
-        var nickname = serverUser && serverUser.nickname ? serverUser.nickname : (localStorage.getItem('userNickname') || username);
+        var nickname = serverUser && serverUser.nickname ? serverUser.nickname : (localStorage.getItem('userNickname') || '');
         var phone = serverUser && serverUser.phone ? serverUser.phone : (localStorage.getItem('userPhone') || '');
         var email = serverUser && serverUser.email ? serverUser.email : (localStorage.getItem('userEmail') || '');
         var role = serverUser && serverUser.role ? (serverUser.role === 'ADMIN' ? '管理员' : '普通用户') : (localStorage.getItem('userRole') || '普通用户');
@@ -1097,9 +1103,9 @@
         var emailText = document.getElementById('info-email-text');
         
         if (usernameText) usernameText.textContent = username;
-        if (nicknameText) nicknameText.textContent = nickname;
-        if (phoneText) phoneText.textContent = phone;
-        if (emailText) emailText.textContent = email;
+        if (nicknameText) nicknameText.textContent = nickname || '未填写';
+        if (phoneText) phoneText.textContent = phone || '未填写';
+        if (emailText) emailText.textContent = email || '未填写';
         
         // 这些元素可能不在页面上，需要判空
         var userNicknameEl = document.getElementById('user-nickname');
