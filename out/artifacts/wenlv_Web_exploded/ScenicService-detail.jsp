@@ -1,5 +1,39 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.niit.utils.DBUtil,com.niit.mapper.ScenicSpotMapper,com.niit.pojo.ScenicSpot,org.apache.ibatis.session.SqlSession,jakarta.servlet.http.HttpSession" %>
+
+<%
+    ScenicSpot scenic = null;
+    String idStr = request.getParameter("id");
+    if (idStr != null) {
+        try (SqlSession s = DBUtil.getSession(false)) {
+            ScenicSpotMapper m = s.getMapper(ScenicSpotMapper.class);
+            scenic = m.findById(Long.parseLong(idStr));
+            if (scenic != null) {
+                HttpSession sess = request.getSession();
+                String key = "sv_" + idStr;
+                Long last = (Long) sess.getAttribute(key);
+                long now = System.currentTimeMillis();
+                if (last == null || now - last > 3000) {
+                    m.incrementViewCount(scenic.getId());
+                    s.commit();
+                    scenic = m.findById(scenic.getId());
+                    sess.setAttribute(key, now);
+                }
+            }
+        } catch (Exception e) {}
+    }
+    request.setAttribute("scenic", scenic);
+%>
+
 <%@include file="Head.jsp"%>
-<%@page contentType="text/html;charset=UTF-8"%>
+
+<c:if test="${empty scenic}">
+    <section class="section section-lg bg-default"><div class="container text-center" style="padding:80px 0;"><h3>景区不存在</h3><a href="ScenicService.jsp" class="button button-primary">返回景区列表</a></div></section>
+</c:if>
+
+<c:if test="${not empty scenic}">
 
 <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
     <div class="container">
@@ -17,45 +51,45 @@
         <div class="row row-30 offset-lg">
             <div class="col-xl-5">
                 <div class="scenic-cover">
-                    <img src="images/single-tour-1-470x464.jpg" alt="沙坡头景区封面" width="470" height="464"/>
+                    <img src="${empty scenic.coverImage ? 'images/single-tour-1-470x464.jpg' : scenic.coverImage}" alt="${scenic.name}" style="max-width:100%;height:auto;"/>
                 </div>
                 <div class="scenic-stats mt-4 d-flex justify-content-around">
                     <div class="stat-item text-center">
                         <div class="stat-icon" style="width: 48px; height: 48px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
                             <i class="fa fa-eye" style="color: white;"></i>
                         </div>
-                        <div class="stat-value" style="font-size: 18px; font-weight: bold; color: #333;">12,345</div>
+                        <div class="stat-value" style="font-size: 18px; font-weight: bold; color: #333;">${scenic.viewCount}</div>
                         <div class="stat-label" style="font-size: 12px; color: #999;">浏览次数</div>
                     </div>
                     <div class="stat-item text-center">
                         <div id="favorite-icon" onclick="toggleFavorite()" style="width: 48px; height: 48px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; cursor: pointer;">
                             <i class="fa fa-heart" style="color: white;"></i>
                         </div>
-                        <div id="favorite-count" style="font-size: 18px; font-weight: bold; color: #333;">2,345</div>
+                        <div id="favorite-count" style="font-size: 18px; font-weight: bold; color: #333;">${scenic.favoriteCount}</div>
                         <div class="stat-label" style="font-size: 12px; color: #999;">收藏次数</div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-7">
                 <div class="single-service__caption">
-                    <div class="heading-4 text-xl mb-3">沙坡头景区</div>
-                    <div class="price-group mb-4"><span class="price-group__sale">¥100.00</span><span class="price-group__price-old">¥120.00</span></div>
+<div class="heading-4 text-xl mb-3">${scenic.name}</div>
+<div class="price-group mb-4"><span class="price-group__sale">¥${empty scenic.minPrice ? '--' : scenic.minPrice}</span></div>
                     <div class="scenic-info-list mb-4">
                         <div class="info-item d-flex align-items-center py-2 border-bottom border-light">
                             <i class="fa fa-map-marker" style="color: #00a8a8; margin-right: 12px; width: 20px;"></i>
-                            <span style="color: #666;">地址：宁夏回族自治区中卫市沙坡头区迎水桥镇沙坡头旅游景区</span>
+                            <span style="color: #666;">地址：${empty scenic.address ? '暂无' : scenic.address}</span>
                         </div>
                         <div class="info-item d-flex align-items-center py-2 border-bottom border-light">
                             <i class="fa fa-clock-o" style="color: #00a8a8; margin-right: 12px; width: 20px;"></i>
-                            <span style="color: #666;">开放时间：08:00 - 18:00（全年开放）</span>
+                            <span style="color: #666;">开放时间：${empty scenic.openingHours ? '全天' : scenic.openingHours}</span>
                         </div>
                         <div class="info-item d-flex align-items-center py-2 border-bottom border-light">
                             <i class="fa fa-phone" style="color: #00a8a8; margin-right: 12px; width: 20px;"></i>
-                            <span style="color: #666;">联系电话：0955-7689103</span>
+                            <span style="color: #666;">联系电话：${empty scenic.contactPhone ? '暂无' : scenic.contactPhone}</span>
                         </div>
                         <div class="info-item d-flex align-items-center py-2 border-bottom border-light">
                             <i class="fa fa-map" style="color: #00a8a8; margin-right: 12px; width: 20px;"></i>
-                            <span style="color: #666;">地理位置：北纬37.54°，东经105.14°</span>
+                            <span style="color: #666;">城市：${empty scenic.city ? '宁夏' : scenic.city}</span>
                         </div>
                         <div class="info-item d-flex align-items-center py-2">
                             <i class="fa fa-star" style="color: #00a8a8; margin-right: 12px; width: 20px;"></i>
@@ -118,12 +152,18 @@
                         </div>
                         <div class="tab-pane fade" id="tabs-1-3">
                             <div class="row row-10 row-narrow-10 text-center" data-lightgallery="group">
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 1s;"><a class="gallery-link" href="images/grid-gallery-1-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-1-370x250.jpg" alt="景区图片1" width="370" height="250"/></a></div>
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 1.5s;"><a class="gallery-link" href="images/grid-gallery-2-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-2-370x250.jpg" alt="景区图片2" width="370" height="250"/></a></div>
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 2s;"><a class="gallery-link" href="images/grid-gallery-3-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-3-370x250.jpg" alt="景区图片3" width="370" height="250"/></a></div>
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 2.5s;"><a class="gallery-link" href="images/grid-gallery-4-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-4-370x250.jpg" alt="景区图片4" width="370" height="250"/></a></div>
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 3s;"><a class="gallery-link" href="images/grid-gallery-5-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-5-370x250.jpg" alt="景区图片5" width="370" height="250"/></a></div>
-                                <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 3.5s;"><a class="gallery-link" href="images/grid-gallery-6-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-6-370x250.jpg" alt="景区图片6" width="370" height="250"/></a></div>
+                                <c:choose>
+                                    <c:when test="${not empty scenic.images}">
+                                        <c:forTokens items="${scenic.images}" delims='["],[]{} ' var="img">
+                                            <c:if test="${not empty img && fn:length(img) > 5}">
+                                                <div class="col-lg-4 col-sm-6 gallery-item"><a class="gallery-link" href="${img}" data-lightgallery="item"><img src="${img}" alt="" width="370" height="250"/></a></div>
+                                            </c:if>
+                                        </c:forTokens>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="col-12 text-center" style="padding:60px 0;color:#999;">暂无图片</div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tabs-1-4">
@@ -390,3 +430,5 @@
         countSpan.textContent = favoriteCount.toLocaleString();
     }
 </script>
+</c:if>
+</body></html>

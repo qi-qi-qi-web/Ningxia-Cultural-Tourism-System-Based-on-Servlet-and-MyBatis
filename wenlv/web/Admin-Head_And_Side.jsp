@@ -46,7 +46,7 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/notice">
                     <i class="fa fa-bullhorn"></i> 通知公告
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-scenic.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/scenic">
                     <i class="fa fa-map-marker"></i> 景区管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/specialty">
