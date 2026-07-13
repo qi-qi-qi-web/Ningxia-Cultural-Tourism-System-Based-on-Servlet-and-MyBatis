@@ -72,6 +72,7 @@
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-bs-toggle="tab"><span class="icon linearicons-menu"></span>景区介绍</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-2" data-bs-toggle="tab"><span class="icon linearicons-plane"></span>游玩攻略</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-bs-toggle="tab"><span class="icon linearicons-picture3"></span>图片画廊</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-4" data-bs-toggle="tab"><span class="icon fa fa-comment"></span>景区评论</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade active show" id="tabs-1-1">
@@ -123,6 +124,23 @@
                                 <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 2.5s;"><a class="gallery-link" href="images/grid-gallery-4-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-4-370x250.jpg" alt="景区图片4" width="370" height="250"/></a></div>
                                 <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 3s;"><a class="gallery-link" href="images/grid-gallery-5-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-5-370x250.jpg" alt="景区图片5" width="370" height="250"/></a></div>
                                 <div class="col-lg-4 col-sm-6 gallery-item" style="animation-delay: 3.5s;"><a class="gallery-link" href="images/grid-gallery-6-1200x800-original.jpg" data-lightgallery="item"><img src="images/grid-gallery-6-370x250.jpg" alt="景区图片6" width="370" height="250"/></a></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tabs-1-4">
+                            <div class="scenic-comments">
+                                <div class="comment-form mb-6">
+                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 20px;">发表评论</h3>
+                                    <div class="form-group mb-3">
+                                        <textarea id="comment-content" class="form-control" rows="4" placeholder="请输入您的评论内容..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button onclick="submitComment()" class="button button-primary" type="button">发表评论</button>
+                                    </div>
+                                </div>
+                                <div class="comment-list">
+                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 20px;">评论列表</h3>
+                                    <div id="comments-container"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,6 +217,48 @@
         transform: translateY(30px);
         animation: none;
     }
+    .comment-item {
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: flex;
+    }
+    .comment-avatar {
+        width: 48px;
+        height: 48px;
+        background: #00a8a8;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 16px;
+        flex-shrink: 0;
+    }
+    .comment-content {
+        flex-grow: 1;
+    }
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .comment-author {
+        font-weight: bold;
+        color: #333;
+    }
+    .comment-time {
+        font-size: 12px;
+        color: #999;
+    }
+    .comment-text {
+        color: #666;
+        line-height: 1.6;
+    }
 </style>
 
 <script>
@@ -222,8 +282,83 @@
                     item.style.animation = null;
                 });
             }
+            if (target === '#tabs-1-4') {
+                renderComments();
+            }
         });
+
+        renderComments();
     });
+
+    var comments = [
+        { author: '张三', avatar: '张', content: '沙坡头真的太震撼了！沙漠与黄河交汇的景观非常独特，值得一去！', time: '2026-06-15 10:30' },
+        { author: '李婷', avatar: '李', content: '第一次体验沙漠冲浪车，刺激又好玩！景区的服务也很好，推荐大家来玩。', time: '2026-06-14 15:20' },
+        { author: '王磊', avatar: '王', content: '骑骆驼穿越沙漠的感觉太棒了，看着一望无际的沙丘，心情特别舒畅。', time: '2026-06-13 09:45' },
+        { author: '赵雪', avatar: '赵', content: '黄河滑索很刺激，俯瞰黄河的视角非常壮观。景区管理有序，玩得很开心！', time: '2026-06-12 14:00' },
+        { author: '陈明', avatar: '陈', content: '带着家人一起来的，孩子们玩得特别开心。特别是沙漠露营，晚上的星空太美了。', time: '2026-06-11 18:30' }
+    ];
+
+    function renderComments() {
+        var container = document.getElementById('comments-container');
+        if (!container) return;
+        
+        container.innerHTML = '';
+        comments.forEach(function(comment) {
+            var commentItem = document.createElement('div');
+            commentItem.className = 'comment-item';
+            commentItem.innerHTML = '<div class="comment-avatar">' + comment.avatar + '</div>' +
+                '<div class="comment-content">' +
+                '<div class="comment-header">' +
+                '<span class="comment-author">' + comment.author + '</span>' +
+                '<span class="comment-time">' + comment.time + '</span>' +
+                '</div>' +
+                '<div class="comment-text">' + comment.content + '</div>' +
+                '</div>';
+            container.appendChild(commentItem);
+        });
+        
+        if (comments.length === 0) {
+            container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">暂无评论，快来发表第一条评论吧！</div>';
+        }
+    }
+
+    function submitComment() {
+        var content = document.getElementById('comment-content').value.trim();
+        if (!content) {
+            alert('请输入评论内容！');
+            return;
+        }
+        
+        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        
+        if (!isLoggedIn && !isAdminLoggedIn) {
+            alert('请先登录后再发表评论！');
+            var loginModal = new bootstrap.Modal(document.getElementById('login-modal'));
+            loginModal.show();
+            return;
+        }
+        
+        var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '游客';
+        var avatar = username.charAt(0);
+        var now = new Date();
+        var timeStr = now.getFullYear() + '-' + 
+            String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+            String(now.getDate()).padStart(2, '0') + ' ' + 
+            String(now.getHours()).padStart(2, '0') + ':' + 
+            String(now.getMinutes()).padStart(2, '0');
+        
+        comments.unshift({
+            author: username,
+            avatar: avatar,
+            content: content,
+            time: timeStr
+        });
+        
+        document.getElementById('comment-content').value = '';
+        renderComments();
+        alert('评论发表成功！');
+    }
 
     var isFavorited = false;
     var favoriteCount = 2345;
