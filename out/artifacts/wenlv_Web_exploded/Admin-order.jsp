@@ -15,6 +15,16 @@
             request.setAttribute("error", "加载失败：" + e.getMessage());
         }
     }
+    // 分页
+    Object obj = request.getAttribute("orderList");
+    int pn = 1, ps = 5;
+    try { pn = Integer.parseInt(request.getParameter("page")); } catch(Exception e){}
+    int tt = obj instanceof java.util.List ? ((java.util.List)obj).size() : 0;
+    int tp = (int)Math.ceil((double)tt/ps);
+    if(pn<1)pn=1; if(pn>tp&&tp>0)pn=tp;
+    request.setAttribute("pn", pn); request.setAttribute("tp", tp);
+    request.setAttribute("tt", tt); request.setAttribute("st", (pn-1)*ps);
+    request.setAttribute("ed", Math.min((pn-1)*ps+ps, tt));
 %>
 
 <%@ include file="Admin-Head_And_Side.jsp" %>
@@ -38,7 +48,7 @@
             <th>订单号</th><th>用户</th><th>金额</th><th>取货</th><th>状态</th><th>下单时间</th><th>操作</th>
         </tr></thead>
         <tbody>
-            <c:forEach items="${orderList}" var="o">
+            <c:if test="${ed > 0}"><c:forEach items="${orderList}" var="o" begin="${st}" end="${ed - 1}">
             <tr>
                 <td><small>${o.orderNo}</small></td>
                 <td>${o.userName}</td>
@@ -72,8 +82,20 @@
                     </c:if>
                 </td>
             </tr>
-            </c:forEach>
+            </c:forEach></c:if>
         </tbody>
     </table>
+
+    <c:if test="${tp > 1}">
+    <div class="page-nav">
+        <c:if test="${pn > 1}"><a href="?page=1">首页</a><a href="?page=${pn-1}">上一页</a></c:if>
+        <c:forEach begin="1" end="${tp}" var="p">
+            <c:choose><c:when test="${p==pn}"><span class="current">${p}</span></c:when><c:otherwise><a href="?page=${p}">${p}</a></c:otherwise></c:choose>
+        </c:forEach>
+        <c:if test="${pn < tp}"><a href="?page=${pn+1}">下一页</a><a href="?page=${tp}">末页</a></c:if>
+        <span class="info">共 ${tp} 页 / ${tt} 条</span>
+    </div>
+    </c:if>
+
 </div>
 </div></div></div></body></html>

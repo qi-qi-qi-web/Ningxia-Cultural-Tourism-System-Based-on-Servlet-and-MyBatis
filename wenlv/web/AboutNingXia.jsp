@@ -48,9 +48,9 @@
                 </div>
                 <div class="news-list">
                     <c:forEach items="${newsList}" var="n" begin="0" end="4" varStatus="s">
-                        <div class="news-item">
+                        <div class="news-item" onclick="location.href='news-detail.jsp?id=${n.id}'" style="cursor:pointer;">
                             <span class="news-number">${s.index + 1}</span>
-                            <span class="news-title">${n.title}</span>
+                            <a href="news-detail.jsp?id=${n.id}" class="news-title">${n.title}</a>
                             <span class="news-date"><fmt:formatDate value="${n.publishedAt}" pattern="MM-dd"/></span>
                         </div>
                     </c:forEach>
@@ -71,11 +71,11 @@
                 </div>
                 <div class="notice-list">
                     <c:forEach items="${noticeList}" var="n" begin="0" end="3">
-                        <div class="notice-item">
+                        <div class="notice-item" onclick="location.href='notice-detail.jsp?id=${n.id}'" style="cursor:pointer;">
                             <span class="notice-badge">
                                 <c:choose><c:when test="${n.isTop == 1}">置顶</c:when><c:otherwise>公告</c:otherwise></c:choose>
                             </span>
-                            <span class="notice-title">${n.title}</span>
+                            <a href="notice-detail.jsp?id=${n.id}" class="notice-title">${n.title}</a>
                             <span class="notice-date"><fmt:formatDate value="${n.publishedAt}" pattern="MM-dd"/></span>
                         </div>
                     </c:forEach>
@@ -89,12 +89,14 @@
     .news-item { display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0; }
     .news-item:last-child { border-bottom:none; }
     .news-number { width:24px;height:24px;background:#00a8a8;color:white;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-size:12px;margin-right:12px;flex-shrink:0; }
-    .news-title { flex-grow:1;font-size:14px;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .news-title { flex-grow:1;font-size:14px;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none; }
+    .news-title:hover { color:#00a8a8; }
     .news-date { font-size:12px;color:#999;margin-left:12px;flex-shrink:0; }
     .notice-item { display:flex;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0; }
     .notice-item:last-child { border-bottom:none; }
     .notice-badge { background:#00a8a8;color:white;font-size:12px;padding:2px 6px;border-radius:3px;margin-right:12px;flex-shrink:0; }
-    .notice-title { flex-grow:1;font-size:14px;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+    .notice-title { flex-grow:1;font-size:14px;color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none; }
+    .notice-title:hover { color:#00a8a8; }
     .notice-date { font-size:12px;color:#999;margin-left:12px;flex-shrink:0; }
 </style>
 

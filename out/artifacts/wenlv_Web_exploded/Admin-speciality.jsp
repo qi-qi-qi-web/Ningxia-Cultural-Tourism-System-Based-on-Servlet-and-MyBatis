@@ -20,6 +20,15 @@
             request.setAttribute("categoryMap", s.getMapper(SpecialtyMapper.class).selectCategories());
         } catch (Exception e) {}
     }
+    java.util.List pageList = (java.util.List) request.getAttribute("specialtyList");
+    int pn = 1, ps = 5;
+    try { pn = Integer.parseInt(request.getParameter("page")); } catch(Exception e){}
+    int tt = pageList != null ? pageList.size() : 0;
+    int tp = (int)Math.ceil((double)tt/ps);
+    if(pn<1)pn=1; if(pn>tp&&tp>0)pn=tp;
+    request.setAttribute("pn", pn); request.setAttribute("tp", tp);
+    request.setAttribute("tt", tt); request.setAttribute("st", (pn-1)*ps);
+    request.setAttribute("ed", Math.min((pn-1)*ps+ps, tt));
 %>
 
 <%@ include file="Admin-Head_And_Side.jsp" %>
@@ -43,7 +52,7 @@
             <th>ID</th><th>名称</th><th>分类</th><th>价格</th><th>库存</th><th>销量</th><th>状态</th><th>操作</th>
         </tr></thead>
         <tbody>
-            <c:forEach items="${specialtyList}" var="s">
+            <c:if test="${ed > 0}"><c:forEach items="${specialtyList}" var="s" begin="${st}" end="${ed - 1}">
             <tr>
                 <td>${s.id}</td>
                 <td><strong>${s.name}</strong></td>
@@ -70,9 +79,21 @@
                     <a href="${pageContext.request.contextPath}/admin/specialty?action=delete&id=${s.id}" class="btn btn-danger btn-sm" onclick="return confirm('确认删除？')">删除</a>
                 </td>
             </tr>
-            </c:forEach>
+            </c:forEach></c:if>
         </tbody>
     </table>
+
+    <c:if test="${tp > 1}">
+    <div class="page-nav">
+        <c:if test="${pn > 1}"><a href="?page=1">首页</a><a href="?page=${pn-1}">上一页</a></c:if>
+        <c:forEach begin="1" end="${tp}" var="p">
+            <c:choose><c:when test="${p==pn}"><span class="current">${p}</span></c:when><c:otherwise><a href="?page=${p}">${p}</a></c:otherwise></c:choose>
+        </c:forEach>
+        <c:if test="${pn < tp}"><a href="?page=${pn+1}">下一页</a><a href="?page=${tp}">末页</a></c:if>
+        <span class="info">共 ${tp} 页 / ${tt} 条</span>
+    </div>
+    </c:if>
+
 </div>
 
 <div id="edit-modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);">
