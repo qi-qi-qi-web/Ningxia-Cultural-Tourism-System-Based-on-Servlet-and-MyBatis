@@ -90,7 +90,7 @@
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="id" id="notice-id">
             <div class="mb-2"><label>标题</label><input class="form-control" name="title" id="notice-title" required></div>
-            <div class="mb-2"><label>正文（HTML）</label><textarea class="form-control" name="content" id="notice-content" rows="6" required></textarea></div>
+            <div class="mb-2"><label>正文</label><textarea class="form-control" name="content" id="notice-content" rows="6" required></textarea></div>
             <div class="mb-2"><label>封面图URL</label><input class="form-control" name="coverImage" id="notice-cover"></div>
             <div class="row mb-2">
                 <div class="col-6"><label>关联景区ID</label><input class="form-control" name="scenicSpotId" id="notice-spot" placeholder="留空=平台级公告"></div>

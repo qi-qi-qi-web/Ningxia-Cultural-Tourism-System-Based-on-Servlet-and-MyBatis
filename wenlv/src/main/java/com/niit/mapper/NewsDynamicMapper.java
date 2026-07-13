@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface NewsDynamicMapper {
     List<NewsDynamic> findAll();
+    List<NewsDynamic> findPublished();
     NewsDynamic findById(Long id);
     int insert(NewsDynamic news);
     int update(NewsDynamic news);

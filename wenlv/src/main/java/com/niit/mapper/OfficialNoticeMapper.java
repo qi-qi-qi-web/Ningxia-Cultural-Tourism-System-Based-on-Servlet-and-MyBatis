@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface OfficialNoticeMapper {
     List<OfficialNotice> findAll();
+    List<OfficialNotice> findPublished();
     OfficialNotice findById(Long id);
     int insert(OfficialNotice notice);
     int update(OfficialNotice notice);
