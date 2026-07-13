@@ -52,7 +52,7 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/specialty">
                     <i class="fa fa-cutlery"></i> 特产管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-Hotel.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/hotel">
                     <i class="fa fa-bed"></i> 酒店管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/strategy">

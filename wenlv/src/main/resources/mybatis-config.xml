@@ -26,5 +26,6 @@
         <mapper resource="com/niit/mapper/SpecialtyMapper.xml"/>
         <mapper resource="com/niit/mapper/OrderMapper.xml"/>
         <mapper resource="com/niit/mapper/TravelGuideMapper.xml"/>
+        <mapper resource="com/niit/mapper/HotelMapper.xml"/>
     </mappers>
 </configuration>
