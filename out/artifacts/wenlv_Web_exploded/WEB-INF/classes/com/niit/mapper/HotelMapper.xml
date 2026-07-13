@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niit.mapper.HotelMapper">
+
+    <resultMap id="HotelMap" type="com.niit.pojo.Hotel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="address" column="address"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="starRating" column="star_rating"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="facilities" column="facilities"/>
+        <result property="coverImage" column="cover_image"/>
+        <result property="images" column="images"/>
+        <result property="minPrice" column="min_price"/>
+        <result property="favoriteCount" column="favorite_count"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="HotelMap">
+        SELECT * FROM hotel ORDER BY id ASC
+    </select>
+
+    <select id="findOpen" resultMap="HotelMap">
+        SELECT * FROM hotel WHERE status = 1 ORDER BY id ASC
+    </select>
+
+    <select id="findById" resultMap="HotelMap">
+        SELECT * FROM hotel WHERE id = #{id}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO hotel (id, name, description, address, city, star_rating, contact_phone, facilities, cover_image, images, min_price, status)
+        VALUES (#{id}, #{name}, #{description}, #{address}, #{city}, #{starRating}, #{contactPhone}, #{facilities}, #{coverImage}, #{images}, #{minPrice}, #{status})
+    </insert>
+
+    <update id="update">
+        UPDATE hotel SET name=#{name}, description=#{description}, address=#{address},
+            city=#{city}, star_rating=#{starRating}, contact_phone=#{contactPhone},
+            facilities=#{facilities}, cover_image=#{coverImage}, images=#{images},
+            min_price=#{minPrice}, status=#{status}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">DELETE FROM hotel WHERE id=#{id}</delete>
+    <update id="toggleStatus">UPDATE hotel SET status=#{status} WHERE id=#{id}</update>
+    <update id="shiftIdsDown">UPDATE hotel SET id = id - 1 WHERE id &gt; #{afterId}</update>
+    <select id="findMaxId" resultType="java.lang.Long">SELECT COALESCE(MAX(id),0) FROM hotel</select>
+</mapper>

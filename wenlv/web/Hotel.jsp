@@ -1,5 +1,18 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.niit.utils.DBUtil" %>
+<%@ page import="com.niit.mapper.HotelMapper" %>
+<%@ page import="com.niit.pojo.Hotel" %>
+<%@ page import="org.apache.ibatis.session.SqlSession" %>
+<%@ page import="java.util.List" %>
+
+<%
+    try (SqlSession s = DBUtil.getSession()) {
+        request.setAttribute("hotels", s.getMapper(HotelMapper.class).findOpen());
+    } catch (Exception e) {}
+%>
+
 <%@include file="Head.jsp"%>
-<%@page contentType="text/html;charset=UTF-8"%>
 
     <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
@@ -16,48 +29,23 @@
         <div class="container">
             <h2 class="text-center text-sm-start">宁夏特色民宿</h2>
             <div class="row row-40 offset-lg">
+                <c:choose>
+                    <c:when test="${empty hotels}">
+                        <div class="col-12 text-center" style="padding:60px 0;color:#999;">酒店正在上架中，敬请期待...</div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="${hotels}" var="h">
                 <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-1-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">黄河宿集</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>坐落于黄河岸边，融合传统与现代的高端民宿集群。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
+                    <article class="card-classic" style="display:flex;flex-direction:column;height:100%;">
+                        <a class="card-classic__media" href="Hotel-detail.jsp?id=${h.id}"><img src="${empty h.coverImage ? 'images/service-1-370x389.jpg' : h.coverImage}" alt="${h.name}" width="370" height="389"/></a>
+                        <h5><a href="Hotel-detail.jsp?id=${h.id}">${h.name}</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
+                        <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${h.description}</p>
+                        <div class="card-classic__actions" style="margin-top:auto;"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp?id=${h.id}">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">${empty h.minPrice ? '299' : h.minPrice}</span><span class="card-classic__price-starting">起</span></span></div>
                     </article>
                 </div>
-                <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-2-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">星空营地</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>沙漠中的星空营地，体验极致的观星体验。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-3-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">贺兰山房</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>依山而建，享受宁静的山间度假时光。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-4-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">枸杞庄园</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>田园风光中的特色民宿，体验采摘乐趣。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-5-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">沙漠酒店</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>沙漠腹地的奢华体验，感受大漠孤烟的壮美。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <article class="card-classic"><a class="card-classic__media" href="Hotel-detail.jsp"><img src="images/service-6-370x389.jpg" alt="" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp">古镇客栈</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                        <p>穿越时光的古镇体验，感受历史的韵味。</p>
-                        <div class="card-classic__actions"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">299</span><span class="card-classic__price-starting">起</span></span></div>
-                    </article>
-                </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </section>

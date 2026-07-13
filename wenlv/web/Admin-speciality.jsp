@@ -55,7 +55,7 @@
             <c:if test="${ed > 0}"><c:forEach items="${specialtyList}" var="s" begin="${st}" end="${ed - 1}">
             <tr>
                 <td>${s.id}</td>
-                <td><strong>${s.name}</strong></td>
+                <td>${s.name}</td>
                 <td>${s.categoryName}</td>
                 <td>¥${s.price}</td>
                 <td>${s.stock}</td>
