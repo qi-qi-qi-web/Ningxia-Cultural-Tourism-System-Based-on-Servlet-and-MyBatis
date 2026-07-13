@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
             httpSession.setAttribute("isLoggedIn", true);
 
             if (isAjax) {
-                sendJson(response, true, "登录成功");
+                sendLoginSuccessJson(response, user);
             } else {
                 response.sendRedirect("index.jsp");
             }
@@ -112,7 +112,6 @@ public class LoginServlet extends HttpServlet {
             newUser.setUsername(username);
             newUser.setPhone(phone);
             newUser.setPasswordHash(PasswordUtil.hash(password));
-            newUser.setNickname(username);
             newUser.setRole("USER");
             // ID = 当前最大ID + 1（不依赖 AUTO_INCREMENT）
             newUser.setId(userMapper.findMaxId() + 1);
@@ -124,7 +123,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession httpSession = request.getSession();
                 httpSession.setAttribute("user", newUser);
                 httpSession.setAttribute("isLoggedIn", true);
-                sendJson(response, true, "注册成功");
+                sendRegisterSuccessJson(response, newUser);
             } else {
                 sendJson(response, false, "注册失败，请重试");
             }
@@ -178,6 +177,36 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
+    private void sendLoginSuccessJson(HttpServletResponse response, User user) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        String json = "{" +
+            "\"success\":true," +
+            "\"message\":\"登录成功\"," +
+            "\"username\":\"" + escapeJson(user.getUsername()) + "\"," +
+            "\"nickname\":\"" + (user.getNickname() != null ? escapeJson(user.getNickname()) : "") + "\"," +
+            "\"phone\":\"" + (user.getPhone() != null ? escapeJson(user.getPhone()) : "") + "\"," +
+            "\"email\":\"" + (user.getEmail() != null ? escapeJson(user.getEmail()) : "") + "\"," +
+            "\"avatar\":\"" + (user.getAvatar() != null ? escapeJson(user.getAvatar()) : "") + "\"" +
+            "}";
+        response.getWriter().write(json);
+    }
+
+    private void sendRegisterSuccessJson(HttpServletResponse response, User user) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        String json = "{" +
+            "\"success\":true," +
+            "\"message\":\"注册成功\"," +
+            "\"username\":\"" + escapeJson(user.getUsername()) + "\"," +
+            "\"phone\":\"" + (user.getPhone() != null ? escapeJson(user.getPhone()) : "") + "\"" +
+            "}";
+        response.getWriter().write(json);
+    }
+
+    private String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
     }
 
     private void sendJson(HttpServletResponse response, boolean success, String message) throws IOException {

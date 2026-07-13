@@ -37,7 +37,7 @@
                             <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                             <!--RD Navbar Brand-->
                             <div class="rd-navbar-brand">
-                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/NingXia/logo.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             </div>
                         </div>
                         <div class="rd-navbar-main-element">
@@ -123,7 +123,7 @@
                     </button>
                 </div>
                 <div class="modal-body wechat-modal__body">
-                    <form id="register-form" method="post" action="#" onsubmit="return handleRegister(event)" novalidate>
+                    <form id="register-form" method="post" action="#" novalidate>
                         <div class="wechat-modal__field">
                             <input class="wechat-modal__input" id="register-username" type="text" name="username" placeholder="用户名">
                         </div>
@@ -137,7 +137,7 @@
                             <input class="wechat-modal__input" id="register-confirm-password" type="password" name="confirmPassword" placeholder="确认密码">
                         </div>
                         <div class="wechat-modal__action">
-                            <button class="wechat-modal__btn" type="submit">注册</button>
+                            <button class="wechat-modal__btn" type="button" onclick="handleRegister(event)">注册</button>
                         </div>
                         <div class="wechat-modal__links">
                             <span style="font-size: 14px; color: #888;">已有账号?</span>
