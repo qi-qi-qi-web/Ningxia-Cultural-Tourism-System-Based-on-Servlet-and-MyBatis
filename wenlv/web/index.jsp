@@ -12,8 +12,8 @@
                             <div class="col-lg-8">
                                 <div class="intro-box">
                                     <div class="intro-box__floating-text">宁夏</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">塞上</span><span data-caption-animate="fadeInUp" data-caption-delay="300">江南</span></div>
-                                    <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">黄河</span><span data-caption-animate="fadeInUp" data-caption-delay="300">金岸</span></div>
+                                    <div class="#" data-caption-animate="#" data-caption-delay="400"><a href="#" data-lightgallery="#"></a></div>
                                 </div>
                             </div>
                         </div>
@@ -27,8 +27,8 @@
                             <div class="col-lg-8">
                                 <div class="intro-box">
                                     <div class="intro-box__floating-text">宁夏</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">神奇</span><span data-caption-animate="fadeInUp" data-caption-delay="300">宁夏</span></div>
-                                    <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">塞上</span><span data-caption-animate="fadeInUp" data-caption-delay="300">江南</span></div>
+                                    <div class="#" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item"></a></div>
                                 </div>
                             </div>
                         </div>
@@ -42,8 +42,8 @@
                             <div class="col-lg-8">
                                 <div class="intro-box">
                                     <div class="intro-box__floating-text">宁夏</div>
-                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">黄河</span><span data-caption-animate="fadeInUp" data-caption-delay="300">金岸</span></div>
-                                    <div class="intro-box__video" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item">观看视频</a></div>
+                                    <div class="intro-box__title"><span data-caption-animate="fadeInUp" data-caption-delay="200">大漠</span><span data-caption-animate="fadeInUp" data-caption-delay="300">山河</span></div>
+                                    <div class="#" data-caption-animate="fadeInUp" data-caption-delay="400"><a href="#" data-lightgallery="item"></a></div>
                                 </div>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-/** Login Modal Styles */
+/** Login Modal Styles - WeChat Style */
 .rd-navbar-login {
     margin-left: 15px;
     position: relative;
@@ -134,481 +134,140 @@
     align-self: center;
 }
 
-#login-modal .modal-dialog {
-    max-width: 420px;
-    width: 90%;
-}
-
-#login-modal .modal-content {
-    border-radius: 8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+/* ===== WeChat-style Unified Modal ===== */
+.wechat-modal {
+    background: #ffffff;
     border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
     overflow: hidden;
 }
 
-#login-modal .modal-header {
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-    border-bottom: none;
-    padding: 24px 30px;
-}
-
-#login-modal .modal-title {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-#login-modal .close {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 28px;
-    opacity: 1;
-    text-shadow: none;
-    transition: color 0.2s ease;
-}
-
-#login-modal .close:hover {
-    color: #ffffff;
-}
-
-#login-modal .modal-body {
-    padding: 30px;
-}
-
-#login-modal .form-wrap {
-    margin-bottom: 20px;
-}
-
-#login-modal .form-label {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #333333;
-    margin-bottom: 8px;
-}
-
-#login-modal .form-input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: #fafafa;
-}
-
-#login-modal .form-input:focus {
-    border-color: #00a8a8;
-    box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
-    background: #ffffff;
-}
-
-#login-modal .form-input::placeholder {
-    color: #999999;
-}
-
-#login-modal .form-check {
-    margin-bottom: 24px;
-}
-
-#login-modal .form-check-input {
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-#login-modal .form-check-label {
-    font-size: 14px;
-    color: #666666;
-    cursor: pointer;
-}
-
-#login-modal .form-button {
-    margin-bottom: 20px;
-}
-
-#login-modal .button-primary {
-    width: 100%;
-    padding: 14px 30px;
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-    border: none;
-    border-radius: 6px;
-    color: #ffffff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#login-modal .button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 168, 168, 0.3);
-}
-
-#login-modal .form-links {
-    text-align: center;
-}
-
-#login-modal .form-links .link-default {
-    font-size: 14px;
-    color: #00a8a8;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-#login-modal .form-links .link-default:hover {
-    color: #008a8a;
-}
-
-#login-modal .form-links .text-separator {
-    display: inline-block;
-    margin: 0 15px;
-    color: #cccccc;
-}
-
-.rd-navbar-login .button-secondary {
-    min-width: 100px;
-    margin-left: 10px;
-    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-    border-color: #6c757d;
-}
-
-.rd-navbar-login .button-secondary:hover {
-    background: linear-gradient(135deg, #5a6268 0%, #3d4349 100%);
-    border-color: #5a6268;
-}
-
-#admin-login-modal .modal-dialog {
-    max-width: 420px;
-    width: 90%;
-}
-
-#admin-login-modal .modal-content {
-    border-radius: 8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border: none;
-    overflow: hidden;
-}
-
-#admin-login-modal .modal-header.admin-header {
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-    border-bottom: none;
-    padding: 24px 30px;
-}
-
-#admin-login-modal .modal-title {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-}
-
-#admin-login-modal .close {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 28px;
-    opacity: 1;
-    text-shadow: none;
-    transition: color 0.2s ease;
-}
-
-#admin-login-modal .close:hover {
-    color: #ffffff;
-}
-
-#admin-login-modal .modal-body {
-    padding: 30px;
-}
-
-#admin-login-modal .form-wrap {
-    margin-bottom: 20px;
-}
-
-#admin-login-modal .form-label {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #333333;
-    margin-bottom: 8px;
-}
-
-#admin-login-modal .form-input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 15px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: #fafafa;
-}
-
-#admin-login-modal .form-input:focus {
-    border-color: #00a8a8;
-    box-shadow: 0 0 0 3px rgba(0, 168, 168, 0.1);
-    background: #ffffff;
-}
-
-#admin-login-modal .form-input::placeholder {
-    color: #999999;
-}
-
-#admin-login-modal .captcha-row {
+.wechat-modal__header {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-}
-
-#admin-login-modal .captcha-input {
-    flex: 1;
-}
-
-#admin-login-modal .captcha-image {
-    width: 120px;
-    height: 40px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: 1px solid #e0e0e0;
-}
-
-#admin-login-modal .captcha-image:hover {
-    border-color: #6c757d;
-}
-
-#admin-login-modal .form-check {
-    margin-bottom: 24px;
-}
-
-#admin-login-modal .form-check-input {
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-#admin-login-modal .form-check-label {
-    font-size: 14px;
-    color: #666666;
-    cursor: pointer;
-}
-
-#admin-login-modal .form-button {
-    margin-bottom: 20px;
-}
-
-#admin-login-modal .button-primary {
-    width: 100%;
-    padding: 14px 30px;
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
-    border: none;
-    border-radius: 6px;
-    color: #ffffff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#admin-login-modal .button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 168, 168, 0.3);
-}
-
-#admin-login-modal .form-links {
-    text-align: center;
-}
-
-#admin-login-modal .form-links .link-default {
-    font-size: 14px;
-    color: #00a8a8;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-#admin-login-modal .form-links .link-default:hover {
-    color: #008a8a;
-}
-
-#admin-login-modal .form-links .text-separator {
-    display: inline-block;
-    margin: 0 15px;
-    color: #cccccc;
-}
-
-#register-modal .modal-dialog {
-    max-width: 420px;
-    width: 90%;
-}
-
-#register-modal .modal-content {
-    border-radius: 8px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border: none;
-    overflow: hidden;
-}
-
-#register-modal .modal-header {
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
+    position: relative;
+    padding: 28px 24px 0 24px;
     border-bottom: none;
-    padding: 24px 30px;
+    background: #ffffff;
 }
 
-#register-modal .modal-title {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 22px;
+.wechat-modal__title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
     font-weight: 600;
-    color: #ffffff;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: #000;
+    text-align: center;
+    line-height: 1.4;
 }
 
-#register-modal .close {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 28px;
+.wechat-modal__close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 24px;
+    font-weight: 300;
     opacity: 1;
     text-shadow: none;
-    transition: color 0.2s ease;
-}
-
-#register-modal .close:hover {
-    color: #ffffff;
-}
-
-#register-modal .modal-body {
-    padding: 30px;
-}
-
-#register-modal .reg-form-group {
-    margin-bottom: 22px;
-    position: relative;
-    display: block;
-}
-
-#register-modal .reg-form-label {
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #333333;
-    margin-bottom: 10px;
-    display: block !important;
-    line-height: 1.5;
-    position: static !important;
-    transform: none !important;
-    float: none !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: auto !important;
-    pointer-events: auto !important;
-}
-
-#register-modal .reg-form-input {
-    width: 100% !important;
-    padding: 14px 16px !important;
-    border: 2px solid #e0e0e0 !important;
-    border-radius: 6px !important;
-    font-size: 15px !important;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    background: #fafafa !important;
-    box-sizing: border-box !important;
-    color: #333333 !important;
-    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    position: relative !important;
-    margin-top: 0 !important;
-}
-
-#register-modal .reg-form-input:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
-    background: #ffffff !important;
-    outline: none !important;
-}
-
-#register-modal .reg-form-input::placeholder {
-    color: #999999 !important;
-    opacity: 1 !important;
-    font-size: 14px !important;
-}
-
-#register-modal .reg-form-check {
-    margin-bottom: 24px;
-}
-
-#register-modal .reg-form-check-input {
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-#register-modal .reg-form-check-label {
-    font-size: 13px;
-    color: #666666;
-    cursor: pointer;
-}
-
-#register-modal .reg-form-check-label a {
-    color: #00a8a8;
-    text-decoration: none;
-}
-
-#register-modal .reg-form-check-label a:hover {
-    text-decoration: underline;
-}
-
-#register-modal .reg-form-button {
-    margin-bottom: 15px;
-}
-
-#register-modal .reg-btn-primary {
-    width: 100%;
-    padding: 14px 30px;
-    font-family: "Oswald", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%);
     border: none;
-    border-radius: 6px;
-    color: #ffffff;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: none;
     cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+}
+.wechat-modal__close:hover {
+    color: #333;
 }
 
-#register-modal .reg-btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 168, 168, 0.3);
+.wechat-modal__body {
+    padding: 20px 24px 28px 24px;
 }
 
-#register-modal .reg-form-links {
+.wechat-modal__field {
+    margin-bottom: 16px;
+}
+
+.wechat-modal__input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #000;
+    background: #fafafa;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    outline: none;
+}
+.wechat-modal__input:focus {
+    border-color: #07c160;
+    background: #ffffff;
+}
+.wechat-modal__input::placeholder {
+    color: #bbb;
+}
+
+.wechat-modal__action {
+    margin: 24px 0 18px 0;
+}
+
+.wechat-modal__btn {
+    width: 100%;
+    padding: 13px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #07c160;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    letter-spacing: 0.02em;
+}
+.wechat-modal__btn:hover {
+    background: #06ad56;
+}
+.wechat-modal__btn:active {
+    transform: scale(0.98);
+}
+
+.wechat-modal__links {
     text-align: center;
+    font-size: 14px;
+    color: #888;
 }
 
-#register-modal .reg-form-links span {
-    font-size: 14px;
-    color: #666666;
-}
-
-#register-modal .reg-link {
-    font-size: 14px;
-    color: #00a8a8;
+.wechat-modal__link {
+    color: #888;
     text-decoration: none;
     transition: color 0.2s ease;
-    margin-left: 5px;
+    font-size: 14px;
+}
+.wechat-modal__link:hover {
+    color: #666;
+    text-decoration: none;
 }
 
-#register-modal .reg-link:hover {
-    color: #008a8a;
+.wechat-modal__sep {
+    display: inline-block;
+    margin: 0 12px;
+    color: #ddd;
 }
 
-/* 防止 Bootstrap 弹窗在 body 上残留 padding-right 导致页面偏移 */
+/* Modal dialogs width */
+#login-modal .modal-dialog,
+#register-modal .modal-dialog,
+#admin-login-modal .modal-dialog {
+    max-width: 400px;
+    width: 88%;
+}
+
+/* 防止 Bootstrap 弹窗 body 偏移 */
 body.modal-open { padding-right: 0 !important; }
 
 .toast-notification {

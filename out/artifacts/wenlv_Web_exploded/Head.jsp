@@ -84,36 +84,28 @@
     <!-- Login Modal -->
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="login-modal-label">用户登录</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <div class="modal-content wechat-modal">
+                <div class="modal-header wechat-modal__header">
+                    <h4 class="modal-title wechat-modal__title" id="login-modal-label">用户登录</h4>
+                    <button type="button" class="close wechat-modal__close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body wechat-modal__body">
                     <form id="login-form" method="post" action="/login" novalidate>
-                        <div class="form-wrap">
-                            <label class="form-label" for="login-email">用户名/邮箱</label>
-                            <input class="form-input" id="login-email" type="text" name="phoneOrEmail" placeholder="请输入用户名或邮箱">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="login-email" type="text" name="phoneOrEmail" placeholder="用户名/邮箱">
                         </div>
-                        <div class="form-wrap">
-                            <label class="form-label" for="login-password">密码</label>
-                            <input class="form-input" id="login-password" type="password" name="password" placeholder="请输入密码">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="login-password" type="password" name="password" placeholder="密码">
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" id="login-remember" type="checkbox" name="remember">
-                            <label class="form-check-label" for="login-remember">记住我</label>
+                        <div class="wechat-modal__action">
+                            <button class="wechat-modal__btn" type="button" onclick="handleLogin()">登录</button>
                         </div>
-                        <div class="form-button">
-                            <button class="button button-primary button-block" type="button" onclick="handleLogin()">登录</button>
-                        </div>
-                        <div class="form-links">
-                            <a href="#" class="link-default">忘记密码?</a>
-                            <span class="text-separator">|</span>
-                            <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#register-modal">注册账户</a>
-                            <span class="text-separator">|</span>
-                            <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#admin-login-modal">管理员登录</a>
+                        <div class="wechat-modal__links">
+                            <a href="javascript:void(0)" class="wechat-modal__link" onclick="switchModal('login-modal','register-modal')">注册账户</a>
+                            <span class="wechat-modal__sep">|</span>
+                            <a href="javascript:void(0)" class="wechat-modal__link" onclick="switchModal('login-modal','admin-login-modal')">管理员登录</a>
                         </div>
                     </form>
                 </div>
@@ -123,41 +115,33 @@
     <!-- Register Modal -->
     <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="register-modal-label">用户注册</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <div class="modal-content wechat-modal">
+                <div class="modal-header wechat-modal__header">
+                    <h4 class="modal-title wechat-modal__title" id="register-modal-label">用户注册</h4>
+                    <button type="button" class="close wechat-modal__close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 30px;">
-                    <form id="register-form" method="post" action="#" onsubmit="return handleRegister(event)" novalidate style="margin: 0;">
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">用户名</div>
-                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-username" type="text" name="username" placeholder="请输入用户名">
+                <div class="modal-body wechat-modal__body">
+                    <form id="register-form" method="post" action="#" onsubmit="return handleRegister(event)" novalidate>
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="register-username" type="text" name="username" placeholder="用户名">
                         </div>
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">手机号</div>
-                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-phone" type="tel" name="phone" placeholder="请输入手机号">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="register-phone" type="tel" name="phone" placeholder="手机号">
                         </div>
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">密码</div>
-                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-password" type="password" name="password" placeholder="请输入密码（至少6位）">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="register-password" type="password" name="password" placeholder="密码（至少6位）">
                         </div>
-                        <div style="margin-bottom: 20px;">
-                            <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">确认密码</div>
-                            <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="register-confirm-password" type="password" name="confirmPassword" placeholder="请再次输入密码">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="register-confirm-password" type="password" name="confirmPassword" placeholder="确认密码">
                         </div>
-                        <div style="margin-bottom: 24px;">
-                            <input style="margin-right: 10px; cursor: pointer;" id="register-agree" type="checkbox" name="agree">
-                            <span style="font-size: 13px; color: #666; cursor: pointer;">我已阅读并同意<a href="#" style="color: #00a8a8; text-decoration: none;">服务条款</a>和<a href="#" style="color: #00a8a8; text-decoration: none;">隐私政策</a></span>
+                        <div class="wechat-modal__action">
+                            <button class="wechat-modal__btn" type="submit">注册</button>
                         </div>
-                        <div style="margin-bottom: 15px;">
-                            <button style="width: 100%; padding: 14px 30px; font-family: Oswald, sans-serif; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; background: linear-gradient(135deg, #00a8a8 0%, #00d4aa 100%); border: none; border-radius: 6px; color: #fff; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;" type="submit">注册</button>
-                        </div>
-                        <div style="text-align: center;">
-                            <span style="font-size: 14px; color: #666;">已有账号?</span>
-                            <a href="#" style="font-size: 14px; color: #00a8a8; text-decoration: none; margin-left: 5px;" data-bs-toggle="modal" data-bs-target="#login-modal" data-bs-dismiss="modal">立即登录</a>
+                        <div class="wechat-modal__links">
+                            <span style="font-size: 14px; color: #888;">已有账号?</span>
+                            <a href="javascript:void(0)" class="wechat-modal__link" style="margin-left: 4px;" onclick="switchModal('register-modal','login-modal')">立即登录</a>
                         </div>
                     </form>
                 </div>
@@ -167,34 +151,26 @@
     <!-- Admin Login Modal -->
     <div class="modal fade" id="admin-login-modal" tabindex="-1" role="dialog" aria-labelledby="admin-login-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header admin-header">
-                    <h4 class="modal-title" id="admin-login-modal-label">管理员登录</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <div class="modal-content wechat-modal">
+                <div class="modal-header wechat-modal__header">
+                    <h4 class="modal-title wechat-modal__title" id="admin-login-modal-label">管理员登录</h4>
+                    <button type="button" class="close wechat-modal__close" onclick="closeModal('admin-login-modal')" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body wechat-modal__body">
                     <form id="admin-login-form" method="post" action="#" onsubmit="return handleAdminLogin(event)" novalidate>
-                        <div class="form-wrap">
-                            <label class="form-label" for="admin-username">管理员账号</label>
-                            <input class="form-input" id="admin-username" type="text" name="username" placeholder="请输入管理员账号">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="admin-username" type="text" name="username" placeholder="管理员账号">
                         </div>
-                        <div class="form-wrap">
-                            <label class="form-label" for="admin-password">密码</label>
-                            <input class="form-input" id="admin-password" type="password" name="password" placeholder="请输入密码">
+                        <div class="wechat-modal__field">
+                            <input class="wechat-modal__input" id="admin-password" type="password" name="password" placeholder="密码">
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" id="admin-remember" type="checkbox" name="remember">
-                            <label class="form-check-label" for="admin-remember">记住我</label>
+                        <div class="wechat-modal__action">
+                            <button class="wechat-modal__btn" type="submit">管理员登录</button>
                         </div>
-                        <div class="form-button">
-                            <button class="button button-primary button-block" type="submit">管理员登录</button>
-                        </div>
-                        <div class="form-links">
-                            <a href="#" class="link-default">忘记密码?</a>
-                            <span class="text-separator">|</span>
-                            <a href="#" class="link-default" data-bs-toggle="modal" data-bs-target="#register-modal">注册账户</a>
+                        <div class="wechat-modal__links">
+                            <a href="javascript:void(0)" class="wechat-modal__link" onclick="switchModal('admin-login-modal','login-modal')">普通用户登录</a>
                         </div>
                     </form>
                 </div>
@@ -208,6 +184,55 @@
     <script src="js/script.js"></script>
     <script src="js/login-script.js"></script>
     <script>
+        // Close modal via Bootstrap API + safety cleanup
+        function closeModal(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                var modal = bootstrap.Modal.getInstance(el);
+                if (modal) {
+                    modal.hide();
+                }
+            }
+            // Safety: if backdrop remains after animation, force-remove it
+            setTimeout(function() {
+                var backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                    document.body.classList.remove('modal-open');
+                    document.body.style.paddingRight = '';
+                    document.body.style.overflow = '';
+                }
+            }, 400);
+        }
+        // Switch from one modal to another – smooth, no jank
+        function switchModal(fromId, toId) {
+            var fromEl = document.getElementById(fromId);
+            if (!fromEl) return;
+            var bsModal = bootstrap.Modal.getInstance(fromEl);
+            if (bsModal) {
+                var handler = function() {
+                    fromEl.removeEventListener('hidden.bs.modal', handler);
+                    var target = document.getElementById(toId);
+                    if (target) {
+                        var old = bootstrap.Modal.getInstance(target);
+                        if (old) old.dispose();
+                        (new bootstrap.Modal(target)).show();
+                    }
+                };
+                fromEl.addEventListener('hidden.bs.modal', handler);
+                bsModal.hide();
+            }
+        }
+        // Global safety: auto-cleanup when any modal finishes hiding
+        document.addEventListener('hidden.bs.modal', function() {
+            var backdrops = document.querySelectorAll('.modal-backdrop');
+            if (backdrops.length) {
+                backdrops.forEach(function(b) { b.remove(); });
+                document.body.classList.remove('modal-open');
+                document.body.style.paddingRight = '';
+                document.body.style.overflow = '';
+            }
+        });
         document.addEventListener('DOMContentLoaded', function() {
             var currentUrl = window.location.pathname;
             var currentPage = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
@@ -231,6 +256,6 @@
                         item.classList.add('active');
                     }
                 }
-            });
-        });
-    </script>
+	        });
+		    });
+		</script>
