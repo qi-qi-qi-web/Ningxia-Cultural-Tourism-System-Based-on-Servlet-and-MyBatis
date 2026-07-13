@@ -592,33 +592,3 @@ INSERT INTO official_notice (title, content, scenic_spot_id, is_top, is_publishe
 ('宁夏"引客入宁"旅游奖励政策（2026年修订版）公布',
  '各旅行社、旅游企业：现将《宁夏回族自治区"引客入宁"旅游奖励政策（2026年修订版）》予以公布。对组织包机、专列、自驾车队来宁旅游的旅行社给予最高10万元奖励，对年度累计输送游客超过1万人次的给予额外奖励。本政策自公布之日起施行。',
  NULL, 1, 1, '2026-06-05 08:00:00');
-
-
--- ============================================================================
--- 附录：常用查询示例
--- ============================================================================
-
--- -- 查询某景区的平均评分
--- SELECT target_id, ROUND(AVG(rating), 1) AS avg_rating, COUNT(*) AS comment_count
--- FROM comment
--- WHERE target_type = 'SCENIC' AND status = 1
--- GROUP BY target_id;
-
--- -- 查询某用户的收藏列表
--- SELECT f.id, f.target_type, f.target_id, f.created_at
--- FROM favorite f
--- WHERE f.user_id = ? AND f.target_type = ?
--- ORDER BY f.created_at DESC;
-
--- -- 查询用户活动日志（按时间倒序）
--- SELECT * FROM sys_platform_log
--- WHERE user_id = ?
--- ORDER BY created_at DESC
--- LIMIT 50;
-
--- -- 查询某用户最近30天的活动统计
--- SELECT log_type, COUNT(*) AS cnt
--- FROM sys_platform_log
--- WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
--- GROUP BY log_type
--- ORDER BY cnt DESC;
