@@ -21,6 +21,10 @@
         SELECT * FROM official_notice ORDER BY id ASC
     </select>
 
+    <select id="findPublished" resultMap="NoticeMap">
+        SELECT * FROM official_notice WHERE is_published = 1 ORDER BY is_top DESC, published_at DESC
+    </select>
+
     <select id="findById" resultMap="NoticeMap">
         SELECT * FROM official_notice WHERE id = #{id}
     </select>

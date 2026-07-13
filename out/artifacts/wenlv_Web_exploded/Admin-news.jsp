@@ -77,7 +77,7 @@
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="id" id="news-id">
             <div class="mb-2"><label>标题</label><input class="form-control" name="title" id="news-title" required></div>
-            <div class="mb-2"><label>正文（HTML）</label><textarea class="form-control" name="content" id="news-content" rows="6" required></textarea></div>
+            <div class="mb-2"><label>正文</label><textarea class="form-control" name="content" id="news-content" rows="6" required></textarea></div>
             <div class="mb-2"><label>封面图URL</label><input class="form-control" name="coverImage" id="news-cover"></div>
             <div class="row mb-2">
                 <div class="col-6"><label>来源</label><input class="form-control" name="source" id="news-source"></div>

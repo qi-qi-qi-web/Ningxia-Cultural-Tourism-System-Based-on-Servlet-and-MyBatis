@@ -22,6 +22,10 @@
         SELECT * FROM news_dynamic ORDER BY id ASC
     </select>
 
+    <select id="findPublished" resultMap="NewsDynamicMap">
+        SELECT * FROM news_dynamic WHERE is_published = 1 ORDER BY published_at DESC
+    </select>
+
     <select id="findById" resultMap="NewsDynamicMap">
         SELECT * FROM news_dynamic WHERE id = #{id}
     </select>
