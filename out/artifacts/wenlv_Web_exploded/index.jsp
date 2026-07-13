@@ -5,7 +5,7 @@
 <!--Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-1" data-autoplay="5000" data-swiper='{"simulateTouch":false,"speed":500}'>
         <div class="swiper-wrapper text-center">
-            <div class="swiper-slide context-dark" data-slide-bg="images/slider-1-slide-1.jpg">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/黄河金岸.jpeg">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide context-dark" data-slide-bg="images/slider-1-slide-2.jpg">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/塞上江南.png">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide context-dark" data-slide-bg="images/slider-1-slide-3.jpg">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/大漠山河.png">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">

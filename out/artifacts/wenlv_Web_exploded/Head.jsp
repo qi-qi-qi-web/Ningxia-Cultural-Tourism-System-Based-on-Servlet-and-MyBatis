@@ -37,7 +37,7 @@
                             <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                             <!--RD Navbar Brand-->
                             <div class="rd-navbar-brand">
-                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/NingXia/logo.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             </div>
                         </div>
                         <div class="rd-navbar-main-element">
