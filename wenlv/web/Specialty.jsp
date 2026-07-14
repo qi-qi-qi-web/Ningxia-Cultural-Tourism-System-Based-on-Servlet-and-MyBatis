@@ -40,7 +40,7 @@
                 <c:otherwise>
                     <c:forEach items="${foodList}" var="food">
                         <div class="col-lg-4 col-sm-6">
-                            <article class="card-classic">
+                            <article class="card-classic" style="display:flex;flex-direction:column;height:100%;">
                                 <a class="card-classic__media" href="Specialty-detail.jsp?id=${food.id}">
                                     <c:choose>
                                         <c:when test="${not empty food.mainImage}">
@@ -52,7 +52,7 @@
                                     </c:choose>
                                 </a>
                                 <h5><a href="Specialty-detail.jsp?id=${food.id}">${food.name}</a></h5>
-                                <p>${food.description}</p>
+                                <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${food.description}</p>
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                                     <span style="font-size:18px;color:#e74c3c;font-weight:bold;">¥${food.price}</span>
                                     <span style="font-size:12px;color:#999;">已售 ${food.salesCount}</span>

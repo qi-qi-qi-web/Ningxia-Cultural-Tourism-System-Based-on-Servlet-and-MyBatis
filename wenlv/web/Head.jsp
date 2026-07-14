@@ -49,9 +49,9 @@
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Food.jsp">宁夏特产</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Specialty.jsp">宁夏特产</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Hotel.jsp">民俗酒店</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Hotel.jsp">民宿酒店</a>
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="TravelGuide.jsp">旅游攻略</a>
                                     </li>
