@@ -1,14 +1,63 @@
 <%@include file="Head.jsp"%>
 <%@page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.niit.utils.DBUtil" %>
+<%@ page import="com.niit.mapper.TravelGuideMapper" %>
+<%@ page import="com.niit.mapper.GuideTagMapper" %>
+<%@ page import="com.niit.pojo.TravelGuide" %>
+<%@ page import="com.niit.pojo.GuideTag" %>
+<%@ page import="org.apache.ibatis.session.SqlSession" %>
+<%@ page import="java.util.*" %>
+
+<%
+    String idParam = request.getParameter("id");
+    TravelGuide guide = null;
+    List<GuideTag> tagList = new ArrayList<>();
+    if (idParam != null) {
+        try (SqlSession s = DBUtil.getSession()) {
+            long gid = Long.parseLong(idParam);
+            guide = s.getMapper(TravelGuideMapper.class).findById(gid);
+            if (guide != null) {
+                tagList = s.getMapper(GuideTagMapper.class).findByGuideId(gid);
+            }
+        } catch (Exception e) {
+            request.setAttribute("error", "加载失败：" + e.getMessage());
+        }
+    }
+    if (guide == null) {
+        response.sendRedirect("TravelGuide.jsp");
+        return;
+    }
+    request.setAttribute("guide", guide);
+    request.setAttribute("tagList", tagList);
+    // 按分类分组标签
+    java.util.Map<String, java.util.List<GuideTag>> grouped = new java.util.LinkedHashMap<>();
+    grouped.put("FEATURE", new java.util.ArrayList<>());
+    grouped.put("TIME", new java.util.ArrayList<>());
+    grouped.put("AUDIENCE", new java.util.ArrayList<>());
+    grouped.put("BUDGET", new java.util.ArrayList<>());
+    for (GuideTag t : tagList) {
+        java.util.List<GuideTag> g = grouped.get(t.getCategory());
+        if (g != null) g.add(t);
+    }
+    java.util.Map<String, String> catColors = new java.util.LinkedHashMap<>();
+    catColors.put("FEATURE", "#2196f3");
+    catColors.put("TIME", "#4caf50");
+    catColors.put("AUDIENCE", "#ff9800");
+    catColors.put("BUDGET", "#9c27b0");
+    request.setAttribute("grouped", grouped);
+    request.setAttribute("catColors", catColors);
+%>
 
 <!-- Breadcrumbs-->
 <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
     <div class="container">
-        <h4 class="breadcrumbs-custom-title">镇北堡影城旅游攻略</h4>
+        <h4 class="breadcrumbs-custom-title">${guide.title}</h4>
         <ul class="breadcrumbs-custom-path">
             <li><a href="index.jsp">首页</a></li>
             <li><a href="TravelGuide.jsp">旅游攻略</a></li>
-            <li class="active">镇北堡影城旅游攻略</li>
+            <li class="active">${guide.title}</li>
         </ul>
     </div>
 </section>
@@ -20,255 +69,72 @@
             <div class="col-xl-8">
                 <div class="box-classic">
                     <div class="mb-6">
-                        <img src="images/tour-1-370x284.jpg" alt="镇北堡影城旅游攻略" class="img-fluid rounded-lg" style="width: 100%; height: 300px; object-fit: cover;"/>
+                        <c:choose>
+                            <c:when test="${not empty guide.coverImage}">
+                                <img src="${guide.coverImage}" alt="${guide.title}" class="img-fluid rounded-lg" style="width: 100%; height: 300px; object-fit: cover;"/>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="images/tour-1-370x284.jpg" alt="${guide.title}" class="img-fluid rounded-lg" style="width: 100%; height: 300px; object-fit: cover;"/>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
 
                     <div class="mb-6">
-                        <h1 style="font-size: 28px; color: #333; font-weight: bold; margin-bottom: 20px;">镇北堡影城旅游攻略</h1>
+                        <h1 style="font-size: 28px; color: #333; font-weight: bold; margin-bottom: 20px;">${guide.title}</h1>
                         
-                        <div class="d-flex flex-wrap align-items-center gap-4 mb-4">
-                            <span class="badge bg-primary text-white">已发布</span>
-                            <span class="badge bg-gray-100 text-gray-600">#宁夏旅游</span>
-                            <span class="badge bg-gray-100 text-gray-600">#银川</span>
-                            <span class="badge bg-gray-100 text-gray-600">#镇北堡</span>
-                            <span class="badge bg-gray-100 text-gray-600">#西部影城</span>
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+                            <c:choose>
+                                <c:when test="${guide.status == 'PUBLISHED'}"><span class="badge bg-success text-white">已发布</span></c:when>
+                                <c:when test="${guide.status == 'DRAFT'}"><span class="badge bg-warning text-white">草稿</span></c:when>
+                                <c:when test="${guide.status == 'HIDDEN'}"><span class="badge bg-danger text-white">已隐藏</span></c:when>
+                                <c:otherwise><span class="badge bg-secondary text-white">${guide.status}</span></c:otherwise>
+                            </c:choose>
                         </div>
+
+                        <!-- 分类标签 -->
+                        <c:set var="catNames" value="${{'FEATURE':'特点','TIME':'时间','AUDIENCE':'适合人群','BUDGET':'预算'}}"/>
+                        <c:forEach items="${grouped}" var="entry">
+                            <c:if test="${not empty entry.value}">
+                            <div style="margin-bottom:6px;">
+                                <span style="display:inline-block;font-size:11px;font-weight:600;color:#888;width:52px;">${catNames[entry.key]}</span>
+                                <c:forEach items="${entry.value}" var="t">
+                                    <span style="display:inline-block;padding:2px 10px;margin:1px 3px;border-radius:12px;font-size:12px;background:${catColors[entry.key]};color:#fff;">${t.name}</span>
+                                </c:forEach>
+                            </div>
+                            </c:if>
+                        </c:forEach>
 
                         <div class="d-flex align-items-center">
-                            <div class="review-avatar" style="width: 40px; height: 40px; font-size: 16px;">旅</div>
+                            <div class="review-avatar" style="width: 40px; height: 40px; font-size: 16px;">${fn:substring(guide.userName, 0, 1)}</div>
                             <div style="margin-left: 12px;">
-                                <div style="font-weight: bold; color: #333;">旅行达人小王</div>
-                                <div style="font-size: 12px; color: #999;">发布于 2026-06-10 10:30</div>
+                                <div style="font-weight: bold; color: #333;">${empty guide.userName ? '匿名用户' : guide.userName}</div>
                             </div>
                         </div>
 
-                        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee; font-size: 12px; color: #999;">
-                            最后更新：2026-06-15 14:20
-                        </div>
                     </div>
 
-                    <div class="tabs-custom tabs-horizontal tabs-line">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-bs-toggle="tab"><span class="icon linearicons-file-text"></span>详情介绍</a></li>
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-2" data-bs-toggle="tab"><span class="icon linearicons-calendar"></span>行程安排</a></li>
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-bs-toggle="tab"><span class="icon linearicons-message-circle"></span>用户问答</a></li>
-                            <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-4" data-bs-toggle="tab"><span class="icon fa fa-comment"></span>用户点评</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade active show" id="tabs-1-1">
-                                <div class="mb-6">
-                                    <h4 class="text-primary mb-4">攻略介绍</h4>
-                                    <p style="line-height: 1.8; color: #666;">
-                                        镇北堡西部影城是中国电影的摇篮，被誉为"东方好莱坞"。这里是《大话西游》《红高粱》《龙门客栈》等经典电影的拍摄地，
-                                        以其独特的大漠风光和古朴的古堡建筑吸引着无数游客。本攻略将带您深度游览这座电影艺术殿堂，体验电影拍摄的魅力。
-                                    </p>
-                                </div>
+                    <!-- 攻略正文 -->
+                    <div style="margin-top:20px; padding:20px; background:#fafafa; border-radius:8px; line-height:1.9; color:#444; white-space:pre-wrap;">${guide.content}</div>
 
-                                <div class="mb-6">
-                                    <h4 class="text-primary mb-4">景区特色</h4>
-                                    <ul class="list-marked list-marked-primary" style="line-height: 2;">
-                                        <li>穿越电影场景，重温经典影片</li>
-                                        <li>西北大漠风光与古堡建筑完美融合</li>
-                                        <li>丰富的影视文化体验项目</li>
-                                        <li>独特的民俗文化展示</li>
-                                        <li>专业的导游讲解，了解幕后故事</li>
-                                    </ul>
+                    <!-- 用户点评 -->
+                    <div style="margin-top:30px;">
+                        <div class="mb-6">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">用户点评 <span style="font-size: 14px; font-weight: normal; color: #999;">(128条)</span></h3>
                                 </div>
-
-                                <div class="mb-6">
-                                    <h4 class="text-primary mb-4">适合人群</h4>
-                                    <div class="row row-30">
-                                        <div class="col-md-3 text-center p-4 bg-gray-50 rounded-lg">
-                                            <div class="icon icon-lg text-primary mb-2"><span class="icon linearicons-users"></span></div>
-                                            <h5>家庭出游</h5>
-                                            <p class="text-sm text-gray-500">亲子互动，寓教于乐</p>
-                                        </div>
-                                        <div class="col-md-3 text-center p-4 bg-gray-50 rounded-lg">
-                                            <div class="icon icon-lg text-primary mb-2"><span class="icon linearicons-user-check"></span></div>
-                                            <h5>朋友结伴</h5>
-                                            <p class="text-sm text-gray-500">欢乐同行，共同回忆</p>
-                                        </div>
-                                        <div class="col-md-3 text-center p-4 bg-gray-50 rounded-lg">
-                                            <div class="icon icon-lg text-primary mb-2"><span class="icon linearicons-camera"></span></div>
-                                            <h5>摄影爱好者</h5>
-                                            <p class="text-sm text-gray-500">电影场景，大片不断</p>
-                                        </div>
-                                        <div class="col-md-3 text-center p-4 bg-gray-50 rounded-lg">
-                                            <div class="icon icon-lg text-primary mb-2"><span class="icon linearicons-heart"></span></div>
-                                            <h5>影迷粉丝</h5>
-                                            <p class="text-sm text-gray-500">追寻经典，重温感动</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mb-6">
-                                    <h4 class="text-primary mb-4">费用说明</h4>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 30%; font-weight: bold;">门票价格</td>
-                                                    <td style="color: #666;">成人票：80元/人；学生票：40元/人（凭学生证）</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 30%; font-weight: bold;">不含费用</td>
-                                                    <td style="color: #666;">景区内交通车、骑马、射箭等自费项目；餐饮费用</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="width: 30%; font-weight: bold;">儿童政策</td>
-                                                    <td style="color: #666;">1.2米以下儿童免门票，1.2米以上儿童需购学生票</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h4 class="text-primary mb-4">温馨提示</h4>
-                                    <ul class="list-marked list-marked-primary" style="line-height: 2;">
-                                        <li>景区面积较大，建议穿着舒适的运动鞋</li>
-                                        <li>夏季紫外线强，建议佩戴墨镜和帽子，做好防晒</li>
-                                        <li>景区内有很多特色服装租赁，适合拍照留念</li>
-                                        <li>建议预留半天到一天时间游览，充分体验</li>
-                                        <li>节假日游客较多，建议提前网上购票</li>
-                                    </ul>
+                                <div class="col-md-6 text-right">
+                                    <button onclick="showWriteReviewModal()" class="button button-primary" type="button">写点评</button>
                                 </div>
                             </div>
-
-                            <div class="tab-pane fade" id="tabs-1-2">
-                                <div class="timeline-classic">
-                                    <article class="timeline-classic-item">
-                                        <div class="timeline-classic-item__marker"></div>
-                                        <div class="timeline-classic-item__body">
-                                            <h5 class="text-primary">上午：老银川一条街 - 清城探秘</h5>
-                                            <div class="row row-20">
-                                                <div class="col-lg-4">
-                                                    <img src="images/tour-1-370x284.jpg" alt="老银川一条街" class="img-fluid rounded-lg"/>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <ul class="list-marked list-marked-primary">
-                                                        <li><strong>09:00</strong>：抵达景区，进入老银川一条街，感受民国风情</li>
-                                                        <li><strong>09:30</strong>：游览清城，参观《大话西游》取景地</li>
-                                                        <li><strong>10:30</strong>：打卡至尊宝和紫霞仙子的经典场景</li>
-                                                        <li><strong>11:30</strong>：体验影视道具展示，了解电影拍摄幕后</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                    <article class="timeline-classic-item">
-                                        <div class="timeline-classic-item__marker"></div>
-                                        <div class="timeline-classic-item__body">
-                                            <h5 class="text-primary">中午：景区午餐 - 品尝西北美食</h5>
-                                            <div class="row row-20">
-                                                <div class="col-lg-4">
-                                                    <img src="images/tour-1-370x284.jpg" alt="西北美食" class="img-fluid rounded-lg"/>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <ul class="list-marked list-marked-primary">
-                                                        <li><strong>12:00</strong>：在景区餐厅享用午餐</li>
-                                                        <li><strong>推荐美食</strong>：手抓羊肉、臊子面、酿皮子</li>
-                                                        <li><strong>休息时间</strong>：约1小时，补充能量</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                    <article class="timeline-classic-item">
-                                        <div class="timeline-classic-item__marker"></div>
-                                        <div class="timeline-classic-item__body">
-                                            <h5 class="text-primary">下午：明城探索 - 民俗体验</h5>
-                                            <div class="row row-20">
-                                                <div class="col-lg-4">
-                                                    <img src="images/tour-1-370x284.jpg" alt="明城" class="img-fluid rounded-lg"/>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <ul class="list-marked list-marked-primary">
-                                                        <li><strong>13:00</strong>：进入明城，游览《红高粱》《龙门客栈》取景地</li>
-                                                        <li><strong>14:00</strong>：体验古代兵器展示，感受武侠文化</li>
-                                                        <li><strong>15:00</strong>：参观民俗文化展示区，了解西北民俗</li>
-                                                        <li><strong>16:00</strong>：参与影视体验活动，过一把演员瘾</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                    <article class="timeline-classic-item">
-                                        <div class="timeline-classic-item__marker"></div>
-                                        <div class="timeline-classic-item__body">
-                                            <h5 class="text-primary">傍晚：夕阳美景 - 结束游览</h5>
-                                            <div class="row row-20">
-                                                <div class="col-lg-4">
-                                                    <img src="images/tour-1-370x284.jpg" alt="夕阳美景" class="img-fluid rounded-lg"/>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <ul class="list-marked list-marked-primary">
-                                                        <li><strong>17:00</strong>：在古堡城墙欣赏大漠夕阳美景</li>
-                                                        <li><strong>17:30</strong>：选购纪念品，留下美好回忆</li>
-                                                        <li><strong>18:00</strong>：结束游览，返回银川市区</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="tabs-1-3">
-                                <div class="mb-4">
-                                    <button onclick="showAskModal()" class="button button-primary" type="button">我要提问</button>
-                                    <a href="#" class="float-right text-primary" style="line-height: 38px;">更多问答 &gt;</a>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-gray-50 rounded-lg">
-                                        <h5 style="font-weight: bold; margin-bottom: 8px;">镇北堡影城游玩需要多长时间？</h5>
-                                        <p style="color: #666;">建议预留半天到一天时间。景区分为清城、明城和老银川一条街三个部分，如果只是走马观花大概2-3小时，如果想深度体验、拍照留念，建议安排一整天时间。</p>
-                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">回答时间：2026-06-10 | 有45人觉得有用</p>
-                                    </div>
-
-                                    <div class="p-4 bg-gray-50 rounded-lg">
-                                        <h5 style="font-weight: bold; margin-bottom: 8px;">景区内可以穿古装拍照吗？</h5>
-                                        <p style="color: #666;">当然可以！景区内有很多服装租赁店，可以租到各种古装、民国装等特色服装，价格大约50-100元不等。穿上古装在电影场景中拍照，非常有代入感。</p>
-                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">回答时间：2026-06-08 | 有67人觉得有用</p>
-                                    </div>
-
-                                    <div class="p-4 bg-gray-50 rounded-lg">
-                                        <h5 style="font-weight: bold; margin-bottom: 8px;">《大话西游》的经典场景在哪里？</h5>
-                                        <p style="color: #666;">《大话西游》的主要取景地在清城，包括城楼、至尊宝和紫霞仙子对话的城墙、牛魔王的府邸等。进入景区后可以跟随指示牌找到这些经典场景，也可以请导游讲解。</p>
-                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">回答时间：2026-06-05 | 有89人觉得有用</p>
-                                    </div>
-
-                                    <div class="p-4 bg-gray-50 rounded-lg">
-                                        <h5 style="font-weight: bold; margin-bottom: 8px;">景区内有餐饮服务吗？价格贵吗？</h5>
-                                        <p style="color: #666;">景区内有多家餐厅和小吃店，提供手抓羊肉、臊子面、酿皮子等西北特色美食。价格相对市区略高，但还算合理，人均大约50-80元。也可以自带零食和水。</p>
-                                        <p style="font-size: 12px; color: #999; margin-top: 8px;">回答时间：2026-06-03 | 有34人觉得有用</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="tabs-1-4">
-                                <div class="mb-6">
-                                    <div class="row align-items-center">
-                                        <div class="col-md-6">
-                                            <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">用户点评 <span style="font-size: 14px; font-weight: normal; color: #999;">(128条)</span></h3>
-                                        </div>
-                                        <div class="col-md-6 text-right">
-                                            <button onclick="showWriteReviewModal()" class="button button-primary" type="button">写点评</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <span class="badge bg-primary text-white mr-2">全部(128)</span>
-                                        <span class="badge bg-gray-100 text-gray-600 mr-2">好评(112)</span>
-                                        <span class="badge bg-gray-100 text-gray-600 mr-2">中评(10)</span>
-                                        <span class="badge bg-gray-100 text-gray-600">差评(6)</span>
-                                    </div>
-                                </div>
-
-                                <div id="reviews-container"></div>
+                            <div class="mt-4">
+                                <span class="badge bg-primary text-white mr-2">全部(128)</span>
+                                <span class="badge bg-gray-100 text-gray-600 mr-2">好评(112)</span>
+                                <span class="badge bg-gray-100 text-gray-600 mr-2">中评(10)</span>
+                                <span class="badge bg-gray-100 text-gray-600">差评(6)</span>
                             </div>
                         </div>
+                        <div id="reviews-container"></div>
                     </div>
                 </div>
             </div>
@@ -279,50 +145,37 @@
                         <h5 style="font-weight: bold; color: #333; margin-bottom: 16px;">攻略信息</h5>
                         <div class="space-y-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-clock3"></span> 游玩时长</span>
-                                <span class="font-weight-bold">半天-1天</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-map2"></span> 游玩地点</span>
-                                <span class="font-weight-bold">镇北堡西部影城</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-users"></span> 适合人群</span>
-                                <span class="font-weight-bold">家庭/影迷/摄影</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-wallet"></span> 门票价格</span>
-                                <span class="font-weight-bold text-primary">￥80起</span>
-                            </div>
-                            <hr style="margin: 12px 0;"/>
-                            <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon linearicons-eye"></span> 浏览数</span>
-                                <span class="font-weight-bold">12,856</span>
+                                <span class="font-weight-bold">${guide.viewCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon linearicons-thumbs-up"></span> 点赞数</span>
-                                <span class="font-weight-bold">2,341</span>
+                                <span class="font-weight-bold">${guide.likeCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon fa fa-comment"></span> 评论数</span>
-                                <span class="font-weight-bold">128</span>
+                                <span class="font-weight-bold">${guide.commentCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon linearicons-heart"></span> 收藏数</span>
-                                <span class="font-weight-bold">1,892</span>
+                                <span class="font-weight-bold">${guide.favoriteCount}</span>
                             </div>
                             <hr style="margin: 12px 0;"/>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500">发布时间</span>
-                                <span style="font-size: 12px;">2026-06-10 10:30</span>
+                                <span style="font-size: 12px;">${guide.createdAt}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500">更新时间</span>
-                                <span style="font-size: 12px;">2026-06-15 14:20</span>
+                                <span style="font-size: 12px;">${guide.updatedAt}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500">状态</span>
-                                <span class="badge bg-primary text-white" style="font-size: 12px;">已发布</span>
+                                <c:choose>
+                                    <c:when test="${guide.status == 'PUBLISHED'}"><span class="badge bg-success text-white" style="font-size:12px;">已发布</span></c:when>
+                                    <c:when test="${guide.status == 'DRAFT'}"><span class="badge bg-warning text-white" style="font-size:12px;">草稿</span></c:when>
+                                    <c:otherwise><span class="badge bg-danger text-white" style="font-size:12px;">已隐藏</span></c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
@@ -553,13 +406,6 @@
             $('#star-rating i').removeClass('active');
             $(this).addClass('active');
             $(this).prevAll().addClass('active');
-        });
-
-        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
-            var target = $(e.target).attr('href');
-            if (target === '#tabs-1-4') {
-                renderReviews();
-            }
         });
     });
 

@@ -1,5 +1,24 @@
 <%@include file="Head.jsp"%>
 <%@page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="com.niit.utils.DBUtil" %>
+<%@ page import="com.niit.mapper.TravelGuideMapper" %>
+<%@ page import="com.niit.pojo.TravelGuide" %>
+<%@ page import="org.apache.ibatis.session.SqlSession" %>
+<%@ page import="java.util.List" %>
+
+<%
+    // 如果 servlet 没有设置 guideList（直接访问 jsp），则自行加载
+    if (request.getAttribute("guideList") == null) {
+        try (SqlSession s = DBUtil.getSession()) {
+            request.setAttribute("guideList", s.getMapper(TravelGuideMapper.class).findPublished());
+        } catch (Exception e) {
+            request.setAttribute("error", "加载失败：" + e.getMessage());
+        }
+    }
+%>
 
 <!-- Breadcrumbs-->
 <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
@@ -21,137 +40,54 @@
         </div>
         <div class="row row-40 offset-lg row-xl-40">
 
-            <!-- 攻略1 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".1s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-1-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">旅</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">旅行达人小王</div>
-                        </div>
-                        <h5><a href="TravelGuide-detail.jsp">镇北堡影城游玩攻略</a></h5>
-                        <p>镇北堡影城第一次来宁夏必看路线</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-clock3"></span><span>5天4晚</span></li>
-                            <li><span class="icon linearicons-map2"></span><span>银川+中卫</span></li>
-                            <li><span class="icon linearicons-users"></span><span>适合家庭/朋友</span></li>
-                        </ul>
+            <c:choose>
+                <c:when test="${empty guideList}">
+                    <div class="col-12 text-center" style="padding: 60px 0;">
+                        <p style="color: #999; font-size: 16px;">暂无攻略，快来发布第一篇吧！</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- 攻略2 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".2s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-2-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">自</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">自驾爱好者</div>
+                </c:when>
+                <c:otherwise>
+                    <c:forEach items="${guideList}" var="g" varStatus="vs">
+                        <c:set var="delay" value="${(vs.index % 3) * 0.1 + 0.1}"/>
+                        <c:set var="iconChar" value="${fn:substring(g.userName, 0, 1)}"/>
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="${delay}s">
+                            <div class="service-box-creative">
+                                <a class="service-box-creative__media" href="TravelGuide-detail.jsp?id=${g.id}" style="display:block;height:220px;overflow:hidden;">
+                                    <c:choose>
+                                        <c:when test="${not empty g.coverImage}">
+                                            <img src="${g.coverImage}" alt="" style="width:100%;height:100%;object-fit:cover;"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="images/tour-${(vs.index % 8) + 1}-370x284.jpg" alt="" style="width:100%;height:100%;object-fit:cover;"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </a>
+                                <div class="service-box-creative__caption">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">${empty iconChar ? '旅' : iconChar}</div>
+                                        <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">${empty g.userName ? '匿名用户' : g.userName}</div>
+                                    </div>
+                                    <h5><a href="TravelGuide-detail.jsp?id=${g.id}">${g.title}</a></h5>
+                                    <c:if test="${not empty g.tags}">
+                                    <div style="margin:8px 0;">
+                                        <c:set var="tagArr" value="${fn:split(g.tags, ',')}"/>
+                                        <c:forEach items="${tagArr}" var="tag">
+                                            <c:if test="${not empty tag}">
+                                            <span style="display:inline-block;padding:2px 10px;margin:2px;border-radius:12px;font-size:11px;background:#e8f5f5;color:#00a8a8;">${tag}</span>
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
+                                    </c:if>
+                                    <ul class="icon-list">
+                                        <li><span class="icon linearicons-eye"></span><span>${g.viewCount} 浏览</span></li>
+                                        <li><span class="icon linearicons-heart"></span><span>${g.likeCount} 点赞</span></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <h5><a href="TravelGuide-detail.jsp">宁夏沙漠自驾全攻略</a></h5>
-                        <p>详细路线、加油点、露营装备、沙漠驾驶技巧，自驾必备</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-car"></span><span>自驾推荐</span></li>
-                            <li><span class="icon linearicons-compass"></span><span>全程480km</span></li>
-                            <li><span class="icon linearicons-sun"></span><span>5-10月最佳</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 攻略3 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-3-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">美</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">美食家陈哥</div>
-                        </div>
-                        <h5><a href="TravelGuide-detail.jsp">宁夏必吃美食攻略</a></h5>
-                        <p>手抓羊肉、蒿子面、辣糊糊、羊杂碎，本地人私藏店铺</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-restaurant"></span><span>12种特色美食</span></li>
-                            <li><span class="icon linearicons-map-pin"></span><span>银川/中卫</span></li>
-                            <li><span class="icon linearicons-wallet"></span><span>人均50元</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 攻略4 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".4s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-4-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">妈</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">亲子游妈妈</div>
-                        </div>
-                        <h5><a href="TravelGuide-detail.jsp">宁夏亲子游3日攻略</a></h5>
-                        <p>轻松不累，适合带孩子，动物园、沙湖、影城孩子超喜欢</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-baby"></span><span>亲子专属</span></li>
-                            <li><span class="icon linearicons-hotel"></span><span>亲子酒店推荐</span></li>
-                            <li><span class="icon linearicons-heart"></span><span>轻松行程</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 攻略5 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-5-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">摄</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">摄影师阿杰</div>
-                        </div>
-                        <h5><a href="TravelGuide-detail.jsp">宁夏网红拍照攻略</a></h5>
-                        <p>沙漠星空、黄河落日、影视城打卡，最佳机位+拍摄时间</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-camera"></span><span>摄影圣地</span></li>
-                            <li><span class="icon linearicons-sunset"></span><span>日出/日落</span></li>
-                            <li><span class="icon linearicons-image"></span><span>20个打卡点</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 攻略6 -->
-            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".6s">
-                <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
-                        <img src="images/tour-6-370x284.jpg" alt="" width="370" height="284"/>
-                    </a>
-                    <div class="service-box-creative__caption">
-                        <div class="d-flex align-items-center mb-2">
-                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">住</div>
-                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">住宿达人</div>
-                        </div>
-                        <h5><a href="TravelGuide-detail.jsp">宁夏住宿全攻略</a></h5>
-                        <p>市区酒店、沙漠帐篷、中卫网红民宿，高性价比推荐</p>
-                        <ul class="icon-list">
-                            <li><span class="icon linearicons-hotel"></span><span>高中低档</span></li>
-                            <li><span class="icon linearicons-map-pin"></span><span>交通便利</span></li>
-                            <li><span class="icon linearicons-wallet"></span><span>价格透明</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
 
         </div>
     </div>
@@ -246,20 +182,23 @@
             </div>
             <div class="modal-body" style="padding: 30px;">
                 <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">封面图片（可选）</div>
+                    <input style="width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="guide-cover" type="file" accept="image/*">
+                </div>
+                <div style="margin-bottom: 20px;">
                     <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略标题</div>
                     <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="guide-title" type="text" placeholder="请输入攻略标题">
                 </div>
                 <div style="margin-bottom: 20px;">
-                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略标签（用逗号分隔）</div>
-                    <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="guide-tags" type="text" placeholder="例如：宁夏旅游,银川,镇北堡">
-                </div>
-                <div style="margin-bottom: 20px;">
-                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略简介</div>
-                    <textarea style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333; resize: vertical;" id="guide-intro" rows="3" placeholder="请简要介绍您的攻略"></textarea>
-                </div>
-                <div style="margin-bottom: 20px;">
                     <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略详情</div>
                     <textarea style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333; resize: vertical;" id="guide-content" rows="8" placeholder="请详细描述您的攻略内容，包括行程安排、注意事项等"></textarea>
+                </div>
+                <!-- 标签选择 -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 10px;">选择标签（点击选中/取消）</div>
+                    <div id="guide-tag-area" style="max-height: 280px; overflow-y: auto;">
+                        <div style="text-align:center;color:#999;padding:20px;">加载标签中...</div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -273,7 +212,15 @@
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
+<style>
+.tag-chip { display:inline-block; padding:5px 12px; margin:3px; border:2px solid #ddd; border-radius:20px; font-size:13px; cursor:pointer; transition:all 0.2s; user-select:none; }
+.tag-chip:hover { border-color:#00a8a8; background:#e8f5f5; }
+.tag-chip.selected { border-color:#00a8a8; background:#00a8a8; color:#fff; }
+.tag-cat-title { font-size:13px; font-weight:600; color:#666; margin:8px 0 4px 3px; }
+</style>
 <script>
+    var guideSelectedTags = {};
+
     function showPublishGuideModal() {
         var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
@@ -286,35 +233,88 @@
         }
         
         document.getElementById('guide-title').value = '';
-        document.getElementById('guide-tags').value = '';
-        document.getElementById('guide-intro').value = '';
         document.getElementById('guide-content').value = '';
+        document.getElementById('guide-cover').value = '';
+        guideSelectedTags = {};
+        loadGuideTags();
         var modal = new bootstrap.Modal(document.getElementById('publish-guide-modal'));
         modal.show();
     }
 
+    function loadGuideTags() {
+        var area = document.getElementById('guide-tag-area');
+        area.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">加载标签中...</div>';
+        fetch('/admin/guideTag?action=list')
+        .then(function(r) { return r.json(); })
+        .then(function(tags) {
+            var catMap = { 'FEATURE': [], 'TIME': [], 'AUDIENCE': [], 'BUDGET': [] };
+            var catNames = { 'FEATURE': '特点', 'TIME': '时间', 'AUDIENCE': '适合人群', 'BUDGET': '预算' };
+            tags.forEach(function(t) {
+                if (catMap[t.category]) catMap[t.category].push(t);
+            });
+            var html = '';
+            for (var cat in catMap) {
+                html += '<div class="tag-cat-title">' + catNames[cat] + '</div>';
+                catMap[cat].forEach(function(t) {
+                    html += '<span class="tag-chip" data-id="' + t.id + '" data-name="' + escHtml(t.name) + '" data-cat="' + cat + '" onclick="toggleTag(this)">' + escHtml(t.name) + '</span>';
+                });
+            }
+            area.innerHTML = html;
+        })
+        .catch(function() {
+            area.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">加载失败</div>';
+        });
+    }
+
+    function toggleTag(el) {
+        var name = el.getAttribute('data-name');
+        if (el.classList.contains('selected')) {
+            el.classList.remove('selected');
+            delete guideSelectedTags[name];
+        } else {
+            el.classList.add('selected');
+            guideSelectedTags[name] = true;
+        }
+    }
+
     function submitGuide() {
         var title = document.getElementById('guide-title').value.trim();
-        var tags = document.getElementById('guide-tags').value.trim();
-        var intro = document.getElementById('guide-intro').value.trim();
         var content = document.getElementById('guide-content').value.trim();
         
-        if (!title) {
-            alert('请输入攻略标题！');
-            return;
-        }
-        if (!intro) {
-            alert('请输入攻略简介！');
-            return;
-        }
-        if (!content) {
-            alert('请输入攻略详情！');
-            return;
-        }
+        if (!title) { alert('请输入攻略标题！'); return; }
+        if (!content) { alert('请输入攻略详情！'); return; }
         
-        $('#publish-guide-modal').modal('hide');
-        alert('攻略发布成功！');
+        var selectedNames = Object.keys(guideSelectedTags);
+        var tags = selectedNames.join(',');
+        
+        var formData = new FormData();
+        formData.append('action', 'publish');
+        formData.append('title', title);
+        formData.append('tags', tags);
+        formData.append('content', content);
+        
+        var coverFile = document.getElementById('guide-cover').files[0];
+        if (coverFile) { formData.append('coverImage', coverFile); }
+        
+        fetch('guide', { method: 'POST', body: formData })
+        .then(function(res) { return res.json(); })
+        .then(function(resp) {
+            if (resp.success) {
+                $('#publish-guide-modal').modal('hide');
+                alert('攻略发布成功！');
+                window.location.reload();
+            } else {
+                alert(resp.message || '发布失败');
+            }
+        })
+        .catch(function() { alert('网络错误，请重试'); });
     }
+
+    function escHtml(s) {
+        if (!s) return '';
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+</script>
 </script>
 </body>
 </html>

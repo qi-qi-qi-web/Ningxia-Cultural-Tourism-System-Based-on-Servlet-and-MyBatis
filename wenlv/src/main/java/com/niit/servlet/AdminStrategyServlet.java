@@ -1,19 +1,27 @@
 package com.niit.servlet;
 
+import com.niit.mapper.GuideTagMapper;
 import com.niit.mapper.TravelGuideMapper;
+import com.niit.pojo.GuideTag;
 import com.niit.pojo.TravelGuide;
 import com.niit.utils.DBUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.ibatis.session.SqlSession;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Statement;
 
 @WebServlet("/admin/strategy")
+@MultipartConfig(maxFileSize = 10 * 1024 * 1024)  // 10MB
 public class AdminStrategyServlet extends HttpServlet {
 
     @Override
@@ -45,7 +53,103 @@ public class AdminStrategyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException { doGet(request, response); }
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        if ("save".equals(request.getParameter("action"))) {
+            saveStrategy(request, response);
+        } else {
+            doGet(request, response);
+        }
+    }
+
+    private void saveStrategy(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String idStr = request.getParameter("id");
+        try (SqlSession s = DBUtil.getSession(false)) {
+            TravelGuideMapper m = s.getMapper(TravelGuideMapper.class);
+            GuideTagMapper tm = s.getMapper(GuideTagMapper.class);
+            TravelGuide g = new TravelGuide();
+            g.setTitle(request.getParameter("title"));
+            g.setContent(request.getParameter("content"));
+            g.setTags(request.getParameter("tags"));
+            g.setStatus(request.getParameter("status") != null ? request.getParameter("status") : "PUBLISHED");
+
+            // 处理封面图上传
+            String coverImage = request.getParameter("coverImage");
+            try {
+                Part filePart = request.getPart("coverImageFile");
+                if (filePart != null && filePart.getSize() > 0) {
+                    coverImage = saveUploadedFile(filePart, request);
+                }
+            } catch (Exception e) {}
+            g.setCoverImage(coverImage != null ? coverImage : "");
+
+            Long guideId;
+            if (idStr != null && !idStr.isEmpty()) {
+                guideId = Long.parseLong(idStr);
+                if (coverImage == null || coverImage.isEmpty()) {
+                    TravelGuide old = m.findById(guideId);
+                    if (old != null && old.getCoverImage() != null) {
+                        g.setCoverImage(old.getCoverImage());
+                    }
+                }
+                g.setId(guideId);
+                m.update(g);
+            } else {
+                Object userObj = request.getSession().getAttribute("user");
+                g.setUserId(userObj != null ? ((com.niit.pojo.User)userObj).getId() : 1L);
+                guideId = m.findMaxId() + 1;
+                g.setId(guideId);
+                m.insert(g);
+            }
+
+            // 同步 guide_tag 关联
+            String tags = g.getTags();
+            if (tags != null && !tags.trim().isEmpty()) {
+                tm.deleteByGuideId(guideId);
+                String[] names = tags.split(",");
+                for (String name : names) {
+                    name = name.trim();
+                    if (!name.isEmpty()) {
+                        GuideTag t = new GuideTag();
+                        t.setId(tm.findMaxId() + 1);
+                        t.setGuideId(guideId);
+                        t.setName(name);
+                        t.setCategory("FEATURE");
+                        t.setSortOrder(0);
+                        tm.insert(t);
+                    }
+                }
+            } else {
+                tm.deleteByGuideId(guideId);
+            }
+
+            s.commit();
+            request.getSession().setAttribute("msg", "攻略「" + truncate(g.getTitle()) + "」保存成功");
+        } catch (Exception e) {
+            request.getSession().setAttribute("msg", "保存失败：" + e.getMessage());
+        }
+        response.sendRedirect(request.getContextPath() + "/admin/strategy");
+    }
+
+    /**
+     * 保存上传的文件到 images/guides/ 目录，返回相对路径
+     */
+    private String saveUploadedFile(Part filePart, HttpServletRequest request) throws IOException {
+        String fileName = filePart.getSubmittedFileName();
+        if (fileName == null || fileName.isEmpty()) return "";
+
+        String uniqueName = System.currentTimeMillis() + "_" + fileName.replaceAll("[^a-zA-Z0-9._\\-]", "_");
+        String realPath = request.getServletContext().getRealPath("/images/guides/");
+        File uploadDir = new File(realPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        File targetFile = new File(uploadDir, uniqueName);
+        Files.copy(filePart.getInputStream(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        return "images/guides/" + uniqueName;
+    }
 
     private void returnJson(HttpServletResponse response, Long id) throws IOException {
         try (SqlSession s = DBUtil.getSession()) {

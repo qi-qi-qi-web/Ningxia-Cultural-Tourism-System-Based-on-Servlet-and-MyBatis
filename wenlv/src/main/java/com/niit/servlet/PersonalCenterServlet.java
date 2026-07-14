@@ -1,15 +1,20 @@
 package com.niit.servlet;
 
+import com.niit.mapper.TravelGuideMapper;
+import com.niit.pojo.TravelGuide;
 import com.niit.pojo.User;
 import com.niit.service.UserService;
+import com.niit.utils.DBUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.session.SqlSession;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/personalCenter")
 public class PersonalCenterServlet extends HttpServlet {
@@ -33,6 +38,11 @@ public class PersonalCenterServlet extends HttpServlet {
 
         if ("me".equals(action)) {
             handleGetMe(request, response);
+            return;
+        }
+
+        if ("myGuides".equals(action)) {
+            handleMyGuides(request, response);
             return;
         }
 
@@ -195,5 +205,47 @@ public class PersonalCenterServlet extends HttpServlet {
         String escaped = message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
         String json = "{\"success\":" + success + ",\"message\":\"" + escaped + "\"}";
         response.getWriter().write(json);
+    }
+
+    private void handleMyGuides(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.getWriter().write("{\"error\":\"not_logged_in\"}");
+            return;
+        }
+
+        User user = (User) session.getAttribute("user");
+        try (SqlSession s = DBUtil.getSession()) {
+            List<TravelGuide> list = s.getMapper(TravelGuideMapper.class).findByUserId(user.getId());
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                TravelGuide g = list.get(i);
+                sb.append(String.format(
+                    "{\"id\":%d,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"tags\":\"%s\",\"likeCount\":%d,\"viewCount\":%d,\"commentCount\":%d,\"status\":\"%s\",\"createdAt\":\"%s\"}",
+                    g.getId(),
+                    esc(g.getTitle()),
+                    esc(g.getContent()),
+                    esc(g.getCoverImage()),
+                    esc(g.getTags()),
+                    g.getLikeCount() != null ? g.getLikeCount() : 0,
+                    g.getViewCount() != null ? g.getViewCount() : 0,
+                    g.getCommentCount() != null ? g.getCommentCount() : 0,
+                    esc(g.getStatus()),
+                    g.getCreatedAt() != null ? g.getCreatedAt().toString() : ""
+                ));
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            response.getWriter().write("[]");
+        }
+    }
+
+    private String esc(String s) {
+        if (s == null) return "";
+        return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
     }
 }

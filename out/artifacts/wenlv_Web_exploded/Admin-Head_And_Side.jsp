@@ -58,6 +58,9 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/strategy">
                     <i class="fa fa-file-text"></i> 攻略管理
                 </a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/guideTag">
+                    <i class="fa fa-tags"></i> 攻略标签
+                </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/order">
                     <i class="fa fa-shopping-cart"></i> 订单管理
                 </a>

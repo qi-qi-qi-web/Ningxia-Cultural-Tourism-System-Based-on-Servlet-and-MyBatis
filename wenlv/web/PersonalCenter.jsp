@@ -483,6 +483,10 @@
     .snackbar.info {
         background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
     }
+    .tag-chip { display:inline-block; padding:5px 12px; margin:3px; border:2px solid #ddd; border-radius:20px; font-size:13px; cursor:pointer; transition:all 0.2s; user-select:none; }
+    .tag-chip:hover { border-color:#00a8a8; background:#e8f5f5; }
+    .tag-chip.selected { border-color:#00a8a8; background:#00a8a8; color:#fff; }
+    .tag-cat-title { font-size:13px; font-weight:600; color:#666; margin:8px 0 4px 3px; }
 </style>
 
 <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);">
@@ -570,10 +574,12 @@
 
                 <div id="tab-posts" class="tab-content-main" style="display: none;">
                     <div class="content-card">
-                        <div class="content-title">我的攻略</div>
-                        <div class="empty-state">
-                            <div class="empty-icon"><i class="fa fa-edit"></i></div>
-                            <div class="empty-text">暂无发布内容</div>
+                        <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #f5f5f5;">
+                            <div class="content-title" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">我的攻略</div>
+                            <button class="btn-primary-custom" onclick="showPublishGuideModalPC()" style="padding: 8px 20px; font-size: 14px;">+ 发布攻略</button>
+                        </div>
+                        <div id="my-guides-list">
+                            <div class="text-center" style="padding: 40px 0; color: #999;">加载中...</div>
                         </div>
                     </div>
                 </div>
@@ -823,6 +829,53 @@
     </div>
 </section>
 
+<!-- 发布攻略弹窗 -->
+<div id="pc-publish-guide-modal" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 650px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="pc-guide-modal-title">发布旅游攻略</h4>
+                <button type="button" class="close" onclick="closePublishGuideModalPC()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <input type="hidden" id="pc-guide-id">
+                <div class="form-group-custom">
+                    <div class="form-label-custom">封面图片（可选）</div>
+                    <input class="form-input-custom" id="pc-guide-cover" type="file" accept="image/*" style="padding: 10px 15px;">
+                </div>
+                <div class="form-group-custom">
+                    <div class="form-label-custom">攻略标题</div>
+                    <input class="form-input-custom" id="pc-guide-title" type="text" placeholder="请输入攻略标题">
+                </div>
+                <div class="form-group-custom">
+                    <div class="form-label-custom">攻略详情</div>
+                    <textarea class="form-input-custom" id="pc-guide-content" rows="6" placeholder="请详细描述您的攻略内容" style="resize: vertical;"></textarea>
+                </div>
+                <!-- 标签选择 -->
+                <div class="form-group-custom">
+                    <div class="form-label-custom">选择标签（点击选中/取消）</div>
+                    <div id="pc-guide-tag-area" style="max-height: 250px; overflow-y: auto; padding: 5px 0;">
+                        <div style="text-align:center;color:#999;padding:15px;">加载标签中...</div>
+                    </div>
+                </div>
+                <div class="form-group-custom" id="pc-status-group">
+                    <div class="form-label-custom">状态</div>
+                    <select class="form-input-custom" id="pc-guide-status">
+                        <option value="PUBLISHED">已发布</option>
+                        <option value="DRAFT">草稿</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-top: 0; text-align: right;">
+                <button class="btn-primary-custom" id="pc-guide-submit-btn" onclick="submitGuidePC()">发布攻略</button>
+                <button class="btn-secondary-custom" style="margin-left: 10px;" onclick="closePublishGuideModalPC()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="edit-profile-modal" class="modal" style="display: none;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -953,6 +1006,11 @@
         });
         if (event) {
             event.currentTarget.classList.add('active');
+        }
+
+        // 切换到"我的攻略"时加载数据
+        if (tabName === 'posts') {
+            loadMyGuides();
         }
     }
 
@@ -1335,5 +1393,232 @@
                 el.style.display = (col === type) ? 'grid' : 'none';
             }
         });
+    }
+
+    /* ========== 我的攻略功能 ========== */
+
+    function loadMyGuides() {
+        var container = document.getElementById('my-guides-list');
+        if (!container) return;
+        container.innerHTML = '<div class="text-center" style="padding: 40px 0; color: #999;">加载中...</div>';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/personalCenter?action=myGuides', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var guides = JSON.parse(xhr.responseText);
+                        if (guides.error) {
+                            container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-edit"></i></div><div class="empty-text">请先登录</div></div>';
+                            return;
+                        }
+                        if (guides.length === 0) {
+                            container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-edit"></i></div><div class="empty-text">暂无发布内容</div></div>';
+                            return;
+                        }
+                        renderMyGuides(guides, container);
+                    } catch(e) {
+                        container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="empty-text">加载失败</div></div>';
+                    }
+                } else {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="empty-text">网络错误</div></div>';
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function renderMyGuides(guides, container) {
+        var html = '';
+        var statusMap = {
+            'PUBLISHED': '<span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:#e8f5e9;color:#4caf50;">已发布</span>',
+            'DRAFT': '<span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:#fff3e0;color:#ff9800;">草稿</span>',
+            'HIDDEN': '<span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;background:#ffebee;color:#e74c3c;">已隐藏</span>'
+        };
+
+        for (var i = 0; i < guides.length; i++) {
+            var g = guides[i];
+            var statusBadge = statusMap[g.status] || g.status;
+            var tags = g.tags ? g.tags.split(',').filter(function(t){return t.trim()!=='';}).join('、') : '';
+            var content = g.content || '';
+            if (content.length > 80) content = content.substring(0, 80) + '...';
+            var createdAt = g.createdAt ? g.createdAt.substring(0, 10) : '';
+
+            html += '<div style="border:1px solid #eee; border-radius:8px; padding:18px; margin-bottom:15px; transition:all 0.3s ease;" onmouseover="this.style.borderColor=\'#00a8a8\';this.style.boxShadow=\'0 2px 8px rgba(0,168,168,0.1)\'" onmouseout="this.style.borderColor=\'#eee\';this.style.boxShadow=\'none\'">';
+            html += '<div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">';
+            html += '<h5 style="font-size:16px; font-weight:600; color:#333; margin:0; flex:1;">' + escHtml(g.title) + '</h5>';
+            html += '<div style="margin-left:15px; white-space:nowrap;">' + statusBadge + '</div>';
+            html += '</div>';
+            html += '<p style="font-size:13px; color:#999; margin-bottom:8px;">' + escHtml(content) + '</p>';
+            if (tags) {
+                html += '<div style="margin-bottom:10px;"><span style="font-size:12px; color:#00a8a8; background:#e8f5f5; padding:2px 8px; border-radius:4px;">' + escHtml(tags) + '</span></div>';
+            }
+            html += '<div style="display:flex; justify-content:space-between; align-items:center;">';
+            html += '<span style="font-size:12px; color:#bbb;">' + createdAt + ' | ' + (g.viewCount||0) + ' 浏览 | ' + (g.likeCount||0) + ' 点赞</span>';
+            html += '<div>';
+            html += '<button class="btn-secondary-custom" style="font-size:12px; padding:4px 12px;" onclick="editGuidePC(' + g.id + ')">编辑</button>';
+            html += '<button class="btn-secondary-custom" style="font-size:12px; padding:4px 12px; color:#e74c3c; margin-left:6px;" onclick="deleteGuidePC(' + g.id + ')">删除</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        container.innerHTML = html;
+    }
+
+    var pcSelectedTags = {};
+
+    function showPublishGuideModalPC() {
+        document.getElementById('pc-guide-id').value = '';
+        document.getElementById('pc-guide-cover').value = '';
+        document.getElementById('pc-guide-title').value = '';
+        document.getElementById('pc-guide-content').value = '';
+        document.getElementById('pc-guide-status').value = 'PUBLISHED';
+        document.getElementById('pc-guide-modal-title').textContent = '发布旅游攻略';
+        document.getElementById('pc-guide-submit-btn').textContent = '发布攻略';
+        document.getElementById('pc-status-group').style.display = 'block';
+        pcSelectedTags = {};
+        loadPCTags();
+        document.getElementById('pc-publish-guide-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function loadPCTags() {
+        var area = document.getElementById('pc-guide-tag-area');
+        area.innerHTML = '<div style="text-align:center;color:#999;padding:15px;">加载标签中...</div>';
+        fetch('/admin/guideTag?action=list')
+        .then(function(r) { return r.json(); })
+        .then(function(tags) {
+            var catMap = { 'FEATURE': [], 'TIME': [], 'AUDIENCE': [], 'BUDGET': [] };
+            var catNames = { 'FEATURE': '特点', 'TIME': '时间', 'AUDIENCE': '适合人群', 'BUDGET': '预算' };
+            tags.forEach(function(t) {
+                if (catMap[t.category]) catMap[t.category].push(t);
+            });
+            var html = '';
+            for (var cat in catMap) {
+                html += '<div class="tag-cat-title">' + catNames[cat] + '</div>';
+                catMap[cat].forEach(function(t) {
+                    var sel = pcSelectedTags[t.name] ? ' selected' : '';
+                    html += '<span class="tag-chip' + sel + '" data-name="' + escHtml(t.name) + '" onclick="togglePCTag(this)">' + escHtml(t.name) + '</span>';
+                });
+            }
+            area.innerHTML = html;
+        })
+        .catch(function() { area.innerHTML = '<div style="text-align:center;color:#999;padding:15px;">加载失败</div>'; });
+    }
+
+    function togglePCTag(el) {
+        var name = el.getAttribute('data-name');
+        if (el.classList.contains('selected')) {
+            el.classList.remove('selected');
+            delete pcSelectedTags[name];
+        } else {
+            el.classList.add('selected');
+            pcSelectedTags[name] = true;
+        }
+    }
+
+    function closePublishGuideModalPC() {
+        document.getElementById('pc-publish-guide-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function editGuidePC(id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/admin/strategy?action=edit&id=' + id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var g = JSON.parse(xhr.responseText);
+                    document.getElementById('pc-guide-id').value = g.id;
+                    document.getElementById('pc-guide-title').value = g.title || '';
+                    document.getElementById('pc-guide-content').value = g.content || '';
+                    document.getElementById('pc-guide-status').value = g.status || 'PUBLISHED';
+                    document.getElementById('pc-guide-modal-title').textContent = '编辑旅游攻略';
+                    document.getElementById('pc-guide-submit-btn').textContent = '保存修改';
+                    document.getElementById('pc-status-group').style.display = 'block';
+                    // 预选已有标签
+                    pcSelectedTags = {};
+                    if (g.tags) {
+                        g.tags.split(',').forEach(function(t) {
+                            var n = t.trim();
+                            if (n) pcSelectedTags[n] = true;
+                        });
+                    }
+                    loadPCTags();
+                    document.getElementById('pc-publish-guide-modal').style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+                } catch(e) {
+                    showToastLocal('加载攻略失败', 'error');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function submitGuidePC() {
+        var id = document.getElementById('pc-guide-id').value;
+        var title = document.getElementById('pc-guide-title').value.trim();
+        var content = document.getElementById('pc-guide-content').value.trim();
+        var status = document.getElementById('pc-guide-status').value;
+
+        if (!title) { showToastLocal('请输入攻略标题', 'error'); return; }
+        if (!content) { showToastLocal('请输入攻略内容', 'error'); return; }
+
+        var selectedNames = Object.keys(pcSelectedTags);
+        var tags = selectedNames.join(',');
+
+        var formData = new FormData();
+        formData.append('title', title);
+        formData.append('tags', tags);
+        formData.append('content', content);
+        formData.append('status', status);
+
+        var coverFile = document.getElementById('pc-guide-cover').files[0];
+        if (coverFile) { formData.append('coverImageFile', coverFile); }
+
+        if (id) {
+            formData.append('action', 'save');
+            formData.append('id', id);
+            fetch('/admin/strategy', { method: 'POST', body: formData })
+            .then(function() {
+                closePublishGuideModalPC();
+                showToastLocal('攻略修改成功！', 'success');
+                loadMyGuides();
+            })
+            .catch(function() { showToastLocal('网络错误', 'error'); });
+        } else {
+            formData.append('action', 'publish');
+            fetch('/guide', { method: 'POST', body: formData })
+            .then(function(res) { return res.json(); })
+            .then(function(resp) {
+                if (resp.success) {
+                    closePublishGuideModalPC();
+                    showToastLocal('攻略发布成功！', 'success');
+                    loadMyGuides();
+                } else {
+                    showToastLocal(resp.message || '发布失败', 'error');
+                }
+            })
+            .catch(function() { showToastLocal('网络错误', 'error'); });
+        }
+    }
+
+    function deleteGuidePC(id) {
+        if (!confirm('确认删除这篇攻略？')) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/admin/strategy?action=delete&id=' + id, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                showToastLocal('攻略已删除', 'info');
+                loadMyGuides();
+            }
+        };
+        xhr.send();
+    }
+
+    function escHtml(s) {
+        if (!s) return '';
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 </script>

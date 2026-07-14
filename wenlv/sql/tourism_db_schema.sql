@@ -279,7 +279,7 @@ CREATE TABLE travel_guide (
     title           VARCHAR(200)    NOT NULL                    COMMENT '攻略标题',
     content         LONGTEXT        NOT NULL                    COMMENT '攻略正文(富文本)',
     cover_image     VARCHAR(500)    DEFAULT NULL                COMMENT '封面图',
-    tags            JSON            DEFAULT NULL                COMMENT '标签JSON: ["亲子","自驾","3天2晚"]',
+    tags            VARCHAR(500)    DEFAULT NULL                COMMENT '标签(逗号分隔)',
     like_count      INT             NOT NULL DEFAULT 0          COMMENT '点赞数',
     view_count      INT             NOT NULL DEFAULT 0          COMMENT '浏览数',
     comment_count   INT             NOT NULL DEFAULT 0          COMMENT '评论数(冗余计数)',
