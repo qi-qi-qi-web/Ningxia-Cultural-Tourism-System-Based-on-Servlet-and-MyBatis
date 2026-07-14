@@ -25,6 +25,16 @@
         } catch (Exception e) {}
     }
     request.setAttribute("scenic", scenic);
+    if (scenic != null && scenic.getDescription() != null) {
+        if (scenic.getDescription().trim().startsWith("<")) {
+            request.setAttribute("formattedDesc", scenic.getDescription());
+        } else {
+            String[] paras = scenic.getDescription().split("\n\n");
+            StringBuilder sb = new StringBuilder();
+            for (String p : paras) { p = p.trim(); if (!p.isEmpty()) sb.append("<p style=\"text-indent:2em;margin-bottom:0.8em;line-height:2;\">").append(p.replace("\n","<br/>")).append("</p>"); }
+            request.setAttribute("formattedDesc", sb.toString());
+        }
+    }
 %>
 
 <%@include file="Head.jsp"%>
@@ -112,22 +122,7 @@
                         <div class="tab-pane fade active show" id="tabs-1-1">
                             <div class="scenic-detail-intro">
                                 <h3 class="mb-4" style="color: #333; font-size: 20px;">景区概况</h3>
-                                <p class="mb-4" style="color: #666; line-height: 1.8;">沙坡头景区是宁夏最具代表性的旅游目的地之一，以其独特的自然景观和丰富的娱乐项目吸引着无数游客。景区位于腾格里沙漠东南边缘，黄河穿境而过，形成了独特的沙水相依景观。景区总面积约80.6平方公里，是集沙漠、黄河、高山、绿洲于一体的国家AAAAA级旅游景区。</p>
-                                <h3 class="mb-4" style="color: #333; font-size: 20px;">景区特色</h3>
-                                <div class="row mb-4">
-                                    <div class="col-md-6">
-                                        <div class="feature-card p-4" style="background: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
-                                            <h4 style="color: #00a8a8; font-size: 16px; margin-bottom: 12px;"><i class="fa fa-desert"></i> 沙漠体验区</h4>
-                                            <p style="color: #666; font-size: 14px; line-height: 1.6;">北区以沙漠体验为主，可进行沙漠冲浪、骑骆驼、沙漠露营、滑沙等活动，感受大漠雄浑与壮美。</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="feature-card p-4" style="background: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
-                                            <h4 style="color: #00a8a8; font-size: 16px; margin-bottom: 12px;"><i class="fa fa-ship"></i> 黄河文化区</h4>
-                                            <p style="color: #666; font-size: 14px; line-height: 1.6;">南区以黄河文化为主，可体验羊皮筏子漂流、黄河滑索、黄河蹦极等项目，欣赏黄河日落美景。</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div style="color: #666; line-height: 1.8;">${formattedDesc}</div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tabs-1-2">
@@ -151,12 +146,12 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tabs-1-3">
-                            <div class="row row-10 row-narrow-10 text-center" data-lightgallery="group">
+                            <div class="row row-10 row-narrow-10 text-center">
                                 <c:choose>
                                     <c:when test="${not empty scenic.images}">
                                         <c:forTokens items="${scenic.images}" delims='["],[]{} ' var="img">
                                             <c:if test="${not empty img && fn:length(img) > 5}">
-                                                <div class="col-lg-4 col-sm-6 gallery-item"><a class="gallery-link" href="${img}" data-lightgallery="item"><img src="${img}" alt="" width="370" height="250"/></a></div>
+                                                <div class="col-lg-4 col-sm-6" style="margin-bottom:20px;"><img src="${img}" alt="" width="370" height="250" onclick="openLightbox('${img}')" style="cursor:pointer;width:100%;height:220px;object-fit:cover;border-radius:8px;"/></div>
                                             </c:if>
                                         </c:forTokens>
                                     </c:when>
@@ -385,6 +380,21 @@
         
         countSpan.textContent = favoriteCount.toLocaleString();
     }
+</script>
+
+<!-- 图片灯箱 -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;">
+    <span onclick="closeLightbox()" style="position:absolute;top:20px;right:30px;color:#fff;font-size:40px;cursor:pointer;z-index:10000;">&times;</span>
+    <img id="lightboxImage" src="" style="max-width:90%;max-height:90%;object-fit:contain;"/>
+</div>
+<script>
+function openLightbox(src) {
+    document.getElementById('lightboxImage').src = src;
+    document.getElementById('lightboxOverlay').style.display = 'flex';
+}
+function closeLightbox() {
+    document.getElementById('lightboxOverlay').style.display = 'none';
+}
 </script>
 </c:if>
 </body></html>
