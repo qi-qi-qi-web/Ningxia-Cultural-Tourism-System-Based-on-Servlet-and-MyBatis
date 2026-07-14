@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-12">
 	                    <div class="blog-post-classic">
-	                        <h2>${hotel.name} <i class="fa fa-star-o bookmark-star bookmark-star--lg" data-bookmarked="false"></i></h2>
+		                        <h2>${hotel.name}</h2>
 	                        <c:choose>
 	                            <c:when test="${not empty hotel.coverImage}">
 	                                <img src="${hotel.coverImage}" alt="${hotel.name}" style="max-width:100%;height:auto;max-height:500px;object-fit:contain;display:block;margin:0 auto 20px;border-radius:10px;"/>
@@ -67,6 +67,7 @@
 	                            </c:if>
 	                            <c:if test="${not empty hotel.minPrice}"><span style="font-size:24px;color:#e74c3c;font-weight:bold;">¥${hotel.minPrice}<small style="font-size:14px;color:#999;"> 起/晚</small></span></c:if>
 	                            <c:if test="${not empty hotel.contactPhone}"><span style="color:#666;">📞 ${hotel.contactPhone}</span></c:if>
+                            <span style="cursor:pointer;margin-left:auto;font-style:normal;" onclick="toggleFavHotel(${hotel.id}, this)"><span id="fav-icon" class="fav-heart" style="color:#ccc;font-size:20px;">♥</span> <span id="fav-count">${hotel.favoriteCount}</span> 收藏</span>
 	                        </div>
 
 	                        <!-- 描述 -->
@@ -262,22 +263,27 @@ document.addEventListener('click', function(e) {
         openLightbox(target.src);
     }
 });
-// Bookmark star toggle
-document.addEventListener('click', function(e) {
-    var star = e.target.closest('.bookmark-star');
-    if (star) {
-        e.preventDefault();
-        var bookmarked = star.getAttribute('data-bookmarked') === 'true';
-        var lg = star.classList.contains('bookmark-star--lg') ? ' bookmark-star--lg' : '';
-        if (bookmarked) {
-            star.className = 'fa fa-star-o bookmark-star' + lg;
-            star.setAttribute('data-bookmarked', 'false');
-        } else {
-            star.className = 'fa fa-star bookmark-star active' + lg;
-            star.setAttribute('data-bookmarked', 'true');
-        }
-    }
-});
+// 收藏切换
+function toggleFavHotel(hid, el) {
+    fetch('/fav?type=HOTEL&id=' + hid)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.ok) {
+            var icon = document.getElementById('fav-icon') || el.querySelector('.fav-heart');
+            var cnt = document.getElementById('fav-count') || el.querySelector('.fav-cnt');
+            if (icon) icon.style.color = d.faved ? '#e74c3c' : '#ccc';
+            if (cnt) cnt.textContent = d.count;
+        } else if (d.msg) { alert(d.msg); }
+    });
+}
+// 页面加载时检查收藏状态
+(function(){
+    var hid = '${hotel.id}';
+    if (hid) fetch('/fav?type=HOTEL&id=' + hid + '&check=1').then(function(r){return r.json();}).then(function(d){
+        var icon = document.getElementById('fav-icon');
+        if (icon && d.faved) icon.style.color = '#e74c3c';
+    });
+})();
 
 // Toggle review form
 function toggleReviewForm() {

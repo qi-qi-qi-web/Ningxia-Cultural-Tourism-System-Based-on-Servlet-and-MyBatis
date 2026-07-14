@@ -80,7 +80,7 @@
                                     </c:if>
                                     <ul class="icon-list">
                                         <li><span class="icon linearicons-eye"></span><span>${g.viewCount} 浏览</span></li>
-                                        <li><span class="icon linearicons-heart"></span><span>${g.likeCount} 点赞</span></li>
+                                        <li style="cursor:pointer;" onclick="toggleFavList(${g.id}, this)"><span class="icon fa fa-heart" style="color:#ccc;"></span><span class="fav-text">${g.favoriteCount} 收藏</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -313,6 +313,19 @@
     function escHtml(s) {
         if (!s) return '';
         return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function toggleFavList(gid, el) {
+        fetch('/fav?type=GUIDE&id=' + gid)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if (d.ok) {
+                var icon = el.querySelector('.fa-heart');
+                var text = el.querySelector('.fav-text');
+                icon.style.color = d.faved ? '#e74c3c' : '#ccc';
+                text.textContent = d.count + ' 收藏';
+            } else if (d.msg) { alert(d.msg); }
+        });
     }
 </script>
 </script>

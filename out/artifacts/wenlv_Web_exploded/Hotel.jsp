@@ -38,9 +38,11 @@
                 <div class="col-lg-4 col-sm-6">
                     <article class="card-classic" style="display:flex;flex-direction:column;height:100%;">
                         <a class="card-classic__media" href="Hotel-detail.jsp?id=${h.id}"><img src="${empty h.coverImage ? 'images/service-1-370x389.jpg' : h.coverImage}" alt="${h.name}" width="370" height="389"/></a>
-                        <h5><a href="Hotel-detail.jsp?id=${h.id}">${h.name}</a> <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
+                        <h5><a href="Hotel-detail.jsp?id=${h.id}">${h.name}</a></h5>
                         <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${h.description}</p>
-                        <div class="card-classic__actions" style="margin-top:auto;"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp?id=${h.id}">了解更多</a><span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">${empty h.minPrice ? '299' : h.minPrice}</span><span class="card-classic__price-starting">起</span></span></div>
+                        <div class="card-classic__actions" style="margin-top:auto;"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp?id=${h.id}">了解更多</a>
+                            <span style="cursor:pointer;font-size:14px;color:#999;font-style:normal;" onclick="toggleFavHotel(${h.id}, this)"><span class="fav-heart" style="color:#ccc;margin-right:4px;">♥</span><span class="fav-cnt">${h.favoriteCount}</span> 收藏</span>
+                            <span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">${empty h.minPrice ? '299' : h.minPrice}</span><span class="card-classic__price-starting">起</span></span></div>
                     </article>
                 </div>
                         </c:forEach>
@@ -56,21 +58,18 @@
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
 <script>
-// Bookmark star toggle
-document.addEventListener('click', function(e) {
-    var star = e.target.closest('.bookmark-star');
-    if (star) {
-        e.preventDefault();
-        var bookmarked = star.getAttribute('data-bookmarked') === 'true';
-        if (bookmarked) {
-            star.className = 'fa fa-star-o bookmark-star' + (star.classList.contains('bookmark-star--lg') ? ' bookmark-star--lg' : '');
-            star.setAttribute('data-bookmarked', 'false');
-        } else {
-            star.className = 'fa fa-star bookmark-star active' + (star.classList.contains('bookmark-star--lg') ? ' bookmark-star--lg' : '');
-            star.setAttribute('data-bookmarked', 'true');
-        }
-    }
-});
+function toggleFavHotel(hid, el) {
+    fetch('/fav?type=HOTEL&id=' + hid)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.ok) {
+            var icon = el.querySelector('.fav-heart');
+            var cnt = el.querySelector('.fav-cnt');
+            icon.style.color = d.faved ? '#e74c3c' : '#ccc';
+            cnt.textContent = d.count;
+        } else if (d.msg) { alert(d.msg); }
+    });
+}
 </script>
 </body>
 </html>

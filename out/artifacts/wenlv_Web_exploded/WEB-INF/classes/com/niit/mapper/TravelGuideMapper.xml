@@ -69,6 +69,18 @@
         UPDATE travel_guide SET status=#{status} WHERE id=#{id}
     </update>
 
+    <update id="incrementViewCount">
+        UPDATE travel_guide SET view_count = view_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="incrementFavoriteCount">
+        UPDATE travel_guide SET favorite_count = favorite_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="decrementFavoriteCount">
+        UPDATE travel_guide SET favorite_count = GREATEST(favorite_count - 1, 0) WHERE id = #{id}
+    </update>
+
     <delete id="deleteById">
         DELETE FROM travel_guide WHERE id=#{id}
     </delete>

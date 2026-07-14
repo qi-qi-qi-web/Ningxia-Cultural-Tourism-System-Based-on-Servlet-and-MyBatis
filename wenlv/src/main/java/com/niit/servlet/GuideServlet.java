@@ -47,6 +47,18 @@ public class GuideServlet extends HttpServlet {
             return;
         }
 
+        // 收藏/取消收藏
+        if ("fav".equals(action)) {
+            handleFavorite(request, response);
+            return;
+        }
+
+        // 浏览数自动+1（AJAX）
+        if ("view".equals(action)) {
+            handleView(request, response);
+            return;
+        }
+
         // 返回某用户的攻略 JSON 列表
         if ("my".equals(action)) {
             String userIdStr = request.getParameter("userId");
@@ -262,5 +274,57 @@ public class GuideServlet extends HttpServlet {
     private String esc(String s) {
         if (s == null) return "";
         return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
+    }
+
+    private void handleFavorite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        HttpSession session = request.getSession(false);
+        Long guideId = Long.parseLong(request.getParameter("id"));
+        boolean checkOnly = "1".equals(request.getParameter("check"));
+        if (session == null || session.getAttribute("user") == null) {
+            if (checkOnly) { response.getWriter().write("{\"faved\":false}"); return; }
+            response.getWriter().write("{\"ok\":false,\"msg\":\"请先登录\"}");
+            return;
+        }
+        Long userId = ((User) session.getAttribute("user")).getId();
+        try (SqlSession s = DBUtil.getSession(checkOnly)) {
+            TravelGuideMapper m = s.getMapper(TravelGuideMapper.class);
+            java.sql.Statement st = s.getConnection().createStatement();
+            java.sql.ResultSet rs = st.executeQuery(
+                "SELECT COUNT(*) FROM favorite WHERE user_id=" + userId + " AND target_type='GUIDE' AND target_id=" + guideId);
+            rs.next();
+            boolean faved = rs.getInt(1) > 0;
+            rs.close(); st.close();
+            if (checkOnly) {
+                response.getWriter().write("{\"faved\":" + faved + "}");
+                return;
+            }
+            if (faved) {
+                s.getConnection().createStatement().execute(
+                    "DELETE FROM favorite WHERE user_id=" + userId + " AND target_type='GUIDE' AND target_id=" + guideId);
+                m.decrementFavoriteCount(guideId);
+            } else {
+                s.getConnection().createStatement().execute(
+                    "INSERT INTO favorite (user_id, target_type, target_id) VALUES (" + userId + ",'GUIDE'," + guideId + ")");
+                m.incrementFavoriteCount(guideId);
+            }
+            s.commit();
+            TravelGuide g = m.findById(guideId);
+            response.getWriter().write("{\"ok\":true,\"faved\":" + !faved + ",\"count\":" + (g != null ? g.getFavoriteCount() : 0) + "}");
+        } catch (Exception e) {
+            response.getWriter().write("{\"ok\":false,\"msg\":\"" + esc(e.getMessage()) + "\"}");
+        }
+    }
+
+    private void handleView(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        Long guideId = Long.parseLong(request.getParameter("id"));
+        try (SqlSession s = DBUtil.getSession(false)) {
+            s.getMapper(TravelGuideMapper.class).incrementViewCount(guideId);
+            s.commit();
+            response.getWriter().write("{\"ok\":true}");
+        } catch (Exception e) {
+            response.getWriter().write("{\"ok\":false}");
+        }
     }
 }

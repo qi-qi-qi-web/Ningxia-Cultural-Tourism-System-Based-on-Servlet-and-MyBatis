@@ -146,19 +146,15 @@
                         <div class="space-y-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon linearicons-eye"></span> 浏览数</span>
-                                <span class="font-weight-bold">${guide.viewCount}</span>
+                                <span class="font-weight-bold" id="view-count">${guide.viewCount}</span>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-thumbs-up"></span> 点赞数</span>
-                                <span class="font-weight-bold">${guide.likeCount}</span>
+                            <div class="d-flex justify-content-between align-items-center" style="cursor:pointer;" onclick="toggleFav()">
+                                <span class="text-gray-500"><span id="fav-icon" class="icon fa fa-heart" style="color:#e74c3c;"></span> 收藏</span>
+                                <span class="font-weight-bold" id="fav-count">${guide.favoriteCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-gray-500"><span class="icon fa fa-comment"></span> 评论数</span>
                                 <span class="font-weight-bold">${guide.commentCount}</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-gray-500"><span class="icon linearicons-heart"></span> 收藏数</span>
-                                <span class="font-weight-bold">${guide.favoriteCount}</span>
                             </div>
                             <hr style="margin: 12px 0;"/>
                             <div class="d-flex justify-content-between align-items-center">
@@ -235,52 +231,7 @@
     </div>
 </div>
 
-<!-- Footer-->
-<footer class="section footer-classic context-dark">
-    <div class="container">
-        <div class="row row-narrow-40 row-30">
-            <div class="col-lg-6 text-center wow fadeInLeft" data-wow-delay=".1s">
-                <div class="footer-media"><img src="images/footer-img-570x402.jpg" alt="" width="570" height="402"/>
-                </div>
-            </div>
-            <div class="col-lg-6 wow fadeInRight" data-wow-delay=".2s">
-                <div class="footer-classic_subscribe">
-                    <h2>订阅攻略</h2>
-                    <h5 class="text-primary">获取最新宁夏旅游攻略、特价线路、本地美食推荐</h5>
-                    <form class="rd-form rd-mailform rd-form-inline subscribe-form" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="bat/rd-mailform.php">
-                        <div class="form-wrap">
-                            <input class="form-input" id="subscribe-form-email-5" type="email" name="email" data-constraints="@Email @Required">
-                            <label class="form-label" for="subscribe-form-email-5">输入您的邮箱</label>
-                            <div class="form-button">
-                                <button class="button button-primary fa fa-chevron-circle-right" type="submit"></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-classic-aside">
-        <div class="container">
-            <div class="row justify-content-between flex-column-reverse flex-md-row row-20">
-                <div class="col-xl-6 col-md-8">
-                    <div class="footer-classic-aside__group">
-                        <a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
-                        <p class="rights">版权 &copy; 2025 宁夏旅游平台 保留所有权利</p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4">
-                    <ul class="social-list">
-                        <li class="wow fadeInUp" data-wow-delay=".1s"><a href="#"><span class="icon fa fa-facebook"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".2s"><a href="#"><span class="icon fa fa-twitter"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".3s"><a href="#"><span class="icon fa fa-instagram"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".4s"><a href="#"><span class="icon fa fa-pinterest"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<%@include file="Footer.jsp"%>
 </div>
 
 <style>
@@ -400,13 +351,11 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         renderReviews();
-        
-        $('#star-rating i').click(function() {
-            selectedRating = $(this).data('value');
-            $('#star-rating i').removeClass('active');
-            $(this).addClass('active');
-            $(this).prevAll().addClass('active');
-        });
+        // 浏览数+1
+        var gid = '${guide.id}';
+        if (gid) fetch('/guide?action=view&id=' + gid).then(function(){ return fetch('/guide?action=detail&id='+gid); }).then(function(r){return r.json();}).then(function(d){ document.getElementById('view-count').textContent = d.viewCount; });
+        // 检查点赞/收藏状态
+        checkLikeFavStatus();
     });
 
     var reviews = [
@@ -671,6 +620,25 @@
         
         $('#ask-modal').modal('hide');
         alert('问题提交成功！我们会尽快回复您。');
+    }
+
+    function toggleFav() {
+        var gid = '${guide.id}';
+        fetch('/fav?type=GUIDE&id=' + gid)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if (d.ok) {
+                document.getElementById('fav-count').textContent = d.count;
+                document.getElementById('fav-icon').style.color = d.faved ? '#e74c3c' : '#ccc';
+            } else if (d.msg) { alert(d.msg); }
+        });
+    }
+
+    function checkLikeFavStatus() {
+        var gid = '${guide.id}';
+        fetch('/guide?action=fav&id=' + gid + '&check=1')
+        .then(function(r){ return r.json(); })
+        .then(function(d){ if (d.faved) document.getElementById('fav-icon').style.color = '#e74c3c'; else document.getElementById('fav-icon').style.color = '#ccc'; });
     }
 </script>
 

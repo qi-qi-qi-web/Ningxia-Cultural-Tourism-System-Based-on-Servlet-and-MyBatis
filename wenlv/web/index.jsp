@@ -157,39 +157,7 @@
 	        </div>
 	    </section>
 
-    <!--Blog Post-->
-    <section class="section section-lg">
-        <div class="container">
-            <h2 class="text-center text-md-start">宁夏旅游资讯</h2>
-            <div class="row row-30">
-                <div class="col-lg-4 col-md-6">
-                    <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-1-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>2024年7月9日</span>
-                            <h5><a href="#">宁夏沙坡头旅游全攻略</a></h5>
-                            <p>沙坡头，中国最美的沙漠旅游目的地之一。这里有黄河与沙漠的完美结合，滑沙、黄河漂流、沙漠骆驼……</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-2-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>2024年7月8日</span>
-                            <h5><a href="#">探秘西夏王陵：千年王朝的遗迹</a></h5>
-                            <p>西夏王陵，被誉为"东方金字塔"。走进这片神秘的王陵群，感受西夏王朝曾经的辉煌与沧桑……</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="post-classic"><a class="post-classic__media" href="#"><img src="images/blog-post-3-370x264.jpg" alt="" width="370" height="264"/></a>
-                        <div class="post-classic-caption"><span>2024年7月7日</span>
-                            <h5><a href="#">宁夏美食推荐：舌尖上的塞上江南</a></h5>
-                            <p>宁夏美食融合了西北风味与回族特色，手抓羊肉、酿皮子、八宝茶……每一道都是独特的味蕾体验……</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <%@include file="Footer.jsp"%>
+	    <%@include file="Footer.jsp"%>
 </div>
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
