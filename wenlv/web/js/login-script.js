@@ -103,21 +103,15 @@ function logout() {
     window.location.href = previousPage;
 }
 
-// 通用关闭弹窗，手动清除遮罩
+// 通用关闭弹窗，交由 Bootstrap 原生管理
 function closeModal(modalId) {
     var modalDom = document.getElementById(modalId);
-    var modal = bootstrap.Modal.getInstance(modalDom);
-    if (modal) {
-        modal.hide();
+    if (modalDom) {
+        var modal = bootstrap.Modal.getInstance(modalDom);
+        if (modal) {
+            modal.hide();
+        }
     }
-    // 强制移除遮罩层，解决黑屏无法点击
-    document.querySelectorAll('.modal-backdrop').forEach(function(el) {
-        el.remove();
-    });
-    document.body.classList.remove('modal-open');
-    // 清除 Bootstrap 弹窗可能遗留的 body 内联样式（padding-right 等）
-    document.body.style.paddingRight = '';
-    document.body.style.overflow = '';
 }
 
 // 普通用户登录提交——调后端验证

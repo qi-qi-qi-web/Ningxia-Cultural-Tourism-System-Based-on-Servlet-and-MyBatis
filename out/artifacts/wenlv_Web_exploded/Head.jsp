@@ -58,8 +58,8 @@
                                 </ul>
                             </div>
                             <!--RD Navbar Login-->
-                            <div id="navbar-login-container" class="rd-navbar-login" style="display: flex; align-items: center; justify-content: flex-end; float: right; margin-top: 0;">
-                                <a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>
+                            <div id="navbar-login-container" class="rd-navbar-login" style="display: flex; align-items: center; justify-content: flex-end; margin-top: 0;">
+                                <a href="javascript:void(0)" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>
                             </div>
                         </div>
                     </div>
@@ -69,8 +69,8 @@
     </header>
 
     <!-- 登录/注册/管理员弹窗 -->
-    <!-- Login Modal -->
-    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal-label" aria-hidden="true">
+	    <!-- Login Modal -->
+	    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="login-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content wechat-modal">
                 <div class="modal-header wechat-modal__header">
@@ -100,14 +100,14 @@
             </div>
         </div>
     </div>
-    <!-- Register Modal -->
-    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
+	    <!-- Register Modal -->
+	    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="register-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content wechat-modal">
                 <div class="modal-header wechat-modal__header">
                     <h4 class="modal-title wechat-modal__title" id="register-modal-label">用户注册</h4>
-                    <button type="button" class="close wechat-modal__close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close wechat-modal__back" onclick="switchModal('register-modal','login-modal')" aria-label="Back">
+                        <span aria-hidden="true">&larr;</span>
                     </button>
                 </div>
                 <div class="modal-body wechat-modal__body">
@@ -136,14 +136,14 @@
             </div>
         </div>
     </div>
-    <!-- Admin Login Modal -->
-    <div class="modal fade" id="admin-login-modal" tabindex="-1" role="dialog" aria-labelledby="admin-login-modal-label" aria-hidden="true">
+	    <!-- Admin Login Modal -->
+	    <div class="modal fade" id="admin-login-modal" tabindex="-1" role="dialog" aria-labelledby="admin-login-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content wechat-modal">
                 <div class="modal-header wechat-modal__header">
                     <h4 class="modal-title wechat-modal__title" id="admin-login-modal-label">管理员登录</h4>
-                    <button type="button" class="close wechat-modal__close" onclick="closeModal('admin-login-modal')" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="close wechat-modal__back" onclick="switchModal('admin-login-modal','login-modal')" aria-label="Back">
+                        <span aria-hidden="true">&larr;</span>
                     </button>
                 </div>
                 <div class="modal-body wechat-modal__body">
@@ -171,56 +171,31 @@
     <script src="js/core.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/login-script.js"></script>
-    <script>
-        // Close modal via Bootstrap API + safety cleanup
-        function closeModal(id) {
-            var el = document.getElementById(id);
-            if (el) {
-                var modal = bootstrap.Modal.getInstance(el);
-                if (modal) {
-                    modal.hide();
-                }
-            }
-            // Safety: if backdrop remains after animation, force-remove it
-            setTimeout(function() {
-                var backdrop = document.querySelector('.modal-backdrop');
-                if (backdrop) {
-                    backdrop.remove();
-                    document.body.classList.remove('modal-open');
-                    document.body.style.paddingRight = '';
-                    document.body.style.overflow = '';
-                }
-            }, 400);
-        }
-        // Switch from one modal to another – smooth, no jank
-        function switchModal(fromId, toId) {
-            var fromEl = document.getElementById(fromId);
-            if (!fromEl) return;
-            var bsModal = bootstrap.Modal.getInstance(fromEl);
-            if (bsModal) {
-                var handler = function() {
-                    fromEl.removeEventListener('hidden.bs.modal', handler);
-                    var target = document.getElementById(toId);
-                    if (target) {
-                        var old = bootstrap.Modal.getInstance(target);
-                        if (old) old.dispose();
-                        (new bootstrap.Modal(target)).show();
-                    }
-                };
-                fromEl.addEventListener('hidden.bs.modal', handler);
-                bsModal.hide();
-            }
-        }
-        // Global safety: auto-cleanup when any modal finishes hiding
-        document.addEventListener('hidden.bs.modal', function() {
-            var backdrops = document.querySelectorAll('.modal-backdrop');
-            if (backdrops.length) {
-                backdrops.forEach(function(b) { b.remove(); });
-                document.body.classList.remove('modal-open');
-                document.body.style.paddingRight = '';
-                document.body.style.overflow = '';
-            }
-        });
+			    <script>
+			        // Switch from one modal to another – smooth transition with full backdrop support
+			        function switchModal(fromId, toId) {
+			            var fromEl = document.getElementById(fromId);
+			            var target = document.getElementById(toId);
+			            if (!fromEl || !target) return;
+			            var bsModal = bootstrap.Modal.getInstance(fromEl);
+			            if (bsModal) {
+			                fromEl.addEventListener('hidden.bs.modal', function handler() {
+			                    this.removeEventListener('hidden.bs.modal', handler);
+			                    // Dispose stale instance to avoid state conflicts
+			                    var oldTarget = bootstrap.Modal.getInstance(target);
+			                    if (oldTarget) oldTarget.dispose();
+			                    // Bootstrap handles backdrop automatically
+			                    new bootstrap.Modal(target).show();
+			                });
+			                bsModal.hide();
+			            }
+			        }
+			        // Safety: when all modals are closed, ensure no leftover backdrop
+			        document.addEventListener('hidden.bs.modal', function() {
+			            if (!document.querySelector('.modal.show')) {
+			                document.querySelectorAll('.modal-backdrop').forEach(function(b) { b.remove(); });
+			            }
+			        });
         document.addEventListener('DOMContentLoaded', function() {
             var currentUrl = window.location.pathname;
             var currentPage = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);

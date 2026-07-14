@@ -178,6 +178,28 @@
     color: #333;
 }
 
+/* 返回按钮（←）— 左上角，跳回上一级弹窗 */
+.wechat-modal__back {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 22px;
+    font-weight: 400;
+    opacity: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+.wechat-modal__back:hover {
+    color: #000;
+}
+
 .wechat-modal__body {
     padding: 20px 24px 28px 24px;
 }
@@ -252,6 +274,11 @@
     display: inline-block;
     margin: 0 12px;
     color: #ddd;
+}
+
+/* 隐藏 Bootstrap 遮罩层（保留 DOM 结构使弹窗逻辑正常） */
+.modal-backdrop {
+    display: none !important;
 }
 
 /* Modal dialogs width */
