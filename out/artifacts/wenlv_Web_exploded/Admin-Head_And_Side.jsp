@@ -64,7 +64,7 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/order">
                     <i class="fa fa-shopping-cart"></i> 订单管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/Admin-comment.jsp">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/comment">
                     <i class="fa fa-comments"></i> 评论管理
                 </a>
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/log">

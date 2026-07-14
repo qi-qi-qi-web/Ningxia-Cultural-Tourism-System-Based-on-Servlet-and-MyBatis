@@ -102,57 +102,17 @@
 	                            </div>
 	                        </div>
 	                        </c:if>
-                        <div class="blog-post-classic__reviews">
-                            <div class="reviews-header">
-                                <h2>住客评价</h2>
-                                <button class="button button-review" onclick="toggleReviewForm()">发表评论</button>
-                            </div>
-                            <!-- Hidden review form (appears between header and existing reviews) -->
-                            <div class="review-form-wrapper" id="reviewFormWrapper" style="display: none;">
-                                <div class="review-form">
-                                    <div class="row row-15">
-                                        <div class="col-lg-2">
-                                            <img src="images/user-1-170x164.jpg" alt="" width="170" height="164" style="border-radius: 50%;">
-                                        </div>
-                                        <div class="col-lg-10">
-                                            <h5>我的评论</h5>
-                                            <div class="form-wrap">
-                                                <textarea class="form-input review-form__textarea" id="reviewContent" rows="4" placeholder="分享您的入住体验..."></textarea>
-                                            </div>
-                                            <div class="review-form__actions">
-                                                <button class="button button-primary-2 button-sm" onclick="var c=document.getElementById('reviewContent'); if(c.value.trim().length<10){alert('评论内容至少10个字');return;} alert('评论提交成功！'); c.value=''; document.getElementById('reviewFormWrapper').style.display='none';">提交评论</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row row-30">
-                                <div class="col-12">
-                                    <div class="blog-post-classic__comment">
-                                        <div class="row row-15">
-                                            <div class="col-lg-2"><img src="images/user-1-170x164.jpg" alt="" width="170" height="164"/>
-                                            </div>
-                                            <div class="col-lg-10">
-                                                <h5>张明 <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                                                <p>黄河宿集真的太美了！坐在院子里就能看到黄河，晚上还能看到满天星空。服务非常贴心，早餐也很美味，强烈推荐！</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="blog-post-classic__comment">
-                                        <div class="row row-15">
-                                            <div class="col-lg-2"><img src="images/user-2-170x164.jpg" alt="" width="170" height="164"/>
-                                            </div>
-                                            <div class="col-lg-10">
-                                                <h5>李婷 <i class="fa fa-star-o bookmark-star" data-bookmarked="false"></i></h5>
-                                                <p>这是我住过最有特色的民宿！设计感十足，每个角落都充满了艺术气息。管家服务非常周到，帮我们安排了沙漠和黄河的体验活动，非常难忘的一次旅行！</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+	                        <!-- 评论区 -->
+	                        <div style="margin-top:30px;">
+	                            <h5 style="margin-bottom:16px;">用户评论</h5>
+	                            <div id="comment-list" style="margin-bottom:20px;"></div>
+	                            <div style="border:1px solid #eee;border-radius:8px;padding:16px;">
+	                                <textarea id="comment-input" rows="3" style="width:100%;border:1px solid #ddd;border-radius:6px;padding:10px;resize:vertical;" placeholder="写下你的评论..."></textarea>
+	                                <div style="text-align:right;margin-top:10px;">
+	                                    <button onclick="postComment()" class="button button-primary" type="button" style="padding:6px 20px;font-size:14px;">发表评论</button>
+	                                </div>
+	                            </div>
+	                        </div>
                     </div>
                 </div>
             </div>
@@ -284,6 +244,50 @@ function toggleFavHotel(hid, el) {
         if (icon && d.faved) icon.style.color = '#e74c3c';
     });
 })();
+
+// 评论功能
+function loadComments() {
+    var hid = '${hotel.id}';
+    fetch('/comment?action=list&targetType=HOTEL&targetId=' + hid)
+    .then(function(r){ return r.json(); })
+    .then(function(list){
+        var html = '';
+        if (list.length === 0) { html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论</div>'; }
+        else {
+            list.forEach(function(c){
+                var avatarChar = (c.userName || '匿').charAt(0);
+                html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
+                    '<div style="width:36px;height:36px;border-radius:50%;background:#00a8a8;color:#fff;text-align:center;line-height:36px;font-size:14px;font-weight:bold;flex-shrink:0;">' + avatarChar + '</div>' +
+                    '<div style="margin-left:12px;flex:1;">' +
+                    '<div style="font-weight:bold;color:#333;font-size:14px;">' + (c.userName||'匿名') + '</div>' +
+                    '<div style="color:#666;margin-top:4px;line-height:1.6;">' + escHtml(c.content) + '</div>' +
+                    '<div style="color:#bbb;font-size:12px;margin-top:4px;">' + (c.createdAt||'').substring(0,16) + '</div>' +
+                    '</div></div>';
+            });
+        }
+        document.getElementById('comment-list').innerHTML = html;
+    });
+}
+
+function postComment() {
+    var content = document.getElementById('comment-input').value.trim();
+    if (!content) { alert('请输入评论内容'); return; }
+    var hid = '${hotel.id}';
+    var fd = new FormData();
+    fd.append('targetType', 'HOTEL');
+    fd.append('targetId', hid);
+    fd.append('content', content);
+    fetch('/comment', { method: 'POST', body: fd })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.ok) { document.getElementById('comment-input').value = ''; loadComments(); }
+        else { alert(d.msg || '评论失败'); }
+    });
+}
+
+function escHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+loadComments();
 
 // Toggle review form
 function toggleReviewForm() {

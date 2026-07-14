@@ -27,6 +27,7 @@
         <mapper resource="com/niit/mapper/OrderMapper.xml"/>
         <mapper resource="com/niit/mapper/TravelGuideMapper.xml"/>
         <mapper resource="com/niit/mapper/GuideTagMapper.xml"/>
+        <mapper resource="com/niit/mapper/CommentMapper.xml"/>
         <mapper resource="com/niit/mapper/HotelMapper.xml"/>
         <mapper resource="com/niit/mapper/ScenicSpotMapper.xml"/>
     </mappers>

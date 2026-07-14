@@ -1,6 +1,8 @@
 package com.niit.servlet;
 
+import com.niit.mapper.CommentMapper;
 import com.niit.mapper.TravelGuideMapper;
+import com.niit.pojo.Comment;
 import com.niit.pojo.TravelGuide;
 import com.niit.pojo.User;
 import com.niit.service.UserService;
@@ -43,6 +45,11 @@ public class PersonalCenterServlet extends HttpServlet {
 
         if ("myGuides".equals(action)) {
             handleMyGuides(request, response);
+            return;
+        }
+
+        if ("myComments".equals(action)) {
+            handleMyComments(request, response);
             return;
         }
 
@@ -124,6 +131,10 @@ public class PersonalCenterServlet extends HttpServlet {
             handleChangePassword(request, response, sessionUser);
         } else if ("changeAvatar".equals(action)) {
             handleChangeAvatar(request, response, sessionUser);
+        } else if ("deleteComment".equals(action)) {
+            handleDeleteComment(request, response, sessionUser);
+        } else if ("editComment".equals(action)) {
+            handleEditComment(request, response, sessionUser);
         } else {
             sendJson(response, false, "未知操作");
         }
@@ -200,6 +211,47 @@ public class PersonalCenterServlet extends HttpServlet {
         }
     }
 
+    private void handleEditComment(HttpServletRequest request, HttpServletResponse response, User sessionUser) throws IOException {
+        String idStr = request.getParameter("id");
+        String content = request.getParameter("content");
+        if (idStr == null || idStr.trim().isEmpty() || content == null || content.trim().isEmpty()) {
+            sendJson(response, false, "参数错误");
+            return;
+        }
+        long commentId = Long.parseLong(idStr);
+        try (SqlSession s = DBUtil.getSession(false)) {
+            int rows = s.getMapper(CommentMapper.class).updateContent(commentId, sessionUser.getId(), content.trim());
+            if (rows > 0) {
+                s.commit();
+                sendJson(response, true, "评论已修改");
+            } else {
+                sendJson(response, false, "修改失败（评论不存在或无权操作）");
+            }
+        } catch (Exception e) {
+            sendJson(response, false, "修改失败：" + e.getMessage());
+        }
+    }
+
+    private void handleDeleteComment(HttpServletRequest request, HttpServletResponse response, User sessionUser) throws IOException {
+        String idStr = request.getParameter("id");
+        if (idStr == null || idStr.trim().isEmpty()) {
+            sendJson(response, false, "参数错误");
+            return;
+        }
+        long commentId = Long.parseLong(idStr);
+        try (SqlSession s = DBUtil.getSession(false)) {
+            int rows = s.getMapper(CommentMapper.class).deleteByUser(commentId, sessionUser.getId());
+            if (rows > 0) {
+                s.commit();
+                sendJson(response, true, "评论已删除");
+            } else {
+                sendJson(response, false, "删除失败（评论不存在或无权操作）");
+            }
+        } catch (Exception e) {
+            sendJson(response, false, "删除失败：" + e.getMessage());
+        }
+    }
+
     private void sendJson(HttpServletResponse response, boolean success, String message) throws IOException {
         // 转义 message 中的特殊字符，防止 JSON 注入
         String escaped = message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
@@ -247,5 +299,41 @@ public class PersonalCenterServlet extends HttpServlet {
     private String esc(String s) {
         if (s == null) return "";
         return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
+    }
+
+    private void handleMyComments(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.getWriter().write("[]");
+            return;
+        }
+        User user = (User) session.getAttribute("user");
+        try (SqlSession s = DBUtil.getSession()) {
+            List<Comment> list = s.getMapper(CommentMapper.class).findByUserId(user.getId());
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                Comment c = list.get(i);
+                String typeName = "";
+                switch (c.getTargetType()) {
+                    case "SCENIC": typeName = "景区"; break;
+                    case "HOTEL": typeName = "酒店"; break;
+                    case "GUIDE": typeName = "攻略"; break;
+                    case "SPECIALTY": typeName = "特产"; break;
+                }
+                sb.append(String.format(
+                    "{\"id\":%d,\"content\":\"%s\",\"targetType\":\"%s\",\"targetTypeName\":\"%s\",\"targetId\":%d,\"targetName\":\"%s\",\"createdAt\":\"%s\"}",
+                    c.getId(), esc(c.getContent()), esc(c.getTargetType()),
+                    typeName, c.getTargetId(), esc(c.getTargetName()),
+                    c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""
+                ));
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().write("[]");
+        }
     }
 }
