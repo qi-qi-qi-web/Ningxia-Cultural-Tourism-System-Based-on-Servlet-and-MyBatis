@@ -7,21 +7,8 @@
     ScenicSpot scenic = null;
     String idStr = request.getParameter("id");
     if (idStr != null) {
-        try (SqlSession s = DBUtil.getSession(false)) {
-            ScenicSpotMapper m = s.getMapper(ScenicSpotMapper.class);
-            scenic = m.findById(Long.parseLong(idStr));
-            if (scenic != null) {
-                HttpSession sess = request.getSession();
-                String key = "sv_" + idStr;
-                Long last = (Long) sess.getAttribute(key);
-                long now = System.currentTimeMillis();
-                if (last == null || now - last > 3000) {
-                    m.incrementViewCount(scenic.getId());
-                    s.commit();
-                    scenic = m.findById(scenic.getId());
-                    sess.setAttribute(key, now);
-                }
-            }
+        try (SqlSession s = DBUtil.getSession()) {
+            scenic = s.getMapper(ScenicSpotMapper.class).findById(Long.parseLong(idStr));
         } catch (Exception e) {}
     }
     request.setAttribute("scenic", scenic);
@@ -254,6 +241,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        var sid = '${scenic.id}';
+        if (sid) {
+            // 浏览数+1（AJAX）
+            fetch('/scenic?action=view&id=' + sid).then(function(){
+                var el = document.querySelector('.stat-value');
+                if (el) el.textContent = parseInt(el.textContent.replace(/,/g,'')) + 1;
+            });
+            // 检查收藏状态
+            fetch('/fav?type=SCENIC&id=' + sid + '&check=1')
+            .then(function(r){ return r.json(); })
+            .then(function(d){
+                if (d.faved) {
+                    document.getElementById('favorite-icon').style.background = '#ff6b6b';
+                }
+            });
+        }
+
         var galleryItems = document.querySelectorAll('.gallery-item');
         galleryItems.forEach(function(item) {
             item.classList.add('hidden');
@@ -351,9 +355,6 @@
         alert('评论发表成功！');
     }
 
-    var isFavorited = false;
-    var favoriteCount = 2345;
-
     function toggleFavorite() {
         var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
@@ -365,20 +366,17 @@
             return;
         }
         
-        var icon = document.getElementById('favorite-icon');
-        var countSpan = document.getElementById('favorite-count');
-        
-        if (isFavorited) {
-            icon.style.background = '#ccc';
-            favoriteCount--;
-            isFavorited = false;
-        } else {
-            icon.style.background = '#ff6b6b';
-            favoriteCount++;
-            isFavorited = true;
-        }
-        
-        countSpan.textContent = favoriteCount.toLocaleString();
+        var sid = '${scenic.id}';
+        fetch('/fav?type=SCENIC&id=' + sid)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if (d.ok) {
+                document.getElementById('favorite-count').textContent = d.count;
+                document.getElementById('favorite-icon').style.background = d.faved ? '#ff6b6b' : '#ccc';
+            } else if (d.msg) {
+                alert(d.msg);
+            }
+        });
     }
 </script>
 

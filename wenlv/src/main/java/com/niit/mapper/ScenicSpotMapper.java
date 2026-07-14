@@ -16,4 +16,6 @@ public interface ScenicSpotMapper {
     int shiftIdsDown(@Param("afterId") Long afterId);
     Long findMaxId();
     int incrementViewCount(@Param("id") Long id);
+    int incrementFavoriteCount(@Param("id") Long id);
+    int decrementFavoriteCount(@Param("id") Long id);
 }

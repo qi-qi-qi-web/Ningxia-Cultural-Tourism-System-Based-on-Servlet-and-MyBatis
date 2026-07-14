@@ -40,4 +40,6 @@
     <update id="shiftIdsDown">UPDATE scenic_spot SET id = id - 1 WHERE id &gt; #{afterId}</update>
     <select id="findMaxId" resultType="java.lang.Long">SELECT COALESCE(MAX(id),0) FROM scenic_spot</select>
     <update id="incrementViewCount">UPDATE scenic_spot SET view_count = view_count + 1 WHERE id=#{id}</update>
+    <update id="incrementFavoriteCount">UPDATE scenic_spot SET favorite_count = favorite_count + 1 WHERE id=#{id}</update>
+    <update id="decrementFavoriteCount">UPDATE scenic_spot SET favorite_count = GREATEST(favorite_count - 1, 0) WHERE id=#{id}</update>
 </mapper>

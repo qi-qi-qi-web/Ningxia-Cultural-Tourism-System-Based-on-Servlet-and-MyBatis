@@ -1,6 +1,7 @@
 package com.niit.servlet;
 
 import com.niit.mapper.HotelMapper;
+import com.niit.mapper.ScenicSpotMapper;
 import com.niit.mapper.TravelGuideMapper;
 import com.niit.pojo.User;
 import com.niit.utils.DBUtil;
@@ -21,7 +22,7 @@ public class FavServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         HttpSession session = request.getSession(false);
         Long targetId = Long.parseLong(request.getParameter("id"));
-        String type = request.getParameter("type"); // GUIDE / HOTEL
+        String type = request.getParameter("type"); // GUIDE / HOTEL / SCENIC
         boolean checkOnly = "1".equals(request.getParameter("check"));
 
         if (session == null || session.getAttribute("user") == null) {
@@ -64,11 +65,13 @@ public class FavServlet extends HttpServlet {
 
     private void incrementCount(SqlSession s, String type, Long id) {
         if ("HOTEL".equals(type)) s.getMapper(HotelMapper.class).incrementFavoriteCount(id);
+        else if ("SCENIC".equals(type)) s.getMapper(ScenicSpotMapper.class).incrementFavoriteCount(id);
         else s.getMapper(TravelGuideMapper.class).incrementFavoriteCount(id);
     }
 
     private void decrementCount(SqlSession s, String type, Long id) {
         if ("HOTEL".equals(type)) s.getMapper(HotelMapper.class).decrementFavoriteCount(id);
+        else if ("SCENIC".equals(type)) s.getMapper(ScenicSpotMapper.class).decrementFavoriteCount(id);
         else s.getMapper(TravelGuideMapper.class).decrementFavoriteCount(id);
     }
 
@@ -76,6 +79,8 @@ public class FavServlet extends HttpServlet {
         try {
             if ("HOTEL".equals(type)) {
                 return s.getMapper(HotelMapper.class).findById(id).getFavoriteCount();
+            } else if ("SCENIC".equals(type)) {
+                return s.getMapper(ScenicSpotMapper.class).findById(id).getFavoriteCount();
             } else {
                 return s.getMapper(TravelGuideMapper.class).findById(id).getFavoriteCount();
             }
