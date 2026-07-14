@@ -7,7 +7,6 @@
     vertical-align: middle;
     gap: 8px;
     white-space: nowrap;
-    min-width: 130px;
     text-align: right;
 }
 
@@ -15,7 +14,7 @@
     position: relative;
     display: inline-block;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.2;
     transition: .25s;
     cursor: pointer;
@@ -109,29 +108,25 @@
 }
 
 .rd-navbar-main-element {
+    flex: 1;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
 }
 
 .rd-navbar-main-element > * {
-    flex-shrink: 0;
     align-self: center;
 }
 
 .rd-navbar-nav-wrap {
-    flex-shrink: 0;
-    align-self: center;
-}
-
-.rd-navbar-search {
-    flex-shrink: 0;
-    align-self: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .rd-navbar-login {
     flex-shrink: 0;
-    align-self: center;
+    margin-left: auto;
 }
 
 /* ===== WeChat-style Unified Modal ===== */
@@ -181,6 +176,28 @@
 }
 .wechat-modal__close:hover {
     color: #333;
+}
+
+/* 返回按钮（←）— 左上角，跳回上一级弹窗 */
+.wechat-modal__back {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 22px;
+    font-weight: 400;
+    opacity: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 8px;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+.wechat-modal__back:hover {
+    color: #000;
 }
 
 .wechat-modal__body {
@@ -257,6 +274,11 @@
     display: inline-block;
     margin: 0 12px;
     color: #ddd;
+}
+
+/* 隐藏 Bootstrap 遮罩层（保留 DOM 结构使弹窗逻辑正常） */
+.modal-backdrop {
+    display: none !important;
 }
 
 /* Modal dialogs width */

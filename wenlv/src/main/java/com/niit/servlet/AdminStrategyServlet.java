@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Statement;
+import java.util.List;
 
 @WebServlet("/admin/strategy")
 @MultipartConfig(maxFileSize = 10 * 1024 * 1024)  // 10MB
@@ -104,8 +105,8 @@ public class AdminStrategyServlet extends HttpServlet {
 
             // 同步 guide_tag 关联
             String tags = g.getTags();
+            tm.deleteByGuideId(guideId);
             if (tags != null && !tags.trim().isEmpty()) {
-                tm.deleteByGuideId(guideId);
                 String[] names = tags.split(",");
                 for (String name : names) {
                     name = name.trim();
@@ -119,8 +120,6 @@ public class AdminStrategyServlet extends HttpServlet {
                         tm.insert(t);
                     }
                 }
-            } else {
-                tm.deleteByGuideId(guideId);
             }
 
             s.commit();
@@ -177,6 +176,8 @@ public class AdminStrategyServlet extends HttpServlet {
                         st.execute("SET FOREIGN_KEY_CHECKS = 0");
                         m.deleteById(id);
                         m.shiftIdsDown(id);
+                        // guide_tag 的 guide_id 也跟着减1
+                        st.execute("UPDATE guide_tag SET guide_id = guide_id - 1 WHERE guide_id > " + id);
                         st.execute("SET FOREIGN_KEY_CHECKS = 1");
                     } finally { try { st.close(); } catch (Exception ignored) {} }
                     s.commit();

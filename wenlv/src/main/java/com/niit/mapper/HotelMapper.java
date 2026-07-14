@@ -13,6 +13,8 @@ public interface HotelMapper {
     int update(Hotel h);
     int deleteById(Long id);
     int toggleStatus(@Param("id") Long id, @Param("status") Integer status);
+    int incrementFavoriteCount(@Param("id") Long id);
+    int decrementFavoriteCount(@Param("id") Long id);
     int shiftIdsDown(@Param("afterId") Long afterId);
     Long findMaxId();
 }

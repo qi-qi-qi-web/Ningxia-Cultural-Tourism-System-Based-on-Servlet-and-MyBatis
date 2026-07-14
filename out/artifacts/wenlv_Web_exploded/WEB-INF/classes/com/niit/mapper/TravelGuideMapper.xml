@@ -23,7 +23,7 @@
         SELECT tg.*, u.username AS user_name
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
-        ORDER BY tg.created_at DESC
+        ORDER BY tg.id ASC
     </select>
 
     <select id="findById" resultMap="GuideMap">
@@ -69,6 +69,18 @@
         UPDATE travel_guide SET status=#{status} WHERE id=#{id}
     </update>
 
+    <update id="incrementViewCount">
+        UPDATE travel_guide SET view_count = view_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="incrementFavoriteCount">
+        UPDATE travel_guide SET favorite_count = favorite_count + 1 WHERE id = #{id}
+    </update>
+
+    <update id="decrementFavoriteCount">
+        UPDATE travel_guide SET favorite_count = GREATEST(favorite_count - 1, 0) WHERE id = #{id}
+    </update>
+
     <delete id="deleteById">
         DELETE FROM travel_guide WHERE id=#{id}
     </delete>
@@ -80,4 +92,11 @@
     <select id="findMaxId" resultType="java.lang.Long">
         SELECT COALESCE(MAX(id), 0) FROM travel_guide
     </select>
+
+    <!-- ID重排 -->
+    <update id="reorderIds">
+        UPDATE travel_guide t
+        JOIN (SELECT id, ROW_NUMBER() OVER (ORDER BY id) AS new_id FROM travel_guide) r ON t.id = r.id
+        SET t.id = r.new_id
+    </update>
 </mapper>
