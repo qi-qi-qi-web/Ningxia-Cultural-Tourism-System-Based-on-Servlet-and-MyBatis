@@ -19,34 +19,79 @@
         <result property="shippedAt" column="shipped_at"/>
         <result property="completedAt" column="completed_at"/>
         <result property="remark" column="remark"/>
+        <result property="returnReason" column="return_reason"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <result property="userName" column="user_name"/>
+        <result property="itemName" column="item_name"/>
     </resultMap>
 
     <select id="findAll" resultMap="OrderMap">
-        SELECT om.*, u.username AS user_name
+        SELECT om.*, u.username AS user_name,
+            (SELECT oi.item_name FROM order_item oi WHERE oi.order_id = om.id LIMIT 1) AS item_name
         FROM order_main om
         LEFT JOIN sys_user u ON om.user_id = u.id
         ORDER BY om.created_at DESC
     </select>
 
     <select id="findById" resultMap="OrderMap">
-        SELECT om.*, u.username AS user_name
+        SELECT om.*, u.username AS user_name,
+            (SELECT oi.item_name FROM order_item oi WHERE oi.order_id = om.id LIMIT 1) AS item_name
         FROM order_main om
         LEFT JOIN sys_user u ON om.user_id = u.id
         WHERE om.id = #{id}
     </select>
 
+    <select id="findByUserId" resultMap="OrderMap">
+        SELECT om.*, u.username AS user_name,
+            (SELECT oi.item_name FROM order_item oi WHERE oi.order_id = om.id LIMIT 1) AS item_name
+        FROM order_main om
+        LEFT JOIN sys_user u ON om.user_id = u.id
+        WHERE om.user_id = #{userId}
+        ORDER BY om.created_at DESC
+    </select>
+
+    <select id="hasUnpaidOrder" resultType="int">
+        SELECT COUNT(*) FROM order_main WHERE user_id = #{userId} AND status = 'PLACED'
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO order_main (order_no, user_id, total_amount, discount_amount, pay_amount,
+            pickup_method, delivery_name, delivery_phone, delivery_address, status, remark, created_at, updated_at)
+        VALUES (#{orderNo}, #{userId}, #{totalAmount}, #{discountAmount}, #{payAmount},
+            #{pickupMethod}, #{deliveryName}, #{deliveryPhone}, #{deliveryAddress}, #{status}, #{remark}, NOW(), NOW())
+    </insert>
+
     <update id="updateStatus">
         UPDATE order_main SET status=#{status} WHERE id=#{id}
+    </update>
+
+    <update id="payOrder">
+        UPDATE order_main SET status='PAID', paid_at=NOW() WHERE id=#{id} AND status='PLACED'
+    </update>
+
+    <update id="cancelByUser">
+        UPDATE order_main SET status='CANCELLED' WHERE id=#{id} AND status='PLACED'
     </update>
 
     <update id="shipOrder">
         UPDATE order_main SET status='SHIPPED', shipped_at=NOW() WHERE id=#{id} AND status='PAID'
     </update>
 
+    <update id="confirmReceipt">
+        UPDATE order_main SET status='RECEIVED' WHERE id=#{id} AND status='SHIPPED'
+    </update>
+
     <update id="completeOrder">
         UPDATE order_main SET status='COMPLETED', completed_at=NOW() WHERE id=#{id}
     </update>
+
+    <update id="requestReturn">
+        UPDATE order_main SET status='RETURNING', return_reason=#{reason} WHERE id=#{id} AND status='RECEIVED'
+    </update>
+
+    <update id="confirmRefund">
+        UPDATE order_main SET status='REFUNDED', completed_at=NOW() WHERE id=#{id} AND status='RETURNING'
+    </update>
+
 </mapper>

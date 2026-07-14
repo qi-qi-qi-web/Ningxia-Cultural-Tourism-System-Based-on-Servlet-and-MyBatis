@@ -15,7 +15,6 @@
             request.setAttribute("error", "加载失败：" + e.getMessage());
         }
     }
-    // 分页
     Object obj = request.getAttribute("orderList");
     int pn = 1, ps = 5;
     try { pn = Integer.parseInt(request.getParameter("page")); } catch(Exception e){}
@@ -45,28 +44,32 @@
 
     <table class="table table-striped table-hover">
         <thead><tr>
-            <th>订单号</th><th>用户</th><th>金额</th><th>取货</th><th>状态</th><th>下单时间</th><th>操作</th>
+            <th>订单号</th><th>商品</th><th>用户</th><th>金额</th><th>状态</th><th>退货原因</th><th>下单时间</th><th>操作</th>
         </tr></thead>
         <tbody>
             <c:if test="${ed > 0}"><c:forEach items="${orderList}" var="o" begin="${st}" end="${ed - 1}">
             <tr>
                 <td><small>${o.orderNo}</small></td>
+                <td><small>${o.itemName}</small></td>
                 <td>${o.userName}</td>
                 <td>¥${o.payAmount}</td>
                 <td>
                     <c:choose>
-                        <c:when test="${o.pickupMethod == 'PICKUP'}"><span class="badge bg-info">自取</span></c:when>
-                        <c:otherwise><span class="badge bg-primary">快递</span></c:otherwise>
+                        <c:when test="${o.status == 'PLACED'}"><span class="badge bg-warning">已下单</span></c:when>
+                        <c:when test="${o.status == 'PAID'}"><span class="badge bg-info">已付款</span></c:when>
+                        <c:when test="${o.status == 'SHIPPED'}"><span class="badge bg-primary">已发货</span></c:when>
+                        <c:when test="${o.status == 'RECEIVED'}"><span class="badge" style="background:#17a2b8;color:#fff;">已收货</span></c:when>
+                        <c:when test="${o.status == 'RETURNING'}"><span class="badge" style="background:#e91e63;color:#fff;">退货中</span></c:when>
+                        <c:when test="${o.status == 'COMPLETED'}"><span class="badge bg-success">已完成</span></c:when>
+                        <c:when test="${o.status == 'REFUNDED'}"><span class="badge bg-secondary">已退款</span></c:when>
+                        <c:when test="${o.status == 'CANCELLED'}"><span class="badge bg-danger">已取消</span></c:when>
+                        <c:otherwise><span class="badge bg-dark">${o.status}</span></c:otherwise>
                     </c:choose>
                 </td>
                 <td>
                     <c:choose>
-                        <c:when test="${o.status == 'PENDING'}"><span class="badge bg-warning">待支付</span></c:when>
-                        <c:when test="${o.status == 'PAID'}"><span class="badge bg-info">已支付</span></c:when>
-                        <c:when test="${o.status == 'SHIPPED'}"><span class="badge bg-primary">已发货</span></c:when>
-                        <c:when test="${o.status == 'COMPLETED'}"><span class="badge bg-success">已完成</span></c:when>
-                        <c:when test="${o.status == 'CANCELLED'}"><span class="badge bg-danger">已取消</span></c:when>
-                        <c:when test="${o.status == 'REFUNDED'}"><span class="badge bg-secondary">已退款</span></c:when>
+                        <c:when test="${not empty o.returnReason}"><small style="color:#e91e63;">${o.returnReason}</small></c:when>
+                        <c:otherwise><span style="color:#ccc;">-</span></c:otherwise>
                     </c:choose>
                 </td>
                 <td><fmt:formatDate value="${o.createdAt}" pattern="MM-dd HH:mm"/></td>
@@ -74,10 +77,10 @@
                     <c:if test="${o.status == 'PAID'}">
                         <a href="${pageContext.request.contextPath}/admin/order?action=ship&id=${o.id}" class="btn btn-primary btn-sm">发货</a>
                     </c:if>
-                    <c:if test="${o.status == 'SHIPPED'}">
-                        <a href="${pageContext.request.contextPath}/admin/order?action=complete&id=${o.id}" class="btn btn-success btn-sm">完成</a>
+                    <c:if test="${o.status == 'RETURNING'}">
+                        <a href="${pageContext.request.contextPath}/admin/order?action=confirmRefund&id=${o.id}" class="btn btn-warning btn-sm" onclick="return confirm('确认退款？')">确认退款</a>
                     </c:if>
-                    <c:if test="${o.status == 'PENDING'}">
+                    <c:if test="${o.status == 'PLACED'}">
                         <a href="${pageContext.request.contextPath}/admin/order?action=cancel&id=${o.id}" class="btn btn-danger btn-sm" onclick="return confirm('确认取消？')">取消</a>
                     </c:if>
                 </td>

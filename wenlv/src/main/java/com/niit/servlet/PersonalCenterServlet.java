@@ -1,6 +1,10 @@
 package com.niit.servlet;
 
+import com.niit.mapper.OrderItemMapper;
+import com.niit.mapper.OrderMapper;
 import com.niit.mapper.TravelGuideMapper;
+import com.niit.pojo.OrderItem;
+import com.niit.pojo.OrderMain;
 import com.niit.pojo.TravelGuide;
 import com.niit.pojo.User;
 import com.niit.service.UserService;
@@ -43,6 +47,11 @@ public class PersonalCenterServlet extends HttpServlet {
 
         if ("myGuides".equals(action)) {
             handleMyGuides(request, response);
+            return;
+        }
+
+        if ("myOrders".equals(action)) {
+            handleMyOrders(request, response);
             return;
         }
 
@@ -247,5 +256,68 @@ public class PersonalCenterServlet extends HttpServlet {
     private String esc(String s) {
         if (s == null) return "";
         return s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","");
+    }
+
+    private void handleMyOrders(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.getWriter().write("[]");
+            return;
+        }
+
+        User user = (User) session.getAttribute("user");
+        try (SqlSession s = DBUtil.getSession()) {
+            List<OrderMain> orders = s.getMapper(OrderMapper.class).findByUserId(user.getId());
+            OrderItemMapper itemMapper = s.getMapper(OrderItemMapper.class);
+
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < orders.size(); i++) {
+                if (i > 0) sb.append(",");
+                OrderMain o = orders.get(i);
+
+                // 查询订单明细
+                List<OrderItem> items = itemMapper.findByOrderId(o.getId());
+                StringBuilder itemsJson = new StringBuilder("[");
+                for (int j = 0; j < items.size(); j++) {
+                    if (j > 0) itemsJson.append(",");
+                    OrderItem it = items.get(j);
+                    itemsJson.append("{")
+                        .append("\"specialtyId\":").append(it.getSpecialtyId()).append(",")
+                        .append("\"itemName\":\"").append(esc(it.getItemName())).append("\",")
+                        .append("\"itemImage\":\"").append(esc(it.getItemImage())).append("\",")
+                        .append("\"quantity\":").append(it.getQuantity()).append(",")
+                        .append("\"unitPrice\":").append(it.getUnitPrice()).append(",")
+                        .append("\"subtotal\":").append(it.getSubtotal())
+                        .append("}");
+                }
+                itemsJson.append("]");
+
+                String deliveryName = o.getDeliveryName() != null ? o.getDeliveryName() : "";
+                String deliveryPhone = o.getDeliveryPhone() != null ? o.getDeliveryPhone() : "";
+                String deliveryAddress = o.getDeliveryAddress() != null ? o.getDeliveryAddress() : "";
+                String returnReason = o.getReturnReason() != null ? o.getReturnReason() : "";
+
+                sb.append("{")
+                    .append("\"id\":").append(o.getId()).append(",")
+                    .append("\"orderNo\":\"").append(esc(o.getOrderNo())).append("\",")
+                    .append("\"totalAmount\":").append(o.getTotalAmount()).append(",")
+                    .append("\"payAmount\":").append(o.getPayAmount()).append(",")
+                    .append("\"pickupMethod\":\"").append(esc(o.getPickupMethod())).append("\",")
+                    .append("\"deliveryName\":\"").append(esc(deliveryName)).append("\",")
+                    .append("\"deliveryPhone\":\"").append(esc(deliveryPhone)).append("\",")
+                    .append("\"deliveryAddress\":\"").append(esc(deliveryAddress)).append("\",")
+                    .append("\"status\":\"").append(esc(o.getStatus())).append("\",")
+                    .append("\"returnReason\":\"").append(esc(returnReason)).append("\",")
+                    .append("\"createdAt\":\"").append(o.getCreatedAt() != null ? o.getCreatedAt().toString() : "").append("\",")
+                    .append("\"items\":").append(itemsJson.toString())
+                    .append("}");
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            response.getWriter().write("[]");
+        }
     }
 }

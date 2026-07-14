@@ -103,26 +103,14 @@
                             </div>
                         </div>
 
-                        <!-- 取货方式 -->
+                        <!-- 收件信息 -->
                         <div class="mb-3">
-                            <label style="font-weight:500;font-size:14px;">取货方式</label>
-                            <div style="display:flex;gap:15px;margin-top:8px;">
-                                <label style="cursor:pointer;padding:10px 20px;border:2px solid #00a8a8;border-radius:8px;background:#e8f8f8;color:#00a8a8;font-weight:500;">
-                                    <input type="radio" name="pickup" value="PICKUP" checked onchange="toggleDelivery()" style="margin-right:6px;"> 自取
-                                </label>
-                                <label style="cursor:pointer;padding:10px 20px;border:2px solid #e0e0e0;border-radius:8px;color:#666;" id="delivery-label">
-                                    <input type="radio" name="pickup" value="DELIVERY" onchange="toggleDelivery()" style="margin-right:6px;"> 快递
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- 快递信息 -->
-                        <div id="delivery-info" style="display:none;">
-                            <div class="row mb-2">
+                            <label style="font-weight:500;font-size:14px;">收件信息</label>
+                            <div class="row mb-2" style="margin-top:8px;">
                                 <div class="col-6"><input class="form-control" id="del-name" placeholder="收件人姓名"></div>
                                 <div class="col-6"><input class="form-control" id="del-phone" placeholder="收件人电话"></div>
                             </div>
-                            <div class="mb-3"><input class="form-control" id="del-addr" placeholder="收件地址"></div>
+                            <div class="mb-2"><input class="form-control" id="del-addr" placeholder="收件地址"></div>
                         </div>
 
                         <button type="submit" style="width:100%;padding:14px;background:linear-gradient(135deg,#00a8a8,#00d4aa);border:none;border-radius:8px;color:#fff;font-size:16px;font-weight:600;cursor:pointer;">
@@ -235,34 +223,67 @@ function updateTotal() {
     document.getElementById('order-subtotal').textContent = '¥' + (qty * unitPrice).toFixed(2);
 }
 
-function toggleDelivery() {
-    var isDelivery = document.querySelector('input[name="pickup"]:checked').value === 'DELIVERY';
-    document.getElementById('delivery-info').style.display = isDelivery ? 'block' : 'none';
-    var labels = document.querySelectorAll('input[name="pickup"] + span') ;
-    document.querySelectorAll('input[name="pickup"]').forEach(function(r){
-        var label = r.parentElement;
-        if (r.checked) {
-            label.style.borderColor = '#00a8a8'; label.style.background = '#e8f8f8'; label.style.color = '#00a8a8';
-        } else {
-            label.style.borderColor = '#e0e0e0'; label.style.background = '#fff'; label.style.color = '#666';
-        }
-    });
-}
-
 function submitOrder(e, id, name, price) {
     e.preventDefault();
-    var qty = parseInt(document.getElementById('order-qty').value) || 1;
-    var pickup = document.querySelector('input[name="pickup"]:checked').value;
-    var total = (qty * price).toFixed(2);
 
-    if (pickup === 'DELIVERY') {
-        var dn = document.getElementById('del-name').value.trim();
-        var dp = document.getElementById('del-phone').value.trim();
-        var da = document.getElementById('del-addr').value.trim();
-        if (!dn || !dp || !da) { alert('请填写完整的收件信息'); return false; }
+    // 检查登录状态
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        alert('请先登录后再下单！');
+        return false;
     }
 
-    alert('下单成功！\n商品：' + name + '\n数量：' + qty + '\n取货：' + (pickup === 'PICKUP' ? '自取' : '快递') + '\n金额：¥' + total + '\n\n（订单功能后续完善）');
+    var qty = parseInt(document.getElementById('order-qty').value) || 1;
+
+    // 校验收件信息
+    var dn = document.getElementById('del-name').value.trim();
+    var dp = document.getElementById('del-phone').value.trim();
+    var da = document.getElementById('del-addr').value.trim();
+    if (!dn || !dp || !da) { alert('请填写完整的收件信息'); return false; }
+
+    // 组装参数（全部快递配送）
+    var params = 'specialtyId=' + encodeURIComponent(id)
+        + '&quantity=' + encodeURIComponent(qty)
+        + '&pickupMethod=DELIVERY'
+        + '&deliveryName=' + encodeURIComponent(dn)
+        + '&deliveryPhone=' + encodeURIComponent(dp)
+        + '&deliveryAddress=' + encodeURIComponent(da);
+
+    // 禁用按钮防止重复提交
+    var btn = document.querySelector('#order-form button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '提交中...';
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/order', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            btn.disabled = false;
+            btn.textContent = '确认下单';
+            if (xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        alert(resp.message);
+                        // 跳转到付款页面
+                        if (resp.orderId) {
+                            window.location.href = 'Pay.jsp?orderId=' + resp.orderId;
+                        } else if (confirm('下单成功！是否前往个人中心查看订单？')) {
+                            window.location.href = 'personalCenter#orders';
+                        }
+                    } else {
+                        alert(resp.message || '下单失败');
+                    }
+                } catch (e) {
+                    alert('服务器返回异常，请稍后重试');
+                }
+            } else {
+                alert('网络错误（' + xhr.status + '），请重试');
+            }
+        }
+    };
+    xhr.send(params);
+
     return false;
 }
 

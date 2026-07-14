@@ -15,5 +15,7 @@ public interface SpecialtyMapper {
     int shiftIdsDown(@Param("afterId") Long afterId);
     Long findMaxId();
     int toggleStatus(@Param("id") Long id, @Param("status") Integer status);
+    int decrementStock(@Param("id") Long id, @Param("qty") int qty);
+    int restoreStock(@Param("id") Long id, @Param("qty") int qty);
     java.util.List<java.util.Map<String,Object>> selectCategories();
 }

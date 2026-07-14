@@ -27,9 +27,11 @@ public class OrderMain {
     private Date shippedAt;
     private Date completedAt;
     private String remark;
+    private String returnReason;
     private Date createdAt;
     private Date updatedAt;
 
     // 关联
     private String userName;
+    private String itemName;   // 第一个商品名（用于后台列表展示）
 }

@@ -1,6 +1,9 @@
 package com.niit.servlet;
 
+import com.niit.mapper.OrderItemMapper;
 import com.niit.mapper.OrderMapper;
+import com.niit.mapper.SpecialtyMapper;
+import com.niit.pojo.OrderItem;
 import com.niit.pojo.OrderMain;
 import com.niit.utils.DBUtil;
 import jakarta.servlet.ServletException;
@@ -49,6 +52,18 @@ public class AdminOrderServlet extends HttpServlet {
                 case "ship": m.shipOrder(id); s.commit(); return "已标记发货";
                 case "complete": m.completeOrder(id); s.commit(); return "已确认收货";
                 case "cancel": m.updateStatus(id, "CANCELLED"); s.commit(); return "订单已取消";
+                case "confirmRefund":
+                    // 回滚库存
+                    List<OrderItem> items = s.getMapper(OrderItemMapper.class).findByOrderId(id);
+                    m.confirmRefund(id);
+                    if (items != null) {
+                        SpecialtyMapper sm = s.getMapper(SpecialtyMapper.class);
+                        for (OrderItem it : items) {
+                            sm.restoreStock(it.getSpecialtyId(), it.getQuantity());
+                        }
+                    }
+                    s.commit();
+                    return "已确认退款，订单已退款";
                 default: return "未知操作";
             }
         }

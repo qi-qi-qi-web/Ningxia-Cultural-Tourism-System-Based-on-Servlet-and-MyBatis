@@ -305,6 +305,17 @@ CREATE TABLE order_item (
     INDEX idx_specialty (specialty_id)
 ) ENGINE=InnoDB COMMENT '订单明细表';
 
+-- 1. 修改 order_main.status 枚举，添加新状态
+ALTER TABLE order_main
+    MODIFY COLUMN status ENUM(
+    'PENDING','PAID','SHIPPED','CANCELLED','REFUNDED','COMPLETED',
+    'PLACED','RECEIVED','RETURNING'
+    ) NOT NULL DEFAULT 'PLACED';
+
+-- 2. 添加退货原因字段
+ALTER TABLE order_main
+    ADD COLUMN return_reason VARCHAR(500) DEFAULT NULL COMMENT '退货原因';
+
 DROP TABLE IF EXISTS comment;
 CREATE TABLE comment (
     id              BIGINT          PRIMARY KEY AUTO_INCREMENT,

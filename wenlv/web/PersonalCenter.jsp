@@ -297,6 +297,26 @@
         background: #f5f5f5;
         color: #999;
     }
+    .order-status.placed {
+        background: #fff3e0;
+        color: #ff9800;
+    }
+    .order-status.received {
+        background: #e3f2fd;
+        color: #2196f3;
+    }
+    .order-status.returning {
+        background: #fce4ec;
+        color: #e91e63;
+    }
+    .order-status.completed {
+        background: #e8f5e9;
+        color: #4caf50;
+    }
+    .order-status.cancelled {
+        background: #f5f5f5;
+        color: #999;
+    }
     .order-content {
         display: flex;
         gap: 15px;
@@ -737,90 +757,8 @@
                 <div id="tab-orders" class="tab-content-main" style="display: none;">
                     <div class="content-card">
                         <div class="content-title">我的订单</div>
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-no">订单号: DD20260705001</div>
-                                <div class="order-status paid">已支付</div>
-                            </div>
-                            <div class="order-content">
-                                <img src="images/img-1-720x400.jpg" alt="沙坡头景区" class="order-img">
-                                <div class="order-info">
-                                    <div class="order-title">沙坡头景区门票</div>
-                                    <div class="order-detail">数量: 2张 | 使用日期: 2026-07-10</div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-price">￥280.00</div>
-                                <button class="btn-secondary-custom">查看详情</button>
-                            </div>
-                        </div>
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-no">订单号: JD20260705001</div>
-                                <div class="order-status paid">已预订</div>
-                            </div>
-                            <div class="order-content">
-                                <img src="images/service-1-370x389.jpg" alt="黄河宿集" class="order-img">
-                                <div class="order-info">
-                                    <div class="order-title">黄河宿集·西坡</div>
-                                    <div class="order-detail">入住日期: 2026-07-10 | 房型: 精致大床房</div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-price">￥1280.00</div>
-                                <button class="btn-secondary-custom">查看详情</button>
-                            </div>
-                        </div>
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-no">订单号: DD20260708002</div>
-                                <div class="order-status unpaid">待支付</div>
-                            </div>
-                            <div class="order-content">
-                                <img src="images/img-2-720x400.jpg" alt="西夏王陵" class="order-img">
-                                <div class="order-info">
-                                    <div class="order-title">西夏王陵门票</div>
-                                    <div class="order-detail">数量: 1张 | 使用日期: 2026-07-15</div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-price">￥75.00</div>
-                                <button class="btn-primary-custom">立即支付</button>
-                            </div>
-                        </div>
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-no">订单号: JD20260709004</div>
-                                <div class="order-status unpaid">待支付</div>
-                            </div>
-                            <div class="order-content">
-                                <img src="images/service-4-370x389.jpg" alt="腾格里沙漠营地" class="order-img">
-                                <div class="order-info">
-                                    <div class="order-title">腾格里沙漠营地</div>
-                                    <div class="order-detail">入住日期: 2026-07-20 | 房型: 沙漠帐篷房</div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-price">￥880.00</div>
-                                <button class="btn-primary-custom">立即支付</button>
-                            </div>
-                        </div>
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="order-no">订单号: DD20260702005</div>
-                                <div class="order-status used">已使用</div>
-                            </div>
-                            <div class="order-content">
-                                <img src="images/img-3-720x400.jpg" alt="镇北堡西部影城" class="order-img">
-                                <div class="order-info">
-                                    <div class="order-title">镇北堡西部影城门票</div>
-                                    <div class="order-detail">数量: 4张 | 使用日期: 2026-07-03</div>
-                                </div>
-                            </div>
-                            <div class="order-footer">
-                                <div class="order-price">￥320.00</div>
-                                <button class="btn-secondary-custom">查看详情</button>
-                            </div>
+                        <div id="my-orders-container" style="text-align:center;color:#999;padding:30px;">
+                            加载中...
                         </div>
                     </div>
                 </div>
@@ -907,6 +845,109 @@
                         <button class="btn-primary-custom" type="submit">保存修改</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== 订单评价弹窗 ========== -->
+<div id="order-comment-modal" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">评价商品</h4>
+                <button type="button" class="close" onclick="closeOrderCommentModal()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <input type="hidden" id="comment-order-id">
+                <div class="form-group-custom" style="text-align:center;margin-bottom:15px;">
+                    <div class="form-label-custom">评分</div>
+                    <div id="star-rating" style="font-size:32px;color:#ddd;cursor:pointer;">
+                        <span data-star="1" onmouseover="highlightStars(1)" onmouseout="resetStars()" onclick="setRating(1)">★</span>
+                        <span data-star="2" onmouseover="highlightStars(2)" onmouseout="resetStars()" onclick="setRating(2)">★</span>
+                        <span data-star="3" onmouseover="highlightStars(3)" onmouseout="resetStars()" onclick="setRating(3)">★</span>
+                        <span data-star="4" onmouseover="highlightStars(4)" onmouseout="resetStars()" onclick="setRating(4)">★</span>
+                        <span data-star="5" onmouseover="highlightStars(5)" onmouseout="resetStars()" onclick="setRating(5)">★</span>
+                    </div>
+                    <input type="hidden" id="comment-rating" value="5">
+                </div>
+                <div class="form-group-custom">
+                    <div class="form-label-custom">评价内容</div>
+                    <textarea class="form-input-custom" id="comment-content-text" rows="4" placeholder="分享您的购买体验..." style="resize: vertical;"></textarea>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="btn-secondary-custom" onclick="closeOrderCommentModal()" style="margin-right: 10px;">取消</button>
+                    <button class="btn-primary-custom" onclick="submitOrderComment()">提交评价</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== 退货原因弹窗 ========== -->
+<div id="return-reason-modal" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">申请退货</h4>
+                <button type="button" class="close" onclick="closeReturnReasonModal()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <input type="hidden" id="return-order-id">
+                <div class="form-group-custom">
+                    <div class="form-label-custom">退货原因</div>
+                    <div id="return-reason-options" style="display:flex;flex-direction:column;gap:8px;">
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="return-reason" value="商品破损" style="margin-right:8px;"> 商品破损
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="return-reason" value="质量问题" style="margin-right:8px;"> 质量问题
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="return-reason" value="与描述不符" style="margin-right:8px;"> 与描述不符
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="return-reason" value="不想要了" style="margin-right:8px;"> 不想要了
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="return-reason" value="其他" style="margin-right:8px;"> 其他
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group-custom" style="margin-top: 10px;">
+                    <div class="form-label-custom">补充说明（选填）</div>
+                    <textarea class="form-input-custom" id="return-reason-detail" rows="3" placeholder="请详细描述退货原因..." style="resize: vertical;"></textarea>
+                </div>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="btn-secondary-custom" onclick="closeReturnReasonModal()" style="margin-right: 10px;">取消</button>
+                    <button class="btn-primary-custom" onclick="submitReturnRequest()">确认退货</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== 确认收货后弹窗 ========== -->
+<div id="confirm-receipt-popup" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">已确认收货！</h4>
+                <button type="button" class="close" onclick="closeConfirmReceiptPopup()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 25px; text-align: center;">
+                <input type="hidden" id="popup-order-id">
+                <p style="font-size: 15px; color: #555; margin-bottom: 20px;">感谢您的购买！请选择后续操作：</p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary-custom" onclick="popupCompleteOrder()" style="min-width: 130px;">完成订单</button>
+                    <button class="btn-secondary-custom" onclick="popupGoReturn()" style="min-width: 130px; background: #f0ad4e; border-color: #f0ad4e; color: #fff;">我要退货</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1012,11 +1053,35 @@
         if (tabName === 'posts') {
             loadMyGuides();
         }
+        // 切换到"我的订单"时加载数据
+        if (tabName === 'orders') {
+            loadMyOrders();
+        }
     }
 
     function showEditProfile() {
         showTab('profile');
     }
+
+    // 支持 URL hash 导航（如 personalCenter#orders）
+    (function(){
+        var hash = window.location.hash;
+        if (hash === '#orders') {
+            // 等 DOM 加载完后切换
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function(){
+                    showTab('orders');
+                    // 高亮 orders 菜单项
+                    var items = document.querySelectorAll('.nav-item-custom');
+                    items.forEach(function(item, idx){
+                        if (idx === 4) item.classList.add('active'); // orders 是第5个tab
+                    });
+                });
+            } else {
+                showTab('orders');
+            }
+        }
+    })();
 
     function openEditModal() {
         // 从 serverUser 或 localStorage 读取真实数据，避免将 "未填写" 带入编辑框
@@ -1620,5 +1685,315 @@
     function escHtml(s) {
         if (!s) return '';
         return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ========== 订单相关功能 ========== */
+
+    // 状态文本映射
+    function getOrderStatusText(status) {
+        var map = {
+            'PLACED': '待付款', 'PAID': '已付款', 'SHIPPED': '已发货',
+            'RECEIVED': '已收货', 'RETURNING': '退货中',
+            'COMPLETED': '已完成', 'REFUNDED': '已退款', 'CANCELLED': '已取消'
+        };
+        return map[status] || status;
+    }
+
+    function getOrderStatusClass(status) {
+        var map = {
+            'PLACED': 'placed', 'PAID': 'paid', 'SHIPPED': 'paid',
+            'RECEIVED': 'received', 'RETURNING': 'returning',
+            'COMPLETED': 'completed', 'REFUNDED': 'used', 'CANCELLED': 'cancelled'
+        };
+        return map[status] || '';
+    }
+
+    function getPickupText(method) {
+        return method === 'DELIVERY' ? '快递配送' : '到店自取';
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        var d = new Date(dateStr);
+        var m = d.getMonth() + 1;
+        var day = d.getDate();
+        var h = d.getHours();
+        var min = d.getMinutes();
+        return m + '-' + (day < 10 ? '0' + day : day) + ' ' + (h < 10 ? '0' + h : h) + ':' + (min < 10 ? '0' + min : min);
+    }
+
+    function loadMyOrders() {
+        var container = document.getElementById('my-orders-container');
+        if (!container) return;
+        container.innerHTML = '<div style="text-align:center;color:#999;padding:30px;">加载中...</div>';
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/personalCenter?action=myOrders', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var orders = JSON.parse(xhr.responseText);
+                        renderOrders(orders, container);
+                    } catch (e) {
+                        container.innerHTML = '<div style="text-align:center;color:#999;padding:30px;">数据加载异常</div>';
+                    }
+                } else {
+                    container.innerHTML = '<div style="text-align:center;color:#999;padding:30px;">网络错误</div>';
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    function renderOrders(orders, container) {
+        if (!orders || orders.length === 0) {
+            container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">暂无订单<br><a href="specialty.jsp" style="color:#00a8a8;">去逛逛特产</a></div>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < orders.length; i++) {
+            var o = orders[i];
+            var item = (o.items && o.items.length > 0) ? o.items[0] : null;
+            var itemName = item ? escHtml(item.itemName) : '商品';
+            var itemImage = item && item.itemImage ? item.itemImage : 'images/img-1-720x400.jpg';
+            var qty = item ? item.quantity : 1;
+            var statusText = getOrderStatusText(o.status);
+            var statusClass = getOrderStatusClass(o.status);
+            var pickupText = getPickupText(o.pickupMethod);
+
+            html += '<div class="order-card">';
+            html += '<div class="order-header">';
+            html += '<div class="order-no">订单号: ' + escHtml(o.orderNo) + '</div>';
+            html += '<div class="order-status ' + statusClass + '">' + statusText + '</div>';
+            html += '</div>';
+            html += '<div class="order-content">';
+            html += '<img src="' + itemImage + '" alt="' + itemName + '" class="order-img" onerror="this.src=\'images/img-1-720x400.jpg\'">';
+            html += '<div class="order-info">';
+            html += '<div class="order-title">' + itemName + '</div>';
+            html += '<div class="order-detail">数量: ' + qty + ' | 取货方式: ' + pickupText + ' | 下单时间: ' + formatDate(o.createdAt) + '</div>';
+            if (o.pickupMethod === 'DELIVERY') {
+                html += '<div class="order-detail">收件人: ' + escHtml(o.deliveryName || '') + ' | ' + escHtml(o.deliveryPhone || '') + '</div>';
+                html += '<div class="order-detail">地址: ' + escHtml(o.deliveryAddress || '') + '</div>';
+            }
+            if (o.status === 'RETURNING' && o.returnReason) {
+                html += '<div class="order-detail" style="color:#e91e63;">退货原因: ' + escHtml(o.returnReason) + '</div>';
+            }
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="order-footer">';
+            html += '<div class="order-price">¥' + (o.payAmount || o.totalAmount || 0).toFixed(2) + '</div>';
+            html += '<div>';
+
+            // 状态按钮
+            if (o.status === 'PLACED') {
+                html += '<a href="Pay.jsp?orderId=' + o.id + '" class="btn-primary-custom" style="display:inline-block;margin-left:8px;text-decoration:none;padding:8px 16px;">去付款</a>';
+            } else if (o.status === 'PAID') {
+                html += '<span style="color:#2196f3;font-size:13px;">等待卖家发货</span>';
+            } else if (o.status === 'SHIPPED') {
+                html += '<button class="btn-primary-custom" onclick="confirmReceipt(' + o.id + ')" style="margin-left:8px;">确认收货</button>';
+            } else if (o.status === 'RECEIVED') {
+                html += '<button class="btn-primary-custom" onclick="completeOrderDirect(' + o.id + ')" style="margin-left:8px;">完成订单</button>';
+                html += '<button class="btn-primary-custom" onclick="openOrderCommentModal(' + o.id + ')" style="margin-left:8px;">评价商品</button>';
+                html += '<button class="btn-secondary-custom" onclick="openReturnReasonModal(' + o.id + ')" style="margin-left:8px;background:#f0ad4e;border-color:#f0ad4e;color:#fff;">申请退货</button>';
+            } else if (o.status === 'RETURNING') {
+                html += '<span style="color:#e91e63;font-size:13px;">等待管理员处理退货</span>';
+            } else if (o.status === 'COMPLETED') {
+                html += '<span style="color:#4caf50;font-size:13px;">&#10003; 已完成</span>';
+                if (item && item.specialtyId) {
+                    html += '<button class="btn-secondary-custom" onclick="openOrderCommentModal(' + o.id + ')" style="margin-left:8px;font-size:12px;">评价</button>';
+                }
+            } else if (o.status === 'REFUNDED') {
+                html += '<span style="color:#999;font-size:13px;">&#8630; 已退款</span>';
+                if (item && item.specialtyId) {
+                    html += '<button class="btn-secondary-custom" onclick="openOrderCommentModal(' + o.id + ')" style="margin-left:8px;font-size:12px;">评价</button>';
+                }
+            } else if (o.status === 'CANCELLED') {
+                html += '<span style="color:#999;font-size:13px;">&#10007; 已取消</span>';
+            }
+
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+        }
+        container.innerHTML = html;
+    }
+
+    // 确认收货（SHIPPED → RECEIVED）
+    function confirmReceipt(orderId) {
+        if (!confirm('确认已收到商品？')) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/order?action=confirmReceipt&id=' + orderId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        document.getElementById('popup-order-id').value = orderId;
+                        document.getElementById('confirm-receipt-popup').style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                        loadMyOrders();
+                    } else {
+                        showToastLocal(resp.message || '操作失败', 'error');
+                    }
+                } catch(e) {
+                    showToastLocal('服务器返回异常', 'error');
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    // 弹窗 - 完成订单
+    function popupCompleteOrder() {
+        var orderId = document.getElementById('popup-order-id').value;
+        closeConfirmReceiptPopup();
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/order?action=complete&id=' + orderId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    showToastLocal(resp.success ? '订单已完成' : (resp.message || '操作失败'), resp.success ? 'success' : 'error');
+                    loadMyOrders();
+                } catch(e) { showToastLocal('服务器返回异常', 'error'); }
+            }
+        };
+        xhr.send();
+    }
+
+    // 弹窗 - 我要退货
+    function popupGoReturn() {
+        var orderId = document.getElementById('popup-order-id').value;
+        closeConfirmReceiptPopup();
+        openReturnReasonModal(orderId);
+    }
+
+    function closeConfirmReceiptPopup() {
+        document.getElementById('confirm-receipt-popup').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    // 直接从订单卡片完成订单
+    function completeOrderDirect(orderId) {
+        if (!confirm('确认完成订单？')) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/order?action=complete&id=' + orderId, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    showToastLocal(resp.success ? '订单已完成' : (resp.message || '操作失败'), resp.success ? 'success' : 'error');
+                    loadMyOrders();
+                } catch(e) { showToastLocal('服务器返回异常', 'error'); }
+            }
+        };
+        xhr.send();
+    }
+
+    /* ========== 评价商品 ========== */
+    var currentRating = 5;
+
+    function openOrderCommentModal(orderId) {
+        document.getElementById('comment-order-id').value = orderId;
+        document.getElementById('comment-content-text').value = '';
+        currentRating = 5;
+        document.getElementById('comment-rating').value = '5';
+        highlightStars(5);
+        document.getElementById('order-comment-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeOrderCommentModal() {
+        document.getElementById('order-comment-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function highlightStars(n) {
+        var stars = document.querySelectorAll('#star-rating span');
+        for (var i = 0; i < stars.length; i++) {
+            stars[i].style.color = i < n ? '#ffc107' : '#ddd';
+        }
+    }
+
+    function resetStars() { highlightStars(currentRating); }
+
+    function setRating(n) {
+        currentRating = n;
+        document.getElementById('comment-rating').value = n;
+        highlightStars(n);
+    }
+
+    // 提交评价（仅评论，不改变订单状态）
+    function submitOrderComment() {
+        var orderId = document.getElementById('comment-order-id').value;
+        var rating = document.getElementById('comment-rating').value;
+        var content = document.getElementById('comment-content-text').value.trim();
+
+        if (!content) { showToastLocal('请输入评价内容', 'error'); return; }
+        if (content.length < 3) { showToastLocal('评价内容至少3个字', 'error'); return; }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/order', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        closeOrderCommentModal();
+                        showToastLocal('评价成功', 'success');
+                    } else {
+                        showToastLocal(resp.message || '评价失败', 'error');
+                    }
+                    loadMyOrders();
+                } catch(e) { showToastLocal('服务器返回异常', 'error'); }
+            }
+        };
+        xhr.send('action=completeWithComment&id=' + encodeURIComponent(orderId)
+            + '&rating=' + encodeURIComponent(rating)
+            + '&content=' + encodeURIComponent(content));
+    }
+
+    /* ========== 申请退货 ========== */
+    function openReturnReasonModal(orderId) {
+        document.getElementById('return-order-id').value = orderId;
+        document.getElementById('return-reason-detail').value = '';
+        var radios = document.querySelectorAll('input[name="return-reason"]');
+        for (var i = 0; i < radios.length; i++) { radios[i].checked = false; }
+        document.getElementById('return-reason-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeReturnReasonModal() {
+        document.getElementById('return-reason-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function submitReturnRequest() {
+        var orderId = document.getElementById('return-order-id').value;
+        var selected = document.querySelector('input[name="return-reason"]:checked');
+        if (!selected) { showToastLocal('请选择退货原因', 'error'); return; }
+        var reason = selected.value;
+        var detail = document.getElementById('return-reason-detail').value.trim();
+        if (detail) { reason += ' - ' + detail; }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/order?action=requestReturn&id=' + encodeURIComponent(orderId)
+            + '&reason=' + encodeURIComponent(reason), true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        closeReturnReasonModal();
+                        showToastLocal('退货申请已提交', 'success');
+                    } else {
+                        showToastLocal(resp.message || '操作失败', 'error');
+                    }
+                    loadMyOrders();
+                } catch(e) { showToastLocal('服务器返回异常', 'error'); }
+            }
+        };
+        xhr.send();
     }
 </script>
