@@ -53,4 +53,6 @@
     <update id="toggleStatus">UPDATE hotel SET status=#{status} WHERE id=#{id}</update>
     <update id="shiftIdsDown">UPDATE hotel SET id = id - 1 WHERE id &gt; #{afterId}</update>
     <select id="findMaxId" resultType="java.lang.Long">SELECT COALESCE(MAX(id),0) FROM hotel</select>
+    <update id="incrementFavoriteCount">UPDATE hotel SET favorite_count = favorite_count + 1 WHERE id = #{id}</update>
+    <update id="decrementFavoriteCount">UPDATE hotel SET favorite_count = GREATEST(favorite_count - 1, 0) WHERE id = #{id}</update>
 </mapper>
