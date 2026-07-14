@@ -7,7 +7,6 @@
     vertical-align: middle;
     gap: 8px;
     white-space: nowrap;
-    min-width: 130px;
     text-align: right;
 }
 
@@ -15,7 +14,7 @@
     position: relative;
     display: inline-block;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.2;
     transition: .25s;
     cursor: pointer;
@@ -109,29 +108,25 @@
 }
 
 .rd-navbar-main-element {
+    flex: 1;
     display: flex !important;
     align-items: center !important;
-    justify-content: flex-start !important;
+    justify-content: center !important;
 }
 
 .rd-navbar-main-element > * {
-    flex-shrink: 0;
     align-self: center;
 }
 
 .rd-navbar-nav-wrap {
-    flex-shrink: 0;
-    align-self: center;
-}
-
-.rd-navbar-search {
-    flex-shrink: 0;
-    align-self: center;
+    flex: 1;
+    display: flex;
+    justify-content: center;
 }
 
 .rd-navbar-login {
     flex-shrink: 0;
-    align-self: center;
+    margin-left: auto;
 }
 
 /* ===== WeChat-style Unified Modal ===== */

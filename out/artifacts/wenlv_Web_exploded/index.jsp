@@ -5,7 +5,7 @@
 <!--Swiper-->
     <section class="section swiper-container swiper-slider swiper-slider-1" data-autoplay="5000" data-swiper='{"simulateTouch":false,"speed":500}'>
         <div class="swiper-wrapper text-center">
-            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/黄河金岸.jpeg">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia_Index/黄河金岸.jpeg">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">
@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/塞上江南.png">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia_Index/塞上江南.png">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia/大漠山河.png">
+            <div class="swiper-slide context-dark" data-slide-bg="images/NingXia_Index/大漠山河.png">
                 <div class="swiper-slide-caption section-md">
                     <div class="container">
                         <div class="row justify-content-lg-center">
@@ -62,17 +62,16 @@
         <div class="container">
             <div class="row row-30">
                 <div class="col-xl-5 position-relative">
-                    <h2><span class="wow fadeInLeft d-xl-block">畅游宁夏</span><span class="wow fadeInLeft d-xl-block" data-wow-delay=".2s">感受丝路风情</span></h2>
-                    <p class="wow fadeInLeft offset-xl" data-wow-delay=".3s">与宁夏文旅一起探索塞上江南的独特魅力！沙坡头的沙漠与黄河交织，西夏王陵诉说千年历史，贺兰山岩画见证远古文明，带您领略不一样的西北风情。</p>
-                    <p class="wow fadeInLeft" data-wow-delay=".4s">宁夏，中国唯一的省级回族自治区，拥有丰富的自然景观和人文历史。从腾格里沙漠到六盘山森林，从古老的丝绸之路到现代的黄河金岸，这里是您旅途中不可错过的一站！</p>
-                    <div class="offset-top-25 wow fadeInUp" data-wow-delay=".5s"><img src="images/signature-1-113x66.png" alt="" width="113" height="66"/>
-                    </div>
+                    <h2><span class="wow fadeInLeft d-xl-block" style="color: #ffffff;">畅游宁夏</span>
+                        <span class="wow fadeInLeft d-xl-block" data-wow-delay=".2s" style="color: #ffffff;">感受丝路风情</span></h2>
+                    <p class="wow fadeInLeft offset-xl" data-wow-delay=".3s" style="color: #ffffff;">与宁夏文旅一起探索塞上江南的独特魅力！沙坡头的沙漠与黄河交织，西夏王陵诉说千年历史，贺兰山岩画见证远古文明，带您领略不一样的西北风情。</p>
+                    <p class="wow fadeInLeft" data-wow-delay=".4s" style="color: #ffffff;">宁夏，中国唯一的省级回族自治区，拥有丰富的自然景观和人文历史。从腾格里沙漠到六盘山森林，从古老的丝绸之路到现代的黄河金岸，这里是您旅途中不可错过的一站！</p>
                 </div>
                 <div class="col-xl-7 position-relative">
                     <div class="image-box inset-xl-1 wow fadeInUp">
-                        <div class="image-box__static"><img src="images/img-2-home-364x459.jpg" alt="" width="364" height="459"/>
+                        <div class="image-box__static"><img src="images/NingXia_Index/丝路风情4.png" alt="" width="364" height="459"/>
                         </div>
-                        <div class="image-box__float"><img src="images/img-1-home-364x459.jpg" alt="" width="364" height="459"/>
+                        <div class="image-box__float"><img src="images/NingXia_Index/丝路风情1（骆驼1）.png" alt="" width="364" height="459"/>
                         </div>
                     </div>
                 </div>
@@ -83,11 +82,11 @@
     <section class="section bg-image-2 section-lg">
         <div class="container">
             <div class="row row-30 flex-column-reverse flex-lg-row">
-                <div class="col-lg-4 d-flex flex-column justify-content-lg-center justify-content-xl-end wow fadeInLeft z-index align-items-center"><a class="floating-video-box" href="#" data-lightgallery="item"><img src="images/video-overlay-370x288.jpg" alt="" width="370" height="288"/><span class="icon fa fa-play"></span></a></div>
+                <div class="col-lg-4 d-flex flex-column justify-content-lg-center justify-content-xl-end wow fadeInLeft z-index align-items-center"><a class="#" href="#" data-lightgallery="item"><img src="images/NingXia_Index/走进神奇宁夏.png" alt="" width="370" height="288"/><span class="icon fa fa-play"></span></a></div>
                 <div class="col-lg-8 column-bg-1">
                     <div class="quote-classic-wrap">
-                        <div class="heading-4 wow fadeInUp">在背包故事，我们亲自规划和创建所有旅游线路，以提供灵活性和独特的体验，这些是您在其他地方无法获得的。此外，每条线路都是为客户量身定制的，以提供他们所期望的体验。</div>
-                        <p class="fst-italicwow fadeInUp" data-wow-delay=".2s">约翰·威尔逊，旅行社总监</p>
+                        <div class="heading-4 wow fadeInUp">走进神奇宁夏，探寻塞上江南的多样风情。我们立足本地，整合特色民宿、精品游览线路与景区资源，带你感受腾格里大漠、黄河两岸风光、西夏千年历史，为每一位游客规划专属西北旅途。</div>
+                        <p class="fst-italicwow fadeInUp" data-wow-delay=".2s">张弛的团队</p>
                     </div>
                 </div>
             </div>
@@ -98,7 +97,7 @@
         <div class="container">
             <div class="row row-30">
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".2s">
-                    <h2><a href="Hotel.jsp">01. 特色民宿</a></h2>
+                    <h2><a href="Hotel.jsp">01. 民宿酒店</a></h2>
                     <p class="offset-xl">体验宁夏独特的民宿文化，黄河宿集、沙湖星空营地等特色住宿，让您的旅程更加难忘。</p>
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".3s">
@@ -107,81 +106,57 @@
                 </div>
                 <div class="col-lg-4 wow fadeInUp" data-wow-delay=".4s">
                     <h2><a href="ScenicService.jsp">03. 景区服务</a></h2>
-                    <p class="offset-xl">一站式预订宁夏各大景区门票，沙坡头、西夏王陵、沙湖等热门景点，便捷出行无忧。</p>
+                    <p class="offset-xl">汇总沙坡头、西夏王陵、沙湖等宁夏知名景区资料，提供景点介绍、游玩路线、打卡建议等实用出行参考。</p>
                 </div>
             </div>
         </div>
     </section>
-    <!--Tours-->
-    <section class="section section-lg bg-image-3">
-        <div class="creative-bg">
-            <div class="container">
-                <div class="row row-30 justify-content-center" data-lightgallery="group">
-                    <div class="d-flex col-sm-6 col-lg-4 ordex-xl-1 order-1 wow fadeInLeft"><a class="info-box-classic" href="images/home-gallery-1-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-1-370x510.jpg" alt="" width="370" height="510"/>
-                        <div class="info-box-classic__description">
-                            <div class="heading-4">沙坡头</div><span>起价</span><span class="price">￥140</span>
-                        </div></a></div>
-                    <div class="col-sm-12 col-lg-4 order-3 order-xl-2">
-                        <div class="row row-30">
-                            <div class="col-lg-12 col-sm-6 wow fadeInUp" data-wow-delay=".2s"><a class="info-box-classic" href="images/home-gallery-2-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-2-370x240.jpg" alt="" width="370" height="240"/>
-                                <div class="info-box-classic__description">
-                                    <div class="heading-4">西夏王陵</div><span>起价</span><span class="price">￥75</span>
-                                </div></a></div>
-                            <div class="col-lg-12 col-sm-6 wow fadeInUp" data-wow-delay=".3s"><a class="info-box-classic" href="images/home-gallery-3-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-3-370x240.jpg" alt="" width="370" height="240"/>
-                                <div class="info-box-classic__description">
-                                    <div class="heading-4">沙湖景区</div><span>起价</span><span class="price">￥130</span>
-                                </div></a></div>
-                        </div>
-                    </div>
-                    <div class="d-flex col-sm-6 col-lg-4 ordex-xl-3 order-md-2 wow fadeInRight" data-wow-delay=".4s"><a class="info-box-classic" href="images/home-gallery-4-1200x800-original.jpg" data-lightgallery="item"><img src="images/home-gallery-4-370x510.jpg" alt="" width="370" height="510"/>
-                        <div class="info-box-classic__description">
-                            <div class="heading-4">贺兰山岩画</div><span>起价</span><span class="price">￥60</span>
-                        </div></a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--Info Section-->
-    <section class="section section-md bg-default">
-        <div class="container">
-            <h2>开启宁夏之旅！</h2>
-            <div class="row row-40 offset-lg">
-                <div class="col-xl-6 wow fadeInLeft">
-                    <p>让我们为您策划一次难忘的宁夏之旅，您可以在专业导游的陪同下探索塞上江南的独特魅力。无论是沙漠探险、历史探秘还是美食体验，我们都能满足您的需求。从沙坡头的黄河漂流到西夏王陵的历史追溯，从贺兰山的壮丽风光到宁夏美食的味蕾盛宴，带您领略不一样的西北风情。</p>
-                </div>
-                <div class="col-xl-3 col-sm-6 wow fadeInUp">
-                    <ul class="list-marked">
-                        <li>沙坡头沙漠体验</li>
-                        <li>西夏王陵探秘</li>
-                        <li>黄河文化之旅</li>
-                        <li>贺兰山岩画</li>
-                        <li>特色民宿体验</li>
-                    </ul>
-                </div>
-                <div class="col-xl-3 col-sm-6 wow fadeInUp">
-                    <ul class="list-marked">
-                        <li>宁夏美食之旅</li>
-                        <li>丝路风情游</li>
-                        <li>亲子研学游</li>
-                        <li>摄影采风团</li>
-                        <li>定制旅行</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="section section-lg bg-image-4">
-        <div class="container">
-            <div class="row justify-content-xl-end">
-                <div class="col-xl-9 column-bg-2">
-                    <div class="quote-classic-wrap">
-                        <div class="heading-4 wow fadeInUp">我们的团队竭尽全力为众多客户提供卓越的旅游服务。与我们一起，您可以体验最具异国情调的目的地的全部美丽。</div>
-                        <p class="fst-italicwow fadeInUp" data-wow-delay=".2s">简·彼得斯，旅游顾问</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	    <!--Tours-->
+	    <section class="section section-lg bg-image-3">
+	        <div class="creative-bg">
+	            <div class="container">
+	                <div class="row justify-content-center" data-lightgallery="group">
+	                    <div class="col-12">
+	                        <div class="tour-gallery">
+	                            <div class="tour-item wow fadeInLeft">
+	                                <a class="info-box-classic" href="images/NingXia_Index/沙坡头.png" data-lightgallery="item">
+	                                    <img src="images/NingXia_Index/沙坡头.png" alt=""/>
+	                                    <div class="info-box-classic__description">
+	                                        <div class="heading-4">沙坡头</div><span>起价</span><span class="price">￥140</span>
+	                                    </div>
+	                                </a>
+	                            </div>
+	                            <div class="tour-item wow fadeInUp" data-wow-delay=".1s">
+	                                <a class="info-box-classic" href="images/NingXia_Index/西夏王陵.png" data-lightgallery="item">
+	                                    <img src="images/NingXia_Index/西夏王陵.png" alt=""/>
+	                                    <div class="info-box-classic__description">
+	                                        <div class="heading-4">西夏王陵</div><span>起价</span><span class="price">￥75</span>
+	                                    </div>
+	                                </a>
+	                            </div>
+	                            <div class="tour-item wow fadeInUp" data-wow-delay=".2s">
+	                                <a class="info-box-classic" href="images/NingXia_Index/沙湖.png" data-lightgallery="item">
+	                                    <img src="images/NingXia_Index/沙湖.png" alt=""/>
+	                                    <div class="info-box-classic__description">
+	                                        <div class="heading-4">沙湖景区</div><span>起价</span><span class="price">￥130</span>
+	                                    </div>
+	                                </a>
+	                            </div>
+	                            <div class="tour-item wow fadeInRight" data-wow-delay=".1s">
+	                                <a class="info-box-classic" href="images/NingXia_Index/贺兰山岩画.png" data-lightgallery="item">
+	                                    <img src="images/NingXia_Index/贺兰山岩画.png" alt=""/>
+	                                    <div class="info-box-classic__description">
+	                                        <div class="heading-4">贺兰山岩画</div><span>起价</span><span class="price">￥60</span>
+	                                    </div>
+	                                </a>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+
     <!--Blog Post-->
     <section class="section section-lg">
         <div class="container">

@@ -37,7 +37,7 @@
                             <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                             <!--RD Navbar Brand-->
                             <div class="rd-navbar-brand">
-                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/NingXia/logo.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
+                                <!--Brand--><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/NingXia_Index/logo.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
                             </div>
                         </div>
                         <div class="rd-navbar-main-element">
@@ -45,7 +45,7 @@
                                 <ul class="rd-navbar-nav">
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="index.jsp">首页</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="AboutNingXia.jsp">关于宁夏</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="AboutNingXia.jsp">资讯</a>
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
                                     </li>
@@ -57,20 +57,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!--RD Navbar Search-->
-                            <div class="rd-navbar-search">
-                                <button class="rd-navbar-search-toggle rd-navbar-fixed-element-2" data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
-                                <form class="rd-search" action="search-results.html" data-search-live="rd-search-results-live" method="GET">
-                                    <div class="form-wrap">
-                                        <label class="form-label" for="rd-navbar-search-form-input">搜索...</label>
-                                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input" type="text" name="s" autocomplete="off">
-                                        <div class="rd-search-results-live" id="rd-search-results-live"></div>
-                                    </div>
-                                    <button class="rd-search-form-submit fa-search" type="submit"></button>
-                                </form>
-                            </div>
                             <!--RD Navbar Login-->
-                            <div id="navbar-login-container" class="rd-navbar-login" style="display: flex; align-items: center; justify-content: flex-end; float: right; margin-top: 8px;">
+                            <div id="navbar-login-container" class="rd-navbar-login" style="display: flex; align-items: center; justify-content: flex-end; float: right; margin-top: 0;">
                                 <a href="#" class="rd-nav-link rd-navbar-login-toggle" data-bs-toggle="modal" data-bs-target="#login-modal">登录</a>
                             </div>
                         </div>
