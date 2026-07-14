@@ -19,4 +19,5 @@ public interface TravelGuideMapper {
     int deleteById(Long id);
     int shiftIdsDown(@Param("afterId") Long afterId);
     Long findMaxId();
+    void reorderIds();
 }
