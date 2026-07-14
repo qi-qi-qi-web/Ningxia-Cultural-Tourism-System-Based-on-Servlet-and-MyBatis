@@ -131,11 +131,29 @@
                     </form>
                 </div>
 
-                <!-- 收藏按钮 -->
-                <div style="margin-top:15px;text-align:right;">
+                <!-- 评论 & 收藏按钮 -->
+                <div style="margin-top:15px;display:flex;justify-content:space-between;align-items:center;">
+                    <button onclick="toggleCommentForm()" style="background:none;border:1px solid #e0e0e0;border-radius:20px;padding:8px 20px;cursor:pointer;color:#666;font-size:14px;" id="comment-btn">
+                        评论
+                    </button>
                     <button onclick="toggleFavorite(${food.id})" style="background:none;border:1px solid #e0e0e0;border-radius:20px;padding:8px 20px;cursor:pointer;color:#666;font-size:14px;" id="fav-btn">
                         <span id="fav-icon">&#9825;</span> <span id="fav-text">收藏</span>
                     </button>
+                </div>
+
+                <!-- 评论区域 -->
+                <div id="comment-section" style="display:none;margin-top:15px;border-top:1px solid #eee;padding-top:15px;">
+                    <div class="comment-form">
+                        <h5 style="margin-bottom:12px;font-size:15px;color:#333;">发表评论</h5>
+                        <textarea id="comment-content" class="form-control" rows="3" placeholder="分享您的购买体验..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;resize:vertical;font-size:14px;"></textarea>
+                        <div style="margin-top:10px;text-align:right;">
+                            <button onclick="submitComment()" style="background:#00a8a8;border:none;border-radius:6px;padding:8px 24px;color:#fff;font-size:14px;cursor:pointer;">提交评论</button>
+                        </div>
+                    </div>
+                    <div class="comment-list" style="margin-top:15px;">
+                        <h5 style="margin-bottom:12px;font-size:15px;color:#333;">全部评论 <span style="font-size:12px;color:#999;" id="comment-count">(0)</span></h5>
+                        <div id="comments-container"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,6 +186,40 @@
 
 <%@include file="Footer.jsp"%>
 </div>
+
+<style>
+.comment-item {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+}
+.comment-avatar {
+    width: 40px;
+    height: 40px;
+    background: #00a8a8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+.comment-body { flex-grow: 1; }
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.comment-author { font-weight: bold; color: #333; font-size: 14px; }
+.comment-time { font-size: 11px; color: #999; }
+.comment-text { color: #666; font-size: 14px; line-height: 1.6; }
+</style>
 
 <script>
 var unitPrice = ${food.price};
@@ -225,6 +277,87 @@ function toggleFavorite(id) {
         icon.innerHTML = '&#9825;'; text.textContent = '收藏';
         btn.style.color = '#666'; btn.style.borderColor = '#e0e0e0';
 	}
+}
+
+// 评论功能
+function escHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+var comments = [
+    { author: '王小明', avatar: '王', content: '味道非常好，家人特别喜欢！发货也很快，包装很用心。', time: '2026-06-20 14:30' },
+    { author: '李芳', avatar: '李', content: '第一次买宁夏特产，品质超出预期。枸杞颗粒饱满，真空包装很新鲜。', time: '2026-06-18 09:15' },
+    { author: '张大叔', avatar: '张', content: '八宝茶味道正宗，跟去宁夏旅游时喝到的一样。已经回购好几次了。', time: '2026-06-15 20:45' }
+];
+
+function toggleCommentForm() {
+    var section = document.getElementById('comment-section');
+    var btn = document.getElementById('comment-btn');
+    if (section.style.display === 'none' || section.style.display === '') {
+        section.style.display = 'block';
+        btn.style.color = '#00a8a8';
+        btn.style.borderColor = '#00a8a8';
+        renderComments();
+    } else {
+        section.style.display = 'none';
+        btn.style.color = '#666';
+        btn.style.borderColor = '#e0e0e0';
+    }
+}
+
+function renderComments() {
+    var container = document.getElementById('comments-container');
+    if (!container) return;
+    var html = '';
+    if (comments.length === 0) {
+        html = '<div style="text-align:center;color:#999;padding:20px;">暂无评论，快来发表第一条评论吧！</div>';
+    } else {
+        for (var i = 0; i < comments.length; i++) {
+            var c = comments[i];
+            html += '<div class="comment-item">' +
+                '<div class="comment-avatar">' + c.avatar + '</div>' +
+                '<div class="comment-body">' +
+                '<div class="comment-header">' +
+                '<span class="comment-author">' + escHtml(c.author) + '</span>' +
+                '<span class="comment-time">' + c.time + '</span>' +
+                '</div>' +
+                '<div class="comment-text">' + escHtml(c.content) + '</div>' +
+                '</div></div>';
+        }
+    }
+    container.innerHTML = html;
+    document.getElementById('comment-count').textContent = '(' + comments.length + ')';
+}
+
+function submitComment() {
+    var content = document.getElementById('comment-content').value.trim();
+    if (!content) {
+        alert('请输入评论内容！');
+        return;
+    }
+    if (content.length < 5) {
+        alert('评论内容至少5个字');
+        return;
+    }
+    var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '匿名用户';
+    var avatar = username.charAt(0);
+    var now = new Date();
+    var timeStr = now.getFullYear() + '-' +
+        String(now.getMonth() + 1).padStart(2, '0') + '-' +
+        String(now.getDate()).padStart(2, '0') + ' ' +
+        String(now.getHours()).padStart(2, '0') + ':' +
+        String(now.getMinutes()).padStart(2, '0');
+
+    comments.unshift({
+        author: username,
+        avatar: avatar,
+        content: content,
+        time: timeStr
+    });
+
+    document.getElementById('comment-content').value = '';
+    renderComments();
+    alert('评论发表成功！');
 }
 
 // Image lightbox
