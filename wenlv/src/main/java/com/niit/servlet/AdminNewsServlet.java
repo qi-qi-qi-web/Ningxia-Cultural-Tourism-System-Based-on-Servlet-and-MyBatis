@@ -4,17 +4,23 @@ import com.niit.mapper.NewsDynamicMapper;
 import com.niit.pojo.NewsDynamic;
 import com.niit.utils.DBUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import org.apache.ibatis.session.SqlSession;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Statement;
 import java.util.List;
 
 @WebServlet("/admin/news")
+@MultipartConfig(maxFileSize = 10 * 1024 * 1024)  // 10MB
 public class AdminNewsServlet extends HttpServlet {
 
     @Override
@@ -75,7 +81,22 @@ public class AdminNewsServlet extends HttpServlet {
             NewsDynamic n = new NewsDynamic();
             n.setTitle(request.getParameter("title"));
             n.setContent(request.getParameter("content"));
-            n.setCoverImage(request.getParameter("coverImage"));
+
+            // 处理封面图上传
+            String coverImage = request.getParameter("coverImage");
+            try {
+                Part filePart = request.getPart("coverImageFile");
+                if (filePart != null && filePart.getSize() > 0) {
+                    coverImage = saveUploadedFile(filePart, request, "images/news/");
+                }
+            } catch (Exception e) {}
+            // 编辑时若未上传新文件且未填写URL，保留原有封面图
+            if ((coverImage == null || coverImage.isEmpty()) && idStr != null && !idStr.isEmpty()) {
+                NewsDynamic old = m.findById(Long.parseLong(idStr));
+                if (old != null) coverImage = old.getCoverImage();
+            }
+            n.setCoverImage(coverImage != null ? coverImage : "");
+
             n.setSource(request.getParameter("source"));
             n.setAuthorName(request.getParameter("authorName"));
             n.setIsPublished(Integer.parseInt(request.getParameter("isPublished") != null ? request.getParameter("isPublished") : "0"));
@@ -121,6 +142,26 @@ public class AdminNewsServlet extends HttpServlet {
         } catch (Exception e) {
             return "操作失败：" + e.getMessage();
         }
+    }
+
+    /**
+     * 保存上传的文件到指定目录，返回相对路径
+     */
+    private String saveUploadedFile(Part filePart, HttpServletRequest request, String uploadDir) throws IOException {
+        String fileName = filePart.getSubmittedFileName();
+        if (fileName == null || fileName.isEmpty()) return "";
+
+        String uniqueName = System.currentTimeMillis() + "_" + fileName.replaceAll("[^a-zA-Z0-9._\\-]", "_");
+        String realPath = request.getServletContext().getRealPath("/" + uploadDir);
+        File dir = new File(realPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File targetFile = new File(dir, uniqueName);
+        Files.copy(filePart.getInputStream(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        return uploadDir + uniqueName;
     }
 
     private String truncate(String s) {

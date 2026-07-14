@@ -94,12 +94,13 @@
 <div id="news-modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);">
     <div style="background:#fff;border-radius:8px;max-width:700px;margin:5% auto;padding:25px;max-height:80vh;overflow-y:auto;">
         <h4 id="news-modal-title">新增新闻</h4>
-        <form method="post" action="${pageContext.request.contextPath}/admin/news">
+        <form method="post" action="${pageContext.request.contextPath}/admin/news" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="id" id="news-id">
             <div class="mb-2"><label>标题</label><input class="form-control" name="title" id="news-title" required></div>
             <div class="mb-2"><label>正文</label><textarea class="form-control" name="content" id="news-content" rows="6" required></textarea></div>
-            <div class="mb-2"><label>封面图URL</label><input class="form-control" name="coverImage" id="news-cover"></div>
+            <div class="mb-2"><label>封面图（可上传文件或填写URL）</label><input class="form-control" type="file" name="coverImageFile" id="news-cover-file" accept="image/*" style="margin-bottom:5px;"></div>
+            <div class="mb-2"><input class="form-control" name="coverImage" id="news-cover" placeholder="或填写图片URL"></div>
             <div class="row mb-2">
                 <div class="col-6"><label>来源</label><input class="form-control" name="source" id="news-source"></div>
                 <div class="col-6"><label>作者</label><input class="form-control" name="authorName" id="news-author"></div>

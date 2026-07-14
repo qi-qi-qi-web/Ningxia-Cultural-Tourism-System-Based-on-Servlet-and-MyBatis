@@ -60,9 +60,9 @@ public class AdminNoticeServlet extends HttpServlet {
             OfficialNotice n = s.getMapper(OfficialNoticeMapper.class).findById(id);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(String.format(
-                "{\"id\":%d,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"scenicSpotId\":\"%s\",\"isTop\":%d,\"isPublished\":%d}",
+                "{\"id\":%d,\"title\":\"%s\",\"content\":\"%s\",\"scenicSpotId\":\"%s\",\"isTop\":%d,\"isPublished\":%d}",
                 n.getId(), esc(n.getTitle()), esc(n.getContent()),
-                esc(n.getCoverImage()), n.getScenicSpotId() == null ? "" : n.getScenicSpotId().toString(),
+                n.getScenicSpotId() == null ? "" : n.getScenicSpotId().toString(),
                 n.getIsTop(), n.getIsPublished()
             ));
         }
@@ -75,7 +75,6 @@ public class AdminNoticeServlet extends HttpServlet {
             OfficialNotice n = new OfficialNotice();
             n.setTitle(request.getParameter("title"));
             n.setContent(request.getParameter("content"));
-            n.setCoverImage(request.getParameter("coverImage"));
             n.setIsTop(Integer.parseInt(request.getParameter("isTop") != null ? request.getParameter("isTop") : "0"));
             n.setIsPublished(Integer.parseInt(request.getParameter("isPublished") != null ? request.getParameter("isPublished") : "0"));
             String spotId = request.getParameter("scenicSpotId");

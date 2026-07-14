@@ -112,7 +112,6 @@
             <input type="hidden" name="id" id="notice-id">
             <div class="mb-2"><label>标题</label><input class="form-control" name="title" id="notice-title" required></div>
             <div class="mb-2"><label>正文</label><textarea class="form-control" name="content" id="notice-content" rows="6" required></textarea></div>
-            <div class="mb-2"><label>封面图URL</label><input class="form-control" name="coverImage" id="notice-cover"></div>
             <div class="row mb-2">
                 <div class="col-6"><label>关联景区ID</label><input class="form-control" name="scenicSpotId" id="notice-spot" placeholder="留空=平台级公告"></div>
                 <div class="col-3"><label>置顶</label>
@@ -143,7 +142,6 @@ function openNoticeEdit(id) {
             document.getElementById('notice-id').value = d.id;
             document.getElementById('notice-title').value = d.title;
             document.getElementById('notice-content').value = d.content;
-            document.getElementById('notice-cover').value = d.coverImage || '';
             document.getElementById('notice-spot').value = d.scenicSpotId || '';
             document.getElementById('notice-top').value = d.isTop;
             document.getElementById('notice-publish').value = d.isPublished;
@@ -151,7 +149,7 @@ function openNoticeEdit(id) {
         .catch(function(){ alert('加载失败'); });
     } else {
         document.getElementById('notice-modal-title').textContent = '新增公告';
-        ['notice-id','notice-title','notice-content','notice-cover','notice-spot'].forEach(function(f){
+        ['notice-id','notice-title','notice-content','notice-spot'].forEach(function(f){
             document.getElementById(f).value = '';
         });
         document.getElementById('notice-top').value = '0';
