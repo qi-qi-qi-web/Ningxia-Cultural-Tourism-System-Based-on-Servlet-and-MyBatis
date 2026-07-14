@@ -607,9 +607,15 @@
                 <div id="tab-comments" class="tab-content-main" style="display: none;">
                     <div class="content-card">
                         <div class="content-title">我的评论</div>
-                        <div class="empty-state">
-                            <div class="empty-icon"><i class="fa fa-comment"></i></div>
-                            <div class="empty-text">暂无评论</div>
+                        <div id="comment-filter-bar" class="mb-3" style="display:none;gap:6px;flex-wrap:wrap;">
+                            <button class="comment-filter-btn active" onclick="filterMyComments('ALL', this)" style="padding:4px 14px;border-radius:20px;border:1px solid #00a8a8;background:#00a8a8;color:#fff;cursor:pointer;font-size:12px;">全部</button>
+                            <button class="comment-filter-btn" onclick="filterMyComments('SCENIC', this)" style="padding:4px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-size:12px;">景区</button>
+                            <button class="comment-filter-btn" onclick="filterMyComments('HOTEL', this)" style="padding:4px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-size:12px;">酒店</button>
+                            <button class="comment-filter-btn" onclick="filterMyComments('GUIDE', this)" style="padding:4px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-size:12px;">攻略</button>
+                            <button class="comment-filter-btn" onclick="filterMyComments('SPECIALTY', this)" style="padding:4px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#666;cursor:pointer;font-size:12px;">特产</button>
+                        </div>
+                        <div id="my-comments-list">
+                            <div class="text-center" style="padding:20px;color:#999;">加载中...</div>
                         </div>
                     </div>
                 </div>
@@ -1057,6 +1063,8 @@
         if (tabName === 'orders') {
             loadMyOrders();
         }
+        if (tabName === 'posts') { loadMyGuides(); }
+        if (tabName === 'comments') { loadMyComments(); }
     }
 
     function showEditProfile() {
@@ -1685,6 +1693,147 @@
     function escHtml(s) {
         if (!s) return '';
         return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function loadMyComments() {
+        var container = document.getElementById('my-comments-list');
+        var filterBar = document.getElementById('comment-filter-bar');
+        if (!container) return;
+        container.innerHTML = '<div class="text-center" style="padding:20px;color:#999;">加载中...</div>';
+        fetch('/personalCenter?action=myComments')
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            if (filterBar) filterBar.style.display = list.length > 0 ? 'flex' : 'none';
+            if (list.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-comment"></i></div><div class="empty-text">暂无评论</div></div>';
+                return;
+            }
+            var typePageMap = {
+                'SCENIC': 'ScenicService-detail.jsp',
+                'HOTEL': 'Hotel-detail.jsp',
+                'GUIDE': 'TravelGuide-detail.jsp',
+                'SPECIALTY': 'Specialty-detail.jsp'
+            };
+            var html = '';
+            list.forEach(function(c){
+                var targetName = c.targetName || '--';
+                var detailUrl = (typePageMap[c.targetType] || '#') + '?id=' + c.targetId;
+                html += '<div class="comment-item-card" data-type="' + (c.targetType||'') + '" style="border:1px solid #eee;border-radius:8px;padding:14px;margin-bottom:10px;">' +
+                    '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">' +
+                    '<span style="font-size:12px;color:#00a8a8;background:#e8f5f5;padding:2px 8px;border-radius:4px;">' + (c.targetTypeName||'') + '</span>' +
+                    '<span style="font-size:12px;color:#bbb;">' + (c.createdAt||'').substring(0,16) + '</span>' +
+                    '</div>' +
+                    '<div class="comment-view" id="view-' + c.id + '">' +
+                    '<div style="color:#444;line-height:1.6;margin-bottom:8px;">' + escHtml(c.content) + '</div>' +
+                    '</div>' +
+                    '<div class="comment-edit" id="edit-' + c.id + '" style="display:none;">' +
+                    '<textarea id="edit-text-' + c.id + '" style="width:100%;border:1px solid #00a8a8;border-radius:6px;padding:8px;resize:vertical;font-size:14px;" rows="3">' + escHtml(c.content) + '</textarea>' +
+                    '<div style="text-align:right;margin-top:6px;">' +
+                    '<button onclick="saveEditComment(' + c.id + ')" style="padding:4px 14px;background:#00a8a8;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;margin-right:6px;">保存</button>' +
+                    '<button onclick="cancelEditComment(' + c.id + ')" style="padding:4px 14px;background:#f5f5f5;color:#666;border:1px solid #ddd;border-radius:6px;cursor:pointer;font-size:12px;">取消</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                    '<a href="' + detailUrl + '" target="_blank" style="font-size:13px;color:#00a8a8;text-decoration:none;">📌 ' + escHtml(targetName) + '</a>' +
+                    '<div>' +
+                    '<button class="btn-secondary-custom" style="font-size:12px;padding:4px 10px;" onclick="startEditComment(' + c.id + ')">编辑</button>' +
+                    '<button class="btn-secondary-custom" style="font-size:12px;padding:4px 10px;color:#e74c3c;margin-left:6px;" onclick="deleteMyComment(' + c.id + ', this)">删除</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            });
+            container.innerHTML = html;
+        })
+        .catch(function(){ container.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-exclamation-triangle"></i></div><div class="empty-text">加载失败</div></div>'; });
+    }
+
+    function filterMyComments(type, btn) {
+        document.querySelectorAll('.comment-filter-btn').forEach(function(b) {
+            b.style.background = '#fff';
+            b.style.color = '#666';
+            b.style.borderColor = '#ddd';
+            b.classList.remove('active');
+        });
+        btn.style.background = '#00a8a8';
+        btn.style.color = '#fff';
+        btn.style.borderColor = '#00a8a8';
+        btn.classList.add('active');
+
+        document.querySelectorAll('.comment-item-card').forEach(function(card) {
+            if (type === 'ALL' || card.getAttribute('data-type') === type) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    function startEditComment(commentId) {
+        var viewEl = document.getElementById('view-' + commentId);
+        var editEl = document.getElementById('edit-' + commentId);
+        if (viewEl) viewEl.style.display = 'none';
+        if (editEl) editEl.style.display = 'block';
+    }
+
+    function cancelEditComment(commentId) {
+        var viewEl = document.getElementById('view-' + commentId);
+        var editEl = document.getElementById('edit-' + commentId);
+        var textEl = document.getElementById('edit-text-' + commentId);
+        if (textEl && viewEl) {
+            // restore original text
+            viewEl.querySelector('div').textContent = textEl.value;
+        }
+        if (viewEl) viewEl.style.display = '';
+        if (editEl) editEl.style.display = 'none';
+    }
+
+    function saveEditComment(commentId) {
+        var textEl = document.getElementById('edit-text-' + commentId);
+        var content = textEl ? textEl.value.trim() : '';
+        if (!content) { showToastLocal('评论内容不能为空', 'error'); return; }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/personalCenter', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        showToastLocal('评论已修改', 'success');
+                        loadMyComments();
+                    } else {
+                        showToastLocal(resp.message || '修改失败', 'error');
+                    }
+                } catch(e) {
+                    showToastLocal('服务器返回异常', 'error');
+                }
+            }
+        };
+        xhr.send('action=editComment&id=' + commentId + '&content=' + encodeURIComponent(content));
+    }
+
+    function deleteMyComment(commentId, btn) {
+        if (!confirm('确认删除这条评论？')) return;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/personalCenter', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        showToastLocal('评论已删除', 'info');
+                        loadMyComments();
+                    } else {
+                        showToastLocal(resp.message || '删除失败', 'error');
+                    }
+                } catch(e) {
+                    showToastLocal('服务器返回异常', 'error');
+                }
+            }
+        };
+        xhr.send('action=deleteComment&id=' + commentId);
     }
 
     /* ========== 订单相关功能 ========== */

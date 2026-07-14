@@ -103,9 +103,8 @@
                         <li class="nav-item" role="presentation"><a class="nav-link active" href="#tabs-1-1" data-bs-toggle="tab"><span class="icon linearicons-menu"></span>景区介绍</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-2" data-bs-toggle="tab"><span class="icon linearicons-plane"></span>游玩攻略</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-3" data-bs-toggle="tab"><span class="icon linearicons-picture3"></span>图片画廊</a></li>
-                        <li class="nav-item" role="presentation"><a class="nav-link" href="#tabs-1-4" data-bs-toggle="tab"><span class="icon fa fa-comment"></span>景区评论</a></li>
-                    </ul>
-                    <div class="tab-content">
+                        </ul>
+                        <div class="tab-content">
                         <div class="tab-pane fade active show" id="tabs-1-1">
                             <div class="scenic-detail-intro">
                                 <h3 class="mb-4" style="color: #333; font-size: 20px;">景区概况</h3>
@@ -148,24 +147,24 @@
                                 </c:choose>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="tabs-1-4">
-                            <div class="scenic-comments">
-                                <div class="comment-form mb-6">
-                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 20px;">发表评论</h3>
-                                    <div class="form-group mb-3">
-                                        <textarea id="comment-content" class="form-control" rows="4" placeholder="请输入您的评论内容..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
-                                    </div>
-                                    <div class="d-flex justify-content-end">
-                                        <button onclick="submitComment()" class="button button-primary" type="button">发表评论</button>
-                                    </div>
-                                </div>
-                                <div class="comment-list">
-                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 20px;">评论列表</h3>
-                                    <div id="comments-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 评论区 -->
+                <div style="margin-top:30px;">
+                    <input type="hidden" id="scenic-id-hidden" value="${scenic.id}">
+                    <h5 style="margin-bottom:16px;">用户评论</h5>
+                    <div id="comment-list" style="margin-bottom:20px;"></div>
+                            <div style="border:1px solid #eee;border-radius:8px;padding:16px;">
+                                <textarea id="comment-input" rows="3" style="width:100%;border:1px solid #ddd;border-radius:6px;padding:10px;resize:vertical;" placeholder="写下你的评论..."></textarea>
+                                <div style="text-align:right;margin-top:10px;">
+                                    <button onclick="postCommentScenic()" class="button button-primary" type="button" style="padding:6px 20px;font-size:14px;">发表评论</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -278,82 +277,49 @@
                 });
             }
             if (target === '#tabs-1-4') {
-                renderComments();
+                loadComments();
             }
         });
 
-        renderComments();
+        loadComments();
     });
 
-    var comments = [
-        { author: '张三', avatar: '张', content: '沙坡头真的太震撼了！沙漠与黄河交汇的景观非常独特，值得一去！', time: '2026-06-15 10:30' },
-        { author: '李婷', avatar: '李', content: '第一次体验沙漠冲浪车，刺激又好玩！景区的服务也很好，推荐大家来玩。', time: '2026-06-14 15:20' },
-        { author: '王磊', avatar: '王', content: '骑骆驼穿越沙漠的感觉太棒了，看着一望无际的沙丘，心情特别舒畅。', time: '2026-06-13 09:45' },
-        { author: '赵雪', avatar: '赵', content: '黄河滑索很刺激，俯瞰黄河的视角非常壮观。景区管理有序，玩得很开心！', time: '2026-06-12 14:00' },
-        { author: '陈明', avatar: '陈', content: '带着家人一起来的，孩子们玩得特别开心。特别是沙漠露营，晚上的星空太美了。', time: '2026-06-11 18:30' }
-    ];
-
-    function renderComments() {
-        var container = document.getElementById('comments-container');
-        if (!container) return;
-        
-        container.innerHTML = '';
-        comments.forEach(function(comment) {
-            var commentItem = document.createElement('div');
-            commentItem.className = 'comment-item';
-            commentItem.innerHTML = '<div class="comment-avatar">' + comment.avatar + '</div>' +
-                '<div class="comment-content">' +
-                '<div class="comment-header">' +
-                '<span class="comment-author">' + comment.author + '</span>' +
-                '<span class="comment-time">' + comment.time + '</span>' +
-                '</div>' +
-                '<div class="comment-text">' + comment.content + '</div>' +
-                '</div>';
-            container.appendChild(commentItem);
+    // 评论
+    function loadComments() {
+        var sid = '${scenic.id}';
+        fetch('/comment?action=list&targetType=SCENIC&targetId=' + sid)
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            var html = '';
+            if (list.length === 0) html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论</div>';
+            else list.forEach(function(c){
+                var avatarChar = (c.userName || '匿').charAt(0);
+                html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
+                    '<div style="width:36px;height:36px;border-radius:50%;background:#00a8a8;color:#fff;text-align:center;line-height:36px;font-size:14px;font-weight:bold;flex-shrink:0;">'+avatarChar+'</div>' +
+                    '<div style="margin-left:12px;flex:1;"><div style="font-weight:bold;color:#333;font-size:14px;">'+(c.userName||'匿名')+'</div>' +
+                    '<div style="color:#666;margin-top:4px;line-height:1.6;">'+escHtml(c.content)+'</div>' +
+                    '<div style="color:#bbb;font-size:12px;margin-top:4px;">'+(c.createdAt||'').substring(0,16)+'</div></div></div>';
+            });
+            document.getElementById('comment-list').innerHTML = html;
         });
-        
-        if (comments.length === 0) {
-            container.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">暂无评论，快来发表第一条评论吧！</div>';
-        }
     }
-
-    function submitComment() {
-        var content = document.getElementById('comment-content').value.trim();
-        if (!content) {
-            alert('请输入评论内容！');
-            return;
-        }
-        
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-        
-        if (!isLoggedIn && !isAdminLoggedIn) {
-            alert('请先登录后再发表评论！');
-            var loginModal = new bootstrap.Modal(document.getElementById('login-modal'));
-            loginModal.show();
-            return;
-        }
-        
-        var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '游客';
-        var avatar = username.charAt(0);
-        var now = new Date();
-        var timeStr = now.getFullYear() + '-' + 
-            String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-            String(now.getDate()).padStart(2, '0') + ' ' + 
-            String(now.getHours()).padStart(2, '0') + ':' + 
-            String(now.getMinutes()).padStart(2, '0');
-        
-        comments.unshift({
-            author: username,
-            avatar: avatar,
-            content: content,
-            time: timeStr
-        });
-        
-        document.getElementById('comment-content').value = '';
-        renderComments();
-        alert('评论发表成功！');
+    function postCommentScenic() {
+        var c = document.getElementById('comment-input').value;
+        if (c == null || c.replace(/\s/g, '') === '') { alert('请输入评论内容'); return; }
+        var fd = new FormData();
+        fd.append('targetType', 'SCENIC');
+        fd.append('targetId', document.getElementById('scenic-id-hidden').value);
+        fd.append('content', c);
+        fetch('/comment', { method: 'POST', body: fd })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.ok) { document.getElementById('comment-input').value = ''; loadComments(); }
+            else { alert(d.msg || '评论失败'); }
+        })
+        .catch(function() { alert('网络错误'); });
     }
+    function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    loadComments();
 
     function toggleFavorite() {
         var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';

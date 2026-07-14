@@ -116,25 +116,16 @@
                     <!-- 攻略正文 -->
                     <div style="margin-top:20px; padding:20px; background:#fafafa; border-radius:8px; line-height:1.9; color:#444; white-space:pre-wrap;">${guide.content}</div>
 
-                    <!-- 用户点评 -->
+                    <!-- 评论区 -->
                     <div style="margin-top:30px;">
-                        <div class="mb-6">
-                            <div class="row align-items-center">
-                                <div class="col-md-6">
-                                    <h3 style="color: #333; font-size: 20px; margin-bottom: 10px;">用户点评 <span style="font-size: 14px; font-weight: normal; color: #999;">(128条)</span></h3>
-                                </div>
-                                <div class="col-md-6 text-right">
-                                    <button onclick="showWriteReviewModal()" class="button button-primary" type="button">写点评</button>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <span class="badge bg-primary text-white mr-2">全部(128)</span>
-                                <span class="badge bg-gray-100 text-gray-600 mr-2">好评(112)</span>
-                                <span class="badge bg-gray-100 text-gray-600 mr-2">中评(10)</span>
-                                <span class="badge bg-gray-100 text-gray-600">差评(6)</span>
+                        <h5 style="margin-bottom:16px;">用户评论</h5>
+                        <div id="comment-list" style="margin-bottom:20px;"></div>
+                        <div style="border:1px solid #eee;border-radius:8px;padding:16px;">
+                            <textarea id="comment-input" rows="3" style="width:100%;border:1px solid #ddd;border-radius:6px;padding:10px;resize:vertical;" placeholder="写下你的评论..."></textarea>
+                            <div style="text-align:right;margin-top:10px;">
+                                <button onclick="postComment()" class="button button-primary" type="button" style="padding:6px 20px;font-size:14px;">发表评论</button>
                             </div>
                         </div>
-                        <div id="reviews-container"></div>
                     </div>
                 </div>
             </div>
@@ -349,8 +340,49 @@
 <script>
     var selectedRating = 0;
 
+    function escHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function loadComments() {
+        var gid = '${guide.id}';
+        fetch('/comment?action=list&targetType=GUIDE&targetId=' + gid)
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            var html = '';
+            if (list.length === 0) { html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论</div>'; }
+            else {
+                list.forEach(function(c){
+                    var avatarChar = (c.userName || '匿').charAt(0);
+                    html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
+                        '<div style="width:36px;height:36px;border-radius:50%;background:#00a8a8;color:#fff;text-align:center;line-height:36px;font-size:14px;font-weight:bold;flex-shrink:0;">' + avatarChar + '</div>' +
+                        '<div style="margin-left:12px;flex:1;">' +
+                        '<div style="font-weight:bold;color:#333;font-size:14px;">' + (c.userName||'匿名') + '</div>' +
+                        '<div style="color:#666;margin-top:4px;line-height:1.6;">' + escHtml(c.content) + '</div>' +
+                        '<div style="color:#bbb;font-size:12px;margin-top:4px;">' + (c.createdAt||'').substring(0,16) + '</div>' +
+                        '</div></div>';
+                });
+            }
+            document.getElementById('comment-list').innerHTML = html;
+        });
+    }
+
+    function postComment() {
+        var content = document.getElementById('comment-input').value.trim();
+        if (!content) { alert('请输入评论内容'); return; }
+        var gid = '${guide.id}';
+        var fd = new FormData();
+        fd.append('targetType', 'GUIDE');
+        fd.append('targetId', gid);
+        fd.append('content', content);
+        fetch('/comment', { method: 'POST', body: fd })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if (d.ok) { document.getElementById('comment-input').value = ''; loadComments(); }
+            else { alert(d.msg || '评论失败'); }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        renderReviews();
+        loadComments();
         // 浏览数+1
         var gid = '${guide.id}';
         if (gid) fetch('/guide?action=view&id=' + gid).then(function(){ return fetch('/guide?action=detail&id='+gid); }).then(function(r){return r.json();}).then(function(d){ document.getElementById('view-count').textContent = d.viewCount; });
