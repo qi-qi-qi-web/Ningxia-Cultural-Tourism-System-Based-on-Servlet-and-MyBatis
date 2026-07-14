@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.niit.mapper.GuideTagMapper">
+
+    <resultMap id="TagMap" type="com.niit.pojo.GuideTag">
+        <id property="id" column="id"/>
+        <result property="guideId" column="guide_id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="sortOrder" column="sort_order"/>
+    </resultMap>
+
+    <!-- 查询所有模板标签（guide_id IS NULL） -->
+    <select id="findAll" resultMap="TagMap">
+        SELECT * FROM guide_tag WHERE guide_id IS NULL ORDER BY category, sort_order
+    </select>
+
+    <!-- 查询模板标签按分类 -->
+    <select id="findByCategory" resultMap="TagMap">
+        SELECT * FROM guide_tag WHERE guide_id IS NULL AND category = #{category} ORDER BY sort_order
+    </select>
+
+    <!-- 查询某攻略的标签 -->
+    <select id="findByGuideId" resultMap="TagMap">
+        SELECT * FROM guide_tag WHERE guide_id = #{guideId} ORDER BY category, sort_order
+    </select>
+
+    <insert id="insert">
+        INSERT INTO guide_tag (id, guide_id, name, category, sort_order)
+        VALUES (#{id}, #{guideId}, #{name}, #{category}, #{sortOrder})
+    </insert>
+
+    <update id="update">
+        UPDATE guide_tag SET name=#{name}, category=#{category}, sort_order=#{sortOrder}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM guide_tag WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteByGuideId">
+        DELETE FROM guide_tag WHERE guide_id = #{guideId}
+    </delete>
+
+    <update id="shiftIdsDown">
+        UPDATE guide_tag SET id = id - 1 WHERE id &gt; #{afterId}
+    </update>
+
+    <select id="findMaxId" resultType="java.lang.Long">
+        SELECT COALESCE(MAX(id), 0) FROM guide_tag
+    </select>
+</mapper>
