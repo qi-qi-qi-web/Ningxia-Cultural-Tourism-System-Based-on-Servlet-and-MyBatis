@@ -103,15 +103,7 @@
     a:hover { color:#00a8a8 !important; }
 </style>
 
-<footer class="section footer-classic context-dark">
-    <div class="container"><div class="row row-narrow-40 row-30">
-        <div class="col-lg-6 text-center wow fadeInLeft"><div class="footer-media"><img src="images/footer-img-570x402.jpg" alt="" width="570" height="402"/></div></div>
-        <div class="col-lg-6 wow fadeInRight"><div class="footer-classic_subscribe"><h2>订阅宁夏旅游资讯</h2><h5 class="text-primary">获取最新宁夏旅游资讯和优惠信息！</h5></div></div>
-    </div></div>
-    <div class="footer-classic-aside"><div class="container"><div class="row justify-content-between flex-column-reverse flex-md-row row-20">
-        <div class="col-xl-6 col-md-8"><div class="footer-classic-aside__group"><a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt=""/></a><p class="rights">版权 &copy; <span class="copyright-year"></span> 保留所有权利</p></div></div>
-    </div></div></div>
-</footer>
+<%@include file="Footer.jsp"%>
 </div>
 <script src="js/core.min.js"></script><script src="js/script.js"></script>
 </body></html>

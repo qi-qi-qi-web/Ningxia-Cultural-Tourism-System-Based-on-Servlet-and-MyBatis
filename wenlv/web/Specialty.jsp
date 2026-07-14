@@ -67,51 +67,7 @@
     </div>
 </section>
 
-<!--Footer-->
-<footer class="section footer-classic context-dark">
-    <div class="container">
-        <div class="row row-narrow-40 row-30">
-            <div class="col-lg-6 text-center wow fadeInLeft" data-wow-delay=".1s">
-                <div class="footer-media"><img src="images/footer-img-570x402.jpg" alt="" width="570" height="402"/></div>
-            </div>
-            <div class="col-lg-6 wow fadeInRight" data-wow-delay=".2s">
-                <div class="footer-classic_subscribe">
-                    <h2>订阅宁夏旅游资讯</h2>
-                    <h5 class="text-primary">立即注册，获取宁夏最新旅游资讯和美食优惠！</h5>
-                    <form class="rd-form rd-mailform rd-form-inline subscribe-form" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="bat/rd-mailform.php">
-                        <div class="form-wrap">
-                            <input class="form-input" id="subscribe-form-email-5" type="email" name="email" data-constraints="@Email @Required">
-                            <label class="form-label" for="subscribe-form-email-5">输入您的邮箱</label>
-                            <div class="form-button">
-                                <button class="button button-primary fa fa-chevron-circle-right" type="submit"></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-classic-aside">
-        <div class="container">
-            <div class="row justify-content-between flex-column-reverse flex-md-row row-20">
-                <div class="col-xl-6 col-md-8">
-                    <div class="footer-classic-aside__group">
-                        <a class="brand" href="index.jsp"><img class="brand-logo-dark" src="images/logo-default-225x39.png" alt="" width="112" height="19"/><img class="brand-logo-light" src="images/logo-default-225x39.png" alt="" width="112" height="19"/></a>
-                        <p class="rights"><span>版权</span><span>&nbsp;</span><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>保留所有权利</span></p>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-4">
-                    <ul class="social-list">
-                        <li class="wow fadeInUp" data-wow-delay=".1s"><a href="#"><span class="icon fa fa-facebook"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".2s"><a href="#"><span class="icon fa fa-twitter"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".3s"><a href="#"><span class="icon fa fa-instagram"></span></a></li>
-                        <li class="wow fadeInUp" data-wow-delay=".4s"><a href="#"><span class="icon fa fa-pinterest"></span></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+<%@include file="Footer.jsp"%>
 </div>
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>

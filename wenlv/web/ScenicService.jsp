@@ -1,13 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.niit.utils.DBUtil,com.niit.mapper.ScenicSpotMapper,com.niit.pojo.ScenicSpot,org.apache.ibatis.session.SqlSession,java.util.List" %>
-
-<%
-    try (SqlSession s = DBUtil.getSession()) { request.setAttribute("scenics", s.getMapper(ScenicSpotMapper.class).findOpen()); }
-    catch (Exception e) {}
-%>
-
 <%@include file="Head.jsp"%>
+<%@page contentType="text/html;charset=UTF-8"%>
 
     <!-- Breadcrumbs-->
     <section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);" data-preset='{"title":"Breadcrumbs","category":"header","reload":false,"id":"breadcrumbs"}'>
@@ -24,29 +16,132 @@
         <div class="container">
             <h2 class="text-center text-md-start">宁夏景区精选</h2>
             <div class="row row-40 offset-lg row-xl-40">
-                <c:choose>
-                    <c:when test="${empty scenics}"><div class="col-12 text-center" style="padding:60px 0;color:#999;">景区正在上架中，敬请期待...</div></c:when>
-                    <c:otherwise>
-                        <c:forEach items="${scenics}" var="s" varStatus="st">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".${st.index % 10}s">
-                    <div class="service-box-creative" style="display:flex;flex-direction:column;height:100%;">
-                        <a class="service-box-creative__media" href="ScenicService-detail.jsp?id=${s.id}"><img src="${empty s.coverImage ? 'images/tour-1-370x284.jpg' : s.coverImage}" alt="${s.name}" width="370" height="284"/></a>
-                        <div class="service-box-creative__caption" style="flex:1;display:flex;flex-direction:column;">
-                            <h5><a href="ScenicService-detail.jsp?id=${s.id}">${s.name}</a></h5>
-                            <div class="price-group"><span class="price-group__sale">¥${empty s.minPrice ? '--' : s.minPrice}</span></div>
-                            <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${s.description}</p>
-                            <ul class="icon-list" style="margin-top:auto;">
-                                <li><span class="icon linearicons-clock3"></span><span>${empty s.openingHours ? '全天' : s.openingHours}</span></li>
-                                <li><span class="icon linearicons-map-marker"></span><span>${empty s.city ? '宁夏' : s.city}</span></li>
-                                <c:if test="${not empty s.contactPhone}"><li><span class="icon linearicons-phone"></span><span>${s.contactPhone}</span></li></c:if>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".1s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-1-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">沙坡头景区</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥100.00</span><span class="price-group__price-old">¥120.00</span></div>
+                            <p>体验沙漠与黄河交汇的独特景观，感受大漠孤烟直的壮美景象。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含观光车</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>全天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                        </c:forEach>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".2s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-2-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">沙湖景区</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥60.00</span><span class="price-group__price-old">¥80.00</span></div>
+                            <p>沙与水的完美结合，体验沙漠中的江南水乡风情。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含船票</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>全天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-3-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">西夏王陵</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥85.00</span><span class="price-group__price-old">¥100.00</span></div>
+                            <p>探秘神秘的西夏文明，感受东方金字塔的历史魅力。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".4s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-4-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">镇北堡西部影城</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥80.00</span><span class="price-group__price-old">¥100.00</span></div>
+                            <p>走进电影世界，体验《大话西游》等经典影片的拍摄场景。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-5-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">贺兰山岩画</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥60.00</span><span class="price-group__price-old">¥75.00</span></div>
+                            <p>观赏远古先民留下的神秘岩画，感受历史的厚重与神秘。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".6s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-6-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">水洞沟遗址</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥76.00</span><span class="price-group__price-old">¥90.00</span></div>
+                            <p>穿越三万年前的史前文明，探索人类进化的奥秘。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".7s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-7-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">青铜峡108塔</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥45.00</span><span class="price-group__price-old">¥55.00</span></div>
+                            <p>感受黄河岸边的千年佛塔群，领略佛教文化的庄严与神圣。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".8s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-8-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">须弥山石窟</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥50.00</span><span class="price-group__price-old">¥60.00</span></div>
+                            <p>中国四大石窟之一，感受北魏至隋唐的佛教艺术瑰宝。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>半天</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".9s">
+                    <div class="service-box-creative"><a class="service-box-creative__media" href="ScenicService-detail.jsp"><img src="images/tour-9-370x284.jpg" alt="" width="370" height="284"/></a>
+                        <div class="service-box-creative__caption">
+                            <h5><a href="ScenicService-detail.jsp">南关清真大寺</a></h5>
+                            <div class="price-group"><span class="price-group__sale">¥25.00</span><span class="price-group__price-old">¥30.00</span></div>
+                            <p>感受浓郁的伊斯兰风情，领略回族建筑艺术的独特魅力。</p>
+                            <ul class="icon-list">
+                                <li><span class="icon linearicons-platter"></span><span>含讲解</span></li>
+                                <li><span class="icon linearicons-clock3"></span><span>1小时</span></li>
+                                <li><span class="icon linearicons-umbrella2"></span><span>含保险</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
