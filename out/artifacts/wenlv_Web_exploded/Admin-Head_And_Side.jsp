@@ -77,7 +77,10 @@ logout = function() {
         <div class="col-md-9 admin-main">
             <div class="admin-header">
                 <div class="welcome">欢迎管理员, <span id="admin-name">管理员</span></div>
-                <button class="btn btn-sm logout-btn" onclick="logout()">退出登录</button>
+                <div>
+                    <a href="${pageContext.request.contextPath}/index.jsp" class="btn btn-sm" style="background:#00a8a8;color:#fff;margin-right:8px;border:none;">返回前台</a>
+                    <button class="btn btn-sm logout-btn" onclick="logout()">退出登录</button>
+                </div>
             </div>
 
             <!-- 注意：这里不关闭 div，由各个子页面负责关闭 -->
