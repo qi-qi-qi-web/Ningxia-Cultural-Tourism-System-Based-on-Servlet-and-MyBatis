@@ -15,18 +15,25 @@
 <!-- 精选攻略 -->
 <section class="section section-lg bg-default">
     <div class="container">
-        <h2 class="text-center text-md-start">宁夏精选旅游攻略</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-center text-md-start">宁夏精选旅游攻略</h2>
+            <button onclick="showPublishGuideModal()" class="button button-primary" type="button"><span class="icon fa fa-plus"></span> 发布攻略</button>
+        </div>
         <div class="row row-40 offset-lg row-xl-40">
 
             <!-- 攻略1 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".1s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-1-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏5日4晚经典游玩攻略</a></h5>
-                        <p>覆盖沙坡头、沙湖、西夏王陵、镇北堡影城，第一次来宁夏必看路线</p>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">旅</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">旅行达人小王</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">镇北堡影城游玩攻略</a></h5>
+                        <p>镇北堡影城第一次来宁夏必看路线</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-clock3"></span><span>5天4晚</span></li>
                             <li><span class="icon linearicons-map2"></span><span>银川+中卫</span></li>
@@ -39,11 +46,15 @@
             <!-- 攻略2 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".2s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-2-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏沙漠自驾全攻略</a></h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">自</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">自驾爱好者</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">宁夏沙漠自驾全攻略</a></h5>
                         <p>详细路线、加油点、露营装备、沙漠驾驶技巧，自驾必备</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-car"></span><span>自驾推荐</span></li>
@@ -57,11 +68,15 @@
             <!-- 攻略3 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".3s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-3-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏必吃美食攻略</a></h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">美</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">美食家陈哥</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">宁夏必吃美食攻略</a></h5>
                         <p>手抓羊肉、蒿子面、辣糊糊、羊杂碎，本地人私藏店铺</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-restaurant"></span><span>12种特色美食</span></li>
@@ -75,11 +90,15 @@
             <!-- 攻略4 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".4s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-4-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏亲子游3日攻略</a></h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">妈</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">亲子游妈妈</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">宁夏亲子游3日攻略</a></h5>
                         <p>轻松不累，适合带孩子，动物园、沙湖、影城孩子超喜欢</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-baby"></span><span>亲子专属</span></li>
@@ -93,11 +112,15 @@
             <!-- 攻略5 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".5s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-5-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏网红拍照攻略</a></h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">摄</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">摄影师阿杰</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">宁夏网红拍照攻略</a></h5>
                         <p>沙漠星空、黄河落日、影视城打卡，最佳机位+拍摄时间</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-camera"></span><span>摄影圣地</span></li>
@@ -111,11 +134,15 @@
             <!-- 攻略6 -->
             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".6s">
                 <div class="service-box-creative">
-                    <a class="service-box-creative__media" href="ScenicService-detail.jsp">
+                    <a class="service-box-creative__media" href="TravelGuide-detail.jsp">
                         <img src="images/tour-6-370x284.jpg" alt="" width="370" height="284"/>
                     </a>
                     <div class="service-box-creative__caption">
-                        <h5><a href="ScenicService-detail.jsp">宁夏住宿全攻略</a></h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">住</div>
+                            <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">住宿达人</div>
+                        </div>
+                        <h5><a href="TravelGuide-detail.jsp">宁夏住宿全攻略</a></h5>
                         <p>市区酒店、沙漠帐篷、中卫网红民宿，高性价比推荐</p>
                         <ul class="icon-list">
                             <li><span class="icon linearicons-hotel"></span><span>高中低档</span></li>
@@ -252,8 +279,87 @@
 </footer>
 </div>
 
+<!-- 发布攻略弹窗 -->
+<div class="modal fade" id="publish-guide-modal" tabindex="-1" role="dialog" aria-labelledby="publish-guide-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="publish-guide-modal-label">发布旅游攻略</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略标题</div>
+                    <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="guide-title" type="text" placeholder="请输入攻略标题">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略标签（用逗号分隔）</div>
+                    <input style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;" id="guide-tags" type="text" placeholder="例如：宁夏旅游,银川,镇北堡">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略简介</div>
+                    <textarea style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333; resize: vertical;" id="guide-intro" rows="3" placeholder="请简要介绍您的攻略"></textarea>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略详情</div>
+                    <textarea style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333; resize: vertical;" id="guide-content" rows="8" placeholder="请详细描述您的攻略内容，包括行程安排、注意事项等"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="button button-primary" onclick="submitGuide()">发布攻略</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+    function showPublishGuideModal() {
+        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        
+        if (!isLoggedIn && !isAdminLoggedIn) {
+            alert('请先登录后再发布攻略！');
+            var loginModal = new bootstrap.Modal(document.getElementById('login-modal'));
+            loginModal.show();
+            return;
+        }
+        
+        document.getElementById('guide-title').value = '';
+        document.getElementById('guide-tags').value = '';
+        document.getElementById('guide-intro').value = '';
+        document.getElementById('guide-content').value = '';
+        var modal = new bootstrap.Modal(document.getElementById('publish-guide-modal'));
+        modal.show();
+    }
+
+    function submitGuide() {
+        var title = document.getElementById('guide-title').value.trim();
+        var tags = document.getElementById('guide-tags').value.trim();
+        var intro = document.getElementById('guide-intro').value.trim();
+        var content = document.getElementById('guide-content').value.trim();
+        
+        if (!title) {
+            alert('请输入攻略标题！');
+            return;
+        }
+        if (!intro) {
+            alert('请输入攻略简介！');
+            return;
+        }
+        if (!content) {
+            alert('请输入攻略详情！');
+            return;
+        }
+        
+        $('#publish-guide-modal').modal('hide');
+        alert('攻略发布成功！');
+    }
+</script>
 </body>
 </html>
