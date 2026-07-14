@@ -139,9 +139,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- 实景展示 - 图片画廊 -->
+        <c:if test="${not empty food.images}">
+        <div style="padding-top:15px;padding-bottom:15px;">
+            <h4 style="border-left:4px solid #00a8a8;padding-left:12px;margin-bottom:15px;">图片展示</h4>
+            <div class="row row-30 justify-content-center">
+                <c:forTokens items="${food.images}" delims='["],[]{} ' var="img">
+                    <c:if test="${not empty img && img.length() > 5}">
+                        <div class="col-lg-3 col-md-4 col-sm-6" style="margin-bottom:20px;">
+                            <img src="${img}" alt="${food.name}" onclick="openLightbox('${img}')" style="width:100%;height:220px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'"/>
+                        </div>
+                    </c:if>
+                </c:forTokens>
+            </div>
+        </div>
+        </c:if>
+
     </div>
 </section>
 </c:if>
+
+<!-- Image lightbox overlay -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+</div>
 
 <%@include file="Footer.jsp"%>
 </div>
@@ -201,7 +224,16 @@ function toggleFavorite(id) {
     } else {
         icon.innerHTML = '&#9825;'; text.textContent = '收藏';
         btn.style.color = '#666'; btn.style.borderColor = '#e0e0e0';
-    }
+	}
+}
+
+// Image lightbox
+function openLightbox(src) {
+    document.getElementById('lightboxImage').src = src;
+    document.getElementById('lightboxOverlay').style.display = 'flex';
+}
+function closeLightbox() {
+    document.getElementById('lightboxOverlay').style.display = 'none';
 }
 </script>
 <script src="js/core.min.js"></script>
