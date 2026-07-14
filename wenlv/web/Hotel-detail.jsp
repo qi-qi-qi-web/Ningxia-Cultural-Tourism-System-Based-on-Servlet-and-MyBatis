@@ -89,8 +89,8 @@
 
 	                        <!-- 酒店图片画廊 -->
 	                        <c:if test="${not empty hotel.images}">
-	                        <div class="blog-post-classic__media-group">
-	                            <h4 style="border-left:4px solid #00a8a8;padding-left:12px;margin-bottom:15px;">实景展示</h4>
+		                        <div class="blog-post-classic__media-group" style="padding-top:15px;">
+		                            <h4 style="border-left:4px solid #00a8a8;padding-left:12px;margin-bottom:15px;">实景展示</h4>
 	                            <div class="row row-30 justify-content-center" id="hotelGalleryContainer">
 	                                <c:forTokens items="${hotel.images}" delims='["],[]{} ' var="img">
 	                                    <c:if test="${not empty img && img.length() > 5}">

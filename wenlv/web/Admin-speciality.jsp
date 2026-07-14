@@ -99,7 +99,7 @@
 <div id="edit-modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.5);">
     <div style="background:#fff;border-radius:8px;max-width:650px;margin:5% auto;padding:25px;max-height:80vh;overflow-y:auto;">
         <h4 id="modal-title">新增特产</h4>
-        <form method="post" action="${pageContext.request.contextPath}/admin/specialty">
+        <form method="post" action="${pageContext.request.contextPath}/admin/specialty" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save"><input type="hidden" name="id" id="sp-id">
             <div class="mb-2"><label>名称</label><input class="form-control" name="name" id="sp-name" required></div>
             <div class="mb-2"><label>分类</label>
@@ -116,8 +116,10 @@
                 <div class="col-4"><label>库存</label><input class="form-control" name="stock" id="sp-stock" type="number" required></div>
                 <div class="col-4"><label>状态</label><select class="form-control" name="status" id="sp-status"><option value="1">上架</option><option value="0">下架</option></select></div>
             </div>
-            <div class="mb-2"><label>主图URL</label><input class="form-control" name="mainImage" id="sp-img"></div>
-            <div class="mb-3"><label>图片列表(JSON)</label><input class="form-control" name="images" id="sp-images" placeholder='["url1","url2"]'></div>
+            <div class="mb-2"><label>主图（可上传文件或填写URL）</label><input class="form-control" type="file" name="mainImageFile" id="sp-img-file" accept="image/*" style="margin-bottom:5px;"></div>
+            <div class="mb-2"><input class="form-control" name="mainImage" id="sp-img" placeholder="或填写图片URL"></div>
+            <div class="mb-2"><label>图片列表（可多选上传文件或填写URL数组）</label><input class="form-control" type="file" name="imagesFiles" id="sp-images-file" multiple accept="image/*" style="margin-bottom:5px;"><div id="sp-images-file-list" style="font-size:12px;color:#888;margin:3px 0;"></div></div>
+            <div class="mb-3"><textarea class="form-control" name="images" id="sp-images" placeholder='或手动填写图片URL数组，JSON格式：["url1","url2"]' rows="2"></textarea></div>
             <button type="submit" class="btn btn-primary">保存</button>
             <button type="button" class="btn btn-secondary" onclick="document.getElementById('edit-modal').style.display='none'">取消</button>
         </form>
@@ -125,6 +127,21 @@
 </div>
 
 <script>
+// 文件选择预览
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('sp-images-file').addEventListener('change', function() {
+        var list = document.getElementById('sp-images-file-list');
+        var html = '';
+        for (var i = 0; i < this.files.length; i++) {
+            html += '<span style="display:inline-block;margin:2px 6px 2px 0;background:#f0f0f0;padding:1px 6px;border-radius:3px;">' + escHtml(this.files[i].name) + '</span>';
+        }
+        list.innerHTML = html || '';
+	});
+});
+function escHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 function openEdit(id) {
     document.getElementById('edit-modal').style.display = 'block';
     if (id) {
