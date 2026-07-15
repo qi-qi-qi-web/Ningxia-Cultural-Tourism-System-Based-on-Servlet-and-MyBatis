@@ -673,6 +673,13 @@
                     <div class="form-label-custom">攻略详情</div>
                     <textarea class="form-input-custom" id="pc-guide-content" rows="6" placeholder="请详细描述您的攻略内容" style="resize: vertical;"></textarea>
                 </div>
+                <!-- 景区选择 -->
+                <div class="form-group-custom">
+                    <div class="form-label-custom">关联景区（可选）</div>
+                    <select class="form-input-custom" id="pc-guide-scenic">
+                        <option value="">不关联景区（通用攻略）</option>
+                    </select>
+                </div>
                 <!-- 标签选择 -->
                 <div class="form-group-custom">
                     <div class="form-label-custom">选择标签（点击选中/取消）</div>
@@ -1515,7 +1522,9 @@
         document.getElementById('pc-guide-submit-btn').textContent = '发布攻略';
         document.getElementById('pc-status-group').style.display = 'block';
         pcSelectedTags = {};
+        document.getElementById('pc-guide-scenic').value = '';
         loadPCTags();
+        loadPCScenicSpots();
         document.getElementById('pc-publish-guide-modal').style.display = 'block';
         document.body.style.overflow = 'hidden';
     }
@@ -1555,6 +1564,21 @@
         }
     }
 
+    function loadPCScenicSpots() {
+        var sel = document.getElementById('pc-guide-scenic');
+        sel.innerHTML = '<option value="">不关联景区（通用攻略）</option>';
+        fetch('/map?action=listOpen')
+        .then(function(r) { return r.json(); })
+        .then(function(scenics) {
+            if (Array.isArray(scenics)) {
+                scenics.forEach(function(s) {
+                    sel.innerHTML += '<option value="' + s.id + '">' + escHtml(s.name) + '</option>';
+                });
+            }
+        })
+        .catch(function() {});
+    }
+
     function closePublishGuideModalPC() {
         document.getElementById('pc-publish-guide-modal').style.display = 'none';
         document.body.style.overflow = '';
@@ -1583,6 +1607,13 @@
                         });
                     }
                     loadPCTags();
+                    // 预选关联景区
+                    loadPCScenicSpots();
+                    setTimeout(function() {
+                        if (g.scenicSpotId) {
+                            document.getElementById('pc-guide-scenic').value = g.scenicSpotId;
+                        }
+                    }, 300);
                     document.getElementById('pc-publish-guide-modal').style.display = 'block';
                     document.body.style.overflow = 'hidden';
                 } catch(e) {
@@ -1610,6 +1641,8 @@
         formData.append('tags', tags);
         formData.append('content', content);
         formData.append('status', status);
+        var scenicId = document.getElementById('pc-guide-scenic').value;
+        if (scenicId) { formData.append('scenicSpotId', scenicId); }
 
         var coverFile = document.getElementById('pc-guide-cover').files[0];
         if (coverFile) { formData.append('coverImageFile', coverFile); }

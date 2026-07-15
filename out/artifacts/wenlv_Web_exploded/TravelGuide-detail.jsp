@@ -5,6 +5,8 @@
 <%@ page import="com.niit.utils.DBUtil" %>
 <%@ page import="com.niit.mapper.TravelGuideMapper" %>
 <%@ page import="com.niit.mapper.GuideTagMapper" %>
+<%@ page import="com.niit.mapper.ScenicSpotMapper" %>
+<%@ page import="com.niit.pojo.ScenicSpot" %>
 <%@ page import="com.niit.pojo.TravelGuide" %>
 <%@ page import="com.niit.pojo.GuideTag" %>
 <%@ page import="org.apache.ibatis.session.SqlSession" %>
@@ -28,6 +30,16 @@
     if (guide == null) {
         response.sendRedirect("TravelGuide.jsp");
         return;
+    }
+    // 查询关联景区名称
+    if (guide.getScenicSpotId() != null) {
+        try (SqlSession s = DBUtil.getSession()) {
+            ScenicSpot scenic = s.getMapper(ScenicSpotMapper.class).findById(guide.getScenicSpotId());
+            if (scenic != null) {
+                request.setAttribute("scenicName", scenic.getName());
+                request.setAttribute("scenicId", scenic.getId());
+            }
+        }
     }
     request.setAttribute("guide", guide);
     request.setAttribute("tagList", tagList);
@@ -166,6 +178,13 @@
                                     <c:otherwise><span class="badge bg-danger text-white" style="font-size:12px;">已隐藏</span></c:otherwise>
                                 </c:choose>
                             </div>
+                            <c:if test="${not empty scenicName}">
+                            <hr style="margin: 12px 0;"/>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-gray-500"><span class="icon linearicons-map-marker"></span> 关联景区</span>
+                                <a href="ScenicService-detail.jsp?id=${scenicId}" style="font-size:13px;color:#00a8a8;text-decoration:none;font-weight:500;">${scenicName}</a>
+                            </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>

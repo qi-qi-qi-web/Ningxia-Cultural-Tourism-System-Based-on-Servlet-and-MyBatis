@@ -10,6 +10,7 @@ public interface TravelGuideMapper {
     TravelGuide findById(Long id);
     List<TravelGuide> findPublished();
     List<TravelGuide> findByUserId(Long userId);
+    List<TravelGuide> findByScenicSpotId(Long scenicSpotId);
     int insert(TravelGuide guide);
     int update(TravelGuide guide);
     int updateStatus(@Param("id") Long id, @Param("status") String status);

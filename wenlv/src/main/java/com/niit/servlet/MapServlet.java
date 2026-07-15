@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.ibatis.session.SqlSession;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/map")
 public class MapServlet extends HttpServlet {
@@ -21,6 +22,8 @@ public class MapServlet extends HttpServlet {
 
         if ("scenicData".equals(action)) {
             handleScenicData(request, response);
+        } else if ("listOpen".equals(action)) {
+            handleListOpen(response);
         } else {
             response.getWriter().write("{\"ok\":false,\"msg\":\"未知操作\"}");
         }
@@ -47,6 +50,27 @@ public class MapServlet extends HttpServlet {
             }
         } catch (Exception e) {
             response.getWriter().write("{\"ok\":false,\"msg\":\"查询失败\"}");
+        }
+    }
+
+    private void handleListOpen(HttpServletResponse response) throws IOException {
+        try (SqlSession s = DBUtil.getSession()) {
+            List<ScenicSpot> list = s.getMapper(ScenicSpotMapper.class).findOpen();
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                ScenicSpot scenic = list.get(i);
+                sb.append(String.format(
+                    "{\"id\":%d,\"name\":\"%s\",\"city\":\"%s\"}",
+                    scenic.getId(),
+                    escapeJson(scenic.getName()),
+                    escapeJson(scenic.getCity())
+                ));
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            response.getWriter().write("[]");
         }
     }
 

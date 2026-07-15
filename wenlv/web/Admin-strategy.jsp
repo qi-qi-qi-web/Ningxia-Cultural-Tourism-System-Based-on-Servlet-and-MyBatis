@@ -111,6 +111,11 @@
                 </div>
                 <input type="hidden" name="tags" id="strategy-tags">
             </div>
+            <div class="mb-2"><label>关联景区</label>
+                <select class="form-control" name="scenicSpotId" id="strategy-scenic">
+                    <option value="">不关联（通用攻略）</option>
+                </select>
+            </div>
             <div class="mb-3"><label>状态</label>
                 <select class="form-control" name="status" id="strategy-status">
                     <option value="PUBLISHED">已发布</option>
@@ -185,6 +190,12 @@ function openStrategyEdit(id) {
             }
             document.getElementById('strategy-tags').value = d.tags || '';
             loadAdminTags();
+            // 预选景区（需要等下拉框加载完成后设置）
+            setTimeout(function() {
+                if (d.scenicSpotId) {
+                    document.getElementById('strategy-scenic').value = d.scenicSpotId;
+                }
+            }, 200);
         })
         .catch(function(){ alert('加载失败'); });
     } else {
@@ -193,8 +204,24 @@ function openStrategyEdit(id) {
             document.getElementById(f).value = '';
         });
         document.getElementById('strategy-status').value = 'PUBLISHED';
+        document.getElementById('strategy-scenic').value = '';
         loadAdminTags();
     }
+}
+
+function loadAdminScenicSpots() {
+    var sel = document.getElementById('strategy-scenic');
+    sel.innerHTML = '<option value="">不关联（通用攻略）</option>';
+    fetch('${pageContext.request.contextPath}/map?action=listOpen')
+    .then(function(r) { return r.json(); })
+    .then(function(scenics) {
+        if (Array.isArray(scenics)) {
+            scenics.forEach(function(s) {
+                sel.innerHTML += '<option value="' + s.id + '">' + escHtml(s.name) + '</option>';
+            });
+        }
+    })
+    .catch(function() {});
 }
 
 function escHtml(s) {
@@ -202,7 +229,8 @@ function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// 页面加载时预加载标签
+// 页面加载时预加载标签和景区列表
 loadAdminTags();
+loadAdminScenicSpots();
 </script>
 </div></div></div></body></html>

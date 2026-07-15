@@ -122,23 +122,8 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tabs-1-2">
-                            <div class="scenic-detail-guide">
-                                <h3 class="mb-4" style="color: #333; font-size: 20px;">游玩路线推荐</h3>
-                                <div class="guide-card p-4" style="background: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
-                                    <h4 style="color: #00a8a8; font-size: 16px; margin-bottom: 12px;"><i class="fa fa-map-signs"></i> 一日游路线</h4>
-                                    <ol style="color: #666; line-height: 1.8; padding-left: 20px;">
-                                        <li><strong>上午</strong>：从景区南门进入，乘坐观光车前往北区沙漠景区，体验沙漠冲浪车和骑骆驼项目，感受沙漠的雄浑与壮美。</li>
-                                        <li><strong>中午</strong>：在沙漠餐厅品尝宁夏特色美食（手抓羊肉、中卫酿皮等）。</li>
-                                        <li><strong>下午</strong>：返回南区，体验黄河滑索、羊皮筏子漂流等项目，欣赏黄河日落美景。</li>
-                                    </ol>
-                                </div>
-                                <div class="guide-card p-4" style="background: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
-                                    <h4 style="color: #00a8a8; font-size: 16px; margin-bottom: 12px;"><i class="fa fa-camping"></i> 两日游路线</h4>
-                                    <ol style="color: #666; line-height: 1.8; padding-left: 20px;">
-                                        <li><strong>第一天</strong>：体验北区沙漠项目，晚上在沙漠露营，欣赏星空银河。</li>
-                                        <li><strong>第二天</strong>：体验南区黄河项目，下午参观景区内的黄河文化博物馆。</li>
-                                    </ol>
-                                </div>
+                            <div id="scenic-guide-list">
+                                <div style="text-align:center;color:#999;padding:40px;">加载中...</div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tabs-1-3">
@@ -246,6 +231,59 @@
         color: #666;
         line-height: 1.6;
     }
+    .scenic-guide-item {
+        display: flex;
+        background: #fafafa;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 16px;
+        transition: box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .scenic-guide-item:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .scenic-guide-img {
+        width: 180px;
+        height: 120px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+    .scenic-guide-info {
+        padding: 14px 18px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .scenic-guide-info h5 {
+        font-size: 16px;
+        margin: 0 0 6px 0;
+        color: #333;
+    }
+    .scenic-guide-info h5 a {
+        color: #333;
+        text-decoration: none;
+    }
+    .scenic-guide-info h5 a:hover {
+        color: #00a8a8;
+    }
+    .scenic-guide-meta {
+        font-size: 12px;
+        color: #999;
+    }
+    .scenic-guide-meta span {
+        margin-right: 12px;
+    }
+    @media (max-width: 576px) {
+        .scenic-guide-item {
+            flex-direction: column;
+        }
+        .scenic-guide-img {
+            width: 100%;
+            height: 160px;
+        }
+    }
 </style>
 
 <script>
@@ -274,6 +312,9 @@
 
         $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
             var target = $(e.target).attr('href');
+            if (target === '#tabs-1-2') {
+                loadScenicGuides();
+            }
             if (target === '#tabs-1-3') {
                 galleryItems.forEach(function(item) {
                     item.classList.remove('hidden');
@@ -292,7 +333,53 @@
         });
 
         loadComments();
+        
+        // 预加载攻略数据
+        loadScenicGuides();
     });
+
+    // 加载该景区的游玩攻略
+    function loadScenicGuides() {
+        var sid = '${scenic.id}';
+        var container = document.getElementById('scenic-guide-list');
+        if (!container) return;
+        container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">加载中...</div>';
+        fetch('/guide?action=byScenic&scenicSpotId=' + sid)
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            if (!list || list.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:#999;padding:50px 0;">' +
+                    '<i class="fa fa-map-signs" style="font-size:48px;display:block;margin-bottom:16px;color:#ddd;"></i>' +
+                    '<p style="font-size:15px;">对不起，该景区暂时没有游玩攻略</p>' +
+                    '<p style="font-size:13px;color:#bbb;">成为第一个分享攻略的人吧！</p>' +
+                    '</div>';
+                return;
+            }
+            var html = '<h3 class="mb-3" style="color:#333;font-size:20px;">相关攻略（' + list.length + '篇）</h3>';
+            list.forEach(function(g){
+                var cover = g.coverImage || 'images/tour-1-370x284.jpg';
+                var title = escHtml(g.title);
+                var author = escHtml(g.userName || g.nickname || '匿名');
+                var views = g.viewCount || 0;
+                var favs = g.favoriteCount || 0;
+                var date = (g.createdAt || '').substring(0, 10);
+                html += '<div class="scenic-guide-item" onclick="window.location.href=\'TravelGuide-detail.jsp?id=' + g.id + '\'">' +
+                    '<img class="scenic-guide-img" src="' + cover + '" alt="" onerror="this.src=\'images/tour-1-370x284.jpg\'"/>' +
+                    '<div class="scenic-guide-info">' +
+                    '<h5><a href="TravelGuide-detail.jsp?id=' + g.id + '">' + title + '</a></h5>' +
+                    '<div class="scenic-guide-meta">' +
+                    '<span><i class="fa fa-user-o"></i> ' + author + '</span>' +
+                    '<span><i class="fa fa-eye"></i> ' + views + '</span>' +
+                    '<span><i class="fa fa-heart-o"></i> ' + favs + '</span>' +
+                    '<span><i class="fa fa-calendar-o"></i> ' + date + '</span>' +
+                    '</div></div></div>';
+            });
+            container.innerHTML = html;
+        })
+        .catch(function(){
+            container.innerHTML = '<div style="text-align:center;color:#999;padding:50px 0;">加载失败，请刷新重试</div>';
+        });
+    }
 
     // 评论
     function loadComments() {

@@ -228,6 +228,7 @@ DROP TABLE IF EXISTS travel_guide;
 CREATE TABLE travel_guide (
     id              BIGINT          PRIMARY KEY AUTO_INCREMENT,
     user_id         BIGINT          NOT NULL,
+    scenic_spot_id  BIGINT          DEFAULT NULL                COMMENT '关联景区ID(NULL=通用攻略)',
     title           VARCHAR(200)    NOT NULL,
     content         LONGTEXT        NOT NULL,
     cover_image     VARCHAR(500)    DEFAULT NULL,
@@ -239,11 +240,13 @@ CREATE TABLE travel_guide (
     status          ENUM('PUBLISHED','DRAFT','HIDDEN') NOT NULL DEFAULT 'PUBLISHED',
     created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_guide_user FOREIGN KEY (user_id) REFERENCES sys_user(id) ON DELETE CASCADE,
-    INDEX idx_user      (user_id),
-    INDEX idx_status    (status),
-    INDEX idx_hot       (like_count, view_count),
-    INDEX idx_created   (created_at)
+    CONSTRAINT fk_guide_user   FOREIGN KEY (user_id)        REFERENCES sys_user(id)   ON DELETE CASCADE,
+    CONSTRAINT fk_guide_scenic FOREIGN KEY (scenic_spot_id) REFERENCES scenic_spot(id) ON DELETE SET NULL,
+    INDEX idx_user        (user_id),
+    INDEX idx_scenic_spot  (scenic_spot_id),
+    INDEX idx_status      (status),
+    INDEX idx_hot         (like_count, view_count),
+    INDEX idx_created     (created_at)
 ) ENGINE=InnoDB COMMENT '旅游攻略表';
 
 -- 攻略标签表（含攻略关联）

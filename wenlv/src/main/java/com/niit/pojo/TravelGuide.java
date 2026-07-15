@@ -12,6 +12,7 @@ import java.util.Date;
 public class TravelGuide {
     private Long id;
     private Long userId;
+    private Long scenicSpotId;
     private String title;
     private String content;
     private String coverImage;

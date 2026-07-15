@@ -68,6 +68,17 @@ public class GuideServlet extends HttpServlet {
             return;
         }
 
+        // 返回某景区的攻略 JSON 列表
+        if ("byScenic".equals(action)) {
+            String scenicSpotIdStr = request.getParameter("scenicSpotId");
+            if (scenicSpotIdStr != null && !scenicSpotIdStr.isEmpty()) {
+                returnScenicGuidesJson(response, Long.parseLong(scenicSpotIdStr));
+            } else {
+                response.getWriter().write("[]");
+            }
+            return;
+        }
+
         // 默认：加载已发布攻略列表，转发到 TravelGuide.jsp
         try (SqlSession s = DBUtil.getSession()) {
             request.setAttribute("guideList", s.getMapper(TravelGuideMapper.class).findPublished());
@@ -110,6 +121,7 @@ public class GuideServlet extends HttpServlet {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String tags = request.getParameter("tags");
+        String scenicSpotIdStr = request.getParameter("scenicSpotId");
 
         if (title == null || title.trim().isEmpty()) {
             response.getWriter().write("{\"success\":false,\"message\":\"请输入攻略标题\"}");
@@ -143,6 +155,9 @@ public class GuideServlet extends HttpServlet {
             g.setTags(tags != null ? tags.trim() : "");
             g.setCoverImage(coverImage);
             g.setStatus("PUBLISHED");
+            if (scenicSpotIdStr != null && !scenicSpotIdStr.trim().isEmpty()) {
+                g.setScenicSpotId(Long.parseLong(scenicSpotIdStr.trim()));
+            }
             m.insert(g);
 
             // 写入 guide_tag 关联
@@ -254,13 +269,32 @@ public class GuideServlet extends HttpServlet {
     }
 
     /**
+     * 返回某景区的已发布攻略 JSON 数组
+     */
+    private void returnScenicGuidesJson(HttpServletResponse response, Long scenicSpotId) throws IOException {
+        try (SqlSession s = DBUtil.getSession()) {
+            List<TravelGuide> list = s.getMapper(TravelGuideMapper.class).findByScenicSpotId(scenicSpotId);
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                sb.append(guideToJson(list.get(i)));
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            response.getWriter().write("[]");
+        }
+    }
+
+    /**
      * 将 TravelGuide 对象转为 JSON 字符串
      */
     private String guideToJson(TravelGuide g) {
         return String.format(
-            "{\"id\":%d,\"userId\":%d,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"tags\":\"%s\",\"likeCount\":%d,\"viewCount\":%d,\"commentCount\":%d,\"favoriteCount\":%d,\"status\":\"%s\",\"createdAt\":\"%s\",\"userName\":\"%s\"}",
+            "{\"id\":%d,\"userId\":%d,\"scenicSpotId\":%s,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"tags\":\"%s\",\"likeCount\":%d,\"viewCount\":%d,\"commentCount\":%d,\"favoriteCount\":%d,\"status\":\"%s\",\"createdAt\":\"%s\",\"userName\":\"%s\"}",
             g.getId(),
             g.getUserId() != null ? g.getUserId() : 0,
+            g.getScenicSpotId() != null ? g.getScenicSpotId().toString() : "null",
             esc(g.getTitle()),
             esc(g.getContent()),
             esc(g.getCoverImage()),

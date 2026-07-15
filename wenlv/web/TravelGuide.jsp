@@ -194,6 +194,13 @@
                     <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">攻略详情</div>
                     <textarea style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333; resize: vertical;" id="guide-content" rows="8" placeholder="请详细描述您的攻略内容，包括行程安排、注意事项等"></textarea>
                 </div>
+                <!-- 景区选择 -->
+                <div style="margin-bottom: 20px;">
+                    <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 8px;">关联景区（可选）</div>
+                    <select id="guide-scenic" style="width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 15px; background: #fafafa; box-sizing: border-box; color: #333;">
+                        <option value="">不关联景区（通用攻略）</option>
+                    </select>
+                </div>
                 <!-- 标签选择 -->
                 <div style="margin-bottom: 20px;">
                     <div style="font-family: Oswald, sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: #333; margin-bottom: 10px;">选择标签（点击选中/取消）</div>
@@ -236,8 +243,10 @@
         document.getElementById('guide-title').value = '';
         document.getElementById('guide-content').value = '';
         document.getElementById('guide-cover').value = '';
+        document.getElementById('guide-scenic').value = '';
         guideSelectedTags = {};
         loadGuideTags();
+        loadScenicSpots();
         var modal = new bootstrap.Modal(document.getElementById('publish-guide-modal'));
         modal.show();
     }
@@ -267,6 +276,23 @@
         });
     }
 
+    function loadScenicSpots() {
+        var sel = document.getElementById('guide-scenic');
+        fetch('/map?action=listOpen')
+        .then(function(r) { return r.json(); })
+        .then(function(scenics) {
+            sel.innerHTML = '<option value="">不关联景区（通用攻略）</option>';
+            if (Array.isArray(scenics)) {
+                scenics.forEach(function(s) {
+                    sel.innerHTML += '<option value="' + s.id + '">' + escHtml(s.name) + '</option>';
+                });
+            }
+        })
+        .catch(function() {
+            // 如果 map 接口不可用，保持默认
+        });
+    }
+
     function toggleTag(el) {
         var name = el.getAttribute('data-name');
         if (el.classList.contains('selected')) {
@@ -293,6 +319,8 @@
         formData.append('title', title);
         formData.append('tags', tags);
         formData.append('content', content);
+        var scenicId = document.getElementById('guide-scenic').value;
+        if (scenicId) { formData.append('scenicSpotId', scenicId); }
         
         var coverFile = document.getElementById('guide-cover').files[0];
         if (coverFile) { formData.append('coverImage', coverFile); }

@@ -73,6 +73,10 @@ public class AdminStrategyServlet extends HttpServlet {
             g.setContent(request.getParameter("content"));
             g.setTags(request.getParameter("tags"));
             g.setStatus(request.getParameter("status") != null ? request.getParameter("status") : "PUBLISHED");
+            String scenicSpotIdStr = request.getParameter("scenicSpotId");
+            if (scenicSpotIdStr != null && !scenicSpotIdStr.trim().isEmpty()) {
+                g.setScenicSpotId(Long.parseLong(scenicSpotIdStr.trim()));
+            }
 
             // 处理封面图上传
             String coverImage = request.getParameter("coverImage");
@@ -155,9 +159,10 @@ public class AdminStrategyServlet extends HttpServlet {
             TravelGuide g = s.getMapper(TravelGuideMapper.class).findById(id);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(String.format(
-                "{\"id\":%d,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"tags\":\"%s\",\"status\":\"%s\"}",
+                "{\"id\":%d,\"title\":\"%s\",\"content\":\"%s\",\"coverImage\":\"%s\",\"tags\":\"%s\",\"status\":\"%s\",\"scenicSpotId\":%s}",
                 g.getId(), esc(g.getTitle()), esc(g.getContent()),
-                esc(g.getCoverImage()), esc(g.getTags()), esc(g.getStatus())
+                esc(g.getCoverImage()), esc(g.getTags()), esc(g.getStatus()),
+                g.getScenicSpotId() != null ? g.getScenicSpotId().toString() : "null"
             ));
         }
     }

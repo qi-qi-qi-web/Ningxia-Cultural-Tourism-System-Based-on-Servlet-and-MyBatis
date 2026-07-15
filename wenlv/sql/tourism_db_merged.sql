@@ -2,6 +2,7 @@
 -- 文旅综合服务平台 - 完整数据库（含攻略标签关联表）
 -- 合并自：tourism_db_full.sql + scenic_spot.sql + scenic_coordinates_update.sql
 -- 冲突时优先使用 scenic_spot.sql 的初始数据
+-- ★ 修改记录：travel_guide 表新增 scenic_spot_id 列（攻略关联景区）
 -- ============================================================================
 
 DROP DATABASE IF EXISTS tourism_platform;
@@ -244,28 +245,32 @@ CREATE TABLE hotel_room (
     INDEX idx_status    (status)
 ) ENGINE=InnoDB COMMENT '酒店房间表';
 
--- 攻略表（tags 改为 VARCHAR 避免 JSON 类型报错）
+-- ★★★ 攻略表（tags 改为 VARCHAR 避免 JSON 类型报错） ★★★
+-- ★ 新增 scenic_spot_id 字段 —— 攻略关联景区
 DROP TABLE IF EXISTS guide_tag;
 DROP TABLE IF EXISTS travel_guide;
 CREATE TABLE travel_guide (
-    id              BIGINT          PRIMARY KEY AUTO_INCREMENT COMMENT '攻略ID',
-    user_id         BIGINT          NOT NULL                   COMMENT '作者用户ID',
-    title           VARCHAR(200)    NOT NULL                   COMMENT '攻略标题',
-    content         LONGTEXT        NOT NULL                   COMMENT '攻略正文',
-    cover_image     VARCHAR(500)    DEFAULT NULL               COMMENT '封面图URL',
-    tags            VARCHAR(500)    DEFAULT NULL               COMMENT '标签(逗号分隔)',
-    like_count      INT             NOT NULL DEFAULT 0         COMMENT '点赞数',
-    view_count      INT             NOT NULL DEFAULT 0         COMMENT '浏览量',
-    comment_count   INT             NOT NULL DEFAULT 0         COMMENT '评论数',
-    favorite_count  BIGINT          NOT NULL DEFAULT 0         COMMENT '收藏数(冗余计数)',
-    status          ENUM('PUBLISHED','DRAFT','HIDDEN') NOT NULL DEFAULT 'PUBLISHED' COMMENT '状态: PUBLISHED=已发布, DRAFT=草稿, HIDDEN=已隐藏',
-    created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    CONSTRAINT fk_guide_user FOREIGN KEY (user_id) REFERENCES sys_user(id) ON DELETE CASCADE,
-    INDEX idx_user      (user_id),
-    INDEX idx_status    (status),
-    INDEX idx_hot       (like_count, view_count),
-    INDEX idx_created   (created_at)
+    id              BIGINT          PRIMARY KEY AUTO_INCREMENT,
+    user_id         BIGINT          NOT NULL,
+    scenic_spot_id  BIGINT          DEFAULT NULL                COMMENT '关联景区ID(NULL=通用攻略)',
+    title           VARCHAR(200)    NOT NULL,
+    content         LONGTEXT        NOT NULL,
+    cover_image     VARCHAR(500)    DEFAULT NULL,
+    tags            VARCHAR(500)    DEFAULT NULL                COMMENT '标签(逗号分隔)',
+    like_count      INT             NOT NULL DEFAULT 0,
+    view_count      INT             NOT NULL DEFAULT 0,
+    comment_count   INT             NOT NULL DEFAULT 0,
+    favorite_count  BIGINT          NOT NULL DEFAULT 0,
+    status          ENUM('PUBLISHED','DRAFT','HIDDEN') NOT NULL DEFAULT 'PUBLISHED',
+    created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_guide_user   FOREIGN KEY (user_id)        REFERENCES sys_user(id)   ON DELETE CASCADE,
+    CONSTRAINT fk_guide_scenic FOREIGN KEY (scenic_spot_id) REFERENCES scenic_spot(id) ON DELETE SET NULL,
+    INDEX idx_user        (user_id),
+    INDEX idx_scenic_spot  (scenic_spot_id),
+    INDEX idx_status      (status),
+    INDEX idx_hot         (like_count, view_count),
+    INDEX idx_created     (created_at)
 ) ENGINE=InnoDB COMMENT '旅游攻略表';
 
 -- 攻略标签表（含攻略关联）
@@ -409,13 +414,13 @@ INSERT INTO guide_tag (guide_id, name, category, sort_order) VALUES
 (NULL,'性价比高','BUDGET',5),(NULL,'精致小资','BUDGET',6),(NULL,'丰俭由人','BUDGET',7),(NULL,'不差钱','BUDGET',8);
 
 -- 测试攻略数据
-INSERT INTO travel_guide (user_id, title, content, cover_image, tags, status, created_at) VALUES
-(2,'镇北堡影城游玩攻略','镇北堡影城第一次来宁夏必看路线\n\n第一天：抵达银川，下午游览镇北堡西部影城，感受《大话西游》《红高粱》等经典电影的拍摄场景。\n第二天：前往西夏王陵，参观东方金字塔，了解神秘的西夏文明。\n第三天：沙湖景区，体验沙水相依的独特景观。','images/tour-1-370x284.jpg','摄影打卡,3天2晚,朋友结伴,中等预算','PUBLISHED','2026-07-01 10:00:00'),
-(2,'宁夏沙漠自驾全攻略','详细路线、加油点、露营装备、沙漠驾驶技巧\n\n路线：银川→中卫沙坡头→腾格里沙漠→盐池→银川，全程约480km。\n第一天：银川出发，前往中卫沙坡头。\n第二天：深入腾格里沙漠，体验沙漠越野和星空露营。\n第三天：前往盐池品尝滩羊肉，返回银川。','images/tour-2-370x284.jpg','户外探险,3天2晚,朋友结伴,经济实惠','PUBLISHED','2026-06-25 14:30:00'),
-(2,'宁夏必吃美食攻略','手抓羊肉、蒿子面、辣糊糊、羊杂碎，本地人私藏店铺\n\n1. 盐池手抓滩羊肉：推荐银川"老毛手抓"。\n2. 吴忠八宝茶：回民街老茶馆。\n3. 中卫蒿子面：鼓楼西街"马家蒿子面"。\n4. 辣糊糊：银川怀远夜市必吃。\n5. 羊杂碎：早餐首选。','images/tour-3-370x284.jpg','美食之旅,2天1晚,美食爱好者,性价比高','PUBLISHED','2026-06-20 09:00:00'),
-(2,'宁夏亲子游3日攻略','轻松不累，适合带孩子\n\n第一天：银川动物园→中山公园，晚上逛怀远夜市。\n第二天：沙湖景区，乘船观鸟，孩子可以喂鱼、玩沙。\n第三天：镇北堡西部影城，孩子可以cosplay电影角色。','images/tour-4-370x284.jpg','亲子,3天2晚,家庭出游,中等预算','PUBLISHED','2026-07-05 11:00:00'),
-(2,'宁夏网红拍照攻略','沙漠星空、黄河落日、影视城打卡\n\n1. 沙坡头黄河落日：下午6:00-7:00，黄河S弯处。\n2. 腾格里沙漠星空：晚上10点后，银河清晰可见。\n3. 镇北堡影城：明清街区上午光线最好。\n4. 西夏王陵：日落前1小时最为壮观。','images/tour-5-370x284.jpg','摄影打卡,网红打卡,3天2晚,摄影爱好者,精致小资','PUBLISHED','2026-07-08 16:00:00'),
-(2,'宁夏住宿全攻略','市区酒店、沙漠帐篷、中卫网红民宿\n\n银川市区：凯宾斯基酒店（600元起）、宁夏国际饭店（300元起）。\n中卫民宿：黄河宿集（1000-2000元/晚）、沙漠星空营地（500-800元/晚）。\n省钱之选：各景区周边农家乐，100-200元/晚。','images/tour-6-370x284.jpg','古镇风情,5天4晚,独自旅行,丰俭由人','PUBLISHED','2026-06-30 08:00:00');
+INSERT INTO travel_guide (user_id, scenic_spot_id, title, content, cover_image, tags, status, created_at) VALUES
+(2, NULL, '镇北堡影城游玩攻略', '镇北堡影城第一次来宁夏必看路线\n\n第一天：抵达银川，下午游览镇北堡西部影城，感受《大话西游》《红高粱》等经典电影的拍摄场景。\n第二天：前往西夏王陵，参观东方金字塔，了解神秘的西夏文明。\n第三天：沙湖景区，体验沙水相依的独特景观。', 'images/tour-1-370x284.jpg', '摄影打卡,3天2晚,朋友结伴,中等预算', 'PUBLISHED', '2026-07-01 10:00:00'),
+(2, NULL, '宁夏沙漠自驾全攻略', '详细路线、加油点、露营装备、沙漠驾驶技巧\n\n路线：银川→中卫沙坡头→腾格里沙漠→盐池→银川，全程约480km。\n第一天：银川出发，前往中卫沙坡头。\n第二天：深入腾格里沙漠，体验沙漠越野和星空露营。\n第三天：前往盐池品尝滩羊肉，返回银川。', 'images/tour-2-370x284.jpg', '户外探险,3天2晚,朋友结伴,经济实惠', 'PUBLISHED', '2026-06-25 14:30:00'),
+(2, NULL, '宁夏必吃美食攻略', '手抓羊肉、蒿子面、辣糊糊、羊杂碎，本地人私藏店铺\n\n1. 盐池手抓滩羊肉：推荐银川"老毛手抓"。\n2. 吴忠八宝茶：回民街老茶馆。\n3. 中卫蒿子面：鼓楼西街"马家蒿子面"。\n4. 辣糊糊：银川怀远夜市必吃。\n5. 羊杂碎：早餐首选。', 'images/tour-3-370x284.jpg', '美食之旅,2天1晚,美食爱好者,性价比高', 'PUBLISHED', '2026-06-20 09:00:00'),
+(2, NULL, '宁夏亲子游3日攻略', '轻松不累，适合带孩子\n\n第一天：银川动物园→中山公园，晚上逛怀远夜市。\n第二天：沙湖景区，乘船观鸟，孩子可以喂鱼、玩沙。\n第三天：镇北堡西部影城，孩子可以cosplay电影角色。', 'images/tour-4-370x284.jpg', '亲子,3天2晚,家庭出游,中等预算', 'PUBLISHED', '2026-07-05 11:00:00'),
+(2, NULL, '宁夏网红拍照攻略', '沙漠星空、黄河落日、影视城打卡\n\n1. 沙坡头黄河落日：下午6:00-7:00，黄河S弯处。\n2. 腾格里沙漠星空：晚上10点后，银河清晰可见。\n3. 镇北堡影城：明清街区上午光线最好。\n4. 西夏王陵：日落前1小时最为壮观。', 'images/tour-5-370x284.jpg', '摄影打卡,网红打卡,3天2晚,摄影爱好者,精致小资', 'PUBLISHED', '2026-07-08 16:00:00'),
+(2, NULL, '宁夏住宿全攻略', '市区酒店、沙漠帐篷、中卫网红民宿\n\n银川市区：凯宾斯基酒店（600元起）、宁夏国际饭店（300元起）。\n中卫民宿：黄河宿集（1000-2000元/晚）、沙漠星空营地（500-800元/晚）。\n省钱之选：各景区周边农家乐，100-200元/晚。', 'images/tour-6-370x284.jpg', '古镇风情,5天4晚,独自旅行,丰俭由人', 'PUBLISHED', '2026-06-30 08:00:00');
 
 INSERT INTO news_dynamic (title, content, cover_image, source, author_name, is_published, published_at) VALUES
 ('游客在沙坡头景区拾金不昧，万元现金物归原主','近日，一名来自北京的游客张先生在沙坡头景区游玩时不慎将装有万元现金的钱包遗落在休息区。景区工作人员李女士发现后立即上报，通过广播寻人、监控排查，仅用半小时便联系到失主。张先生激动地表示："宁夏不仅风景美，人心更美！"景区已对李女士进行了通报表扬。',
