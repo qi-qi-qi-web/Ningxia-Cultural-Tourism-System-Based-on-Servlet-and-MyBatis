@@ -179,12 +179,35 @@
 </div>
 
 <script>
-    var totalSeconds = 300;
+    // 基于订单创建时间计算剩余付款时间（5分钟=300秒）
+    <%
+        long remainingSec = 0;
+        if (order != null && order.getCreatedAt() != null) {
+            long createdMs = order.getCreatedAt().getTime();
+            long deadlineMs = createdMs + 300_000; // 5分钟
+            long nowMs = System.currentTimeMillis();
+            remainingSec = Math.max(0, (deadlineMs - nowMs) / 1000);
+        }
+    %>
+    var totalSeconds = <%= remainingSec %>;
     var timerInterval = null;
     var orderId = '<%= order != null ? order.getId() : "" %>';
-    var expired = false;
+    var expired = totalSeconds <= 0;
+
+    // 如果进入页面时已超时，直接取消
+    if (expired && orderId) {
+        (function(){
+            var btn = document.getElementById('pay-btn');
+            if (btn) { btn.disabled = true; btn.textContent = '订单已超时取消'; }
+            var cancelBtn = document.getElementById('cancel-btn');
+            if (cancelBtn) cancelBtn.style.display = 'none';
+            // 延迟执行取消，确保页面渲染完毕
+            setTimeout(function(){ cancelOrder(false); }, 1000);
+        })();
+    }
 
     function updateCountdown() {
+        if (expired && totalSeconds <= 0) { clearInterval(timerInterval); return; }
         var m = Math.floor(totalSeconds / 60);
         var s = totalSeconds % 60;
         var display = (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);

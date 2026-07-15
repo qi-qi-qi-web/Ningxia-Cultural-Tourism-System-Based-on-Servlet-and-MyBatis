@@ -1866,7 +1866,7 @@
 
     function renderOrders(orders, container) {
         if (!orders || orders.length === 0) {
-            container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">暂无订单<br><a href="specialty.jsp" style="color:#00a8a8;">去逛逛特产</a></div>';
+            container.innerHTML = '<div style="text-align:center;color:#999;padding:40px;">暂无订单<br><a href="Specialty.jsp" style="color:#00a8a8;">去逛逛特产</a></div>';
             return;
         }
         var html = '';
