@@ -41,13 +41,13 @@
                     <c:forEach items="${foodList}" var="food">
                         <div class="col-lg-4 col-sm-6">
                             <article class="card-classic" style="display:flex;flex-direction:column;height:100%;">
-                                <a class="card-classic__media" href="Specialty-detail.jsp?id=${food.id}">
+                                <a class="card-classic__media" href="Specialty-detail.jsp?id=${food.id}" style="width:100%;">
                                     <c:choose>
                                         <c:when test="${not empty food.mainImage}">
-                                            <img src="${food.mainImage}" alt="${food.name}" width="370" height="389"/>
+                                            <img src="${food.mainImage}" alt="${food.name}" width="370" height="284" style="width:100%;height:220px;object-fit:cover;"/>
                                         </c:when>
                                         <c:otherwise>
-                                            <img src="images/service-1-370x389.jpg" alt="${food.name}" width="370" height="389"/>
+                                            <img src="images/service-1-370x389.jpg" alt="${food.name}" width="370" height="284" style="width:100%;height:220px;object-fit:cover;"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </a>

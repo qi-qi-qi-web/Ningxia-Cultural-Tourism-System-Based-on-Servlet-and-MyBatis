@@ -37,7 +37,7 @@
                         <c:forEach items="${hotels}" var="h">
                 <div class="col-lg-4 col-sm-6">
                     <article class="card-classic" style="display:flex;flex-direction:column;height:100%;">
-                        <a class="card-classic__media" href="Hotel-detail.jsp?id=${h.id}"><img src="${empty h.coverImage ? 'images/service-1-370x389.jpg' : h.coverImage}" alt="${h.name}" width="370" height="389"/></a>
+                        <a class="card-classic__media" href="Hotel-detail.jsp?id=${h.id}" style="width:100%;"><img src="${empty h.coverImage ? 'images/service-1-370x389.jpg' : h.coverImage}" alt="${h.name}" width="370" height="284" style="width:100%;height:220px;object-fit:cover;"/></a>
                         <h5><a href="Hotel-detail.jsp?id=${h.id}">${h.name}</a></h5>
                         <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${h.description}</p>
                         <div class="card-classic__actions" style="margin-top:auto;"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp?id=${h.id}">了解更多</a>

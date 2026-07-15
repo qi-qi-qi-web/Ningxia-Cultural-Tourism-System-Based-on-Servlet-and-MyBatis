@@ -43,7 +43,7 @@
                                 <ul class="rd-navbar-nav">
                                     <li class="rd-nav-item active"><a class="rd-nav-link" href="index.jsp">首页</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="AboutNingXia.jsp">关于宁夏</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Information.jsp">关于宁夏</a>
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
                                         <ul class="rd-menu rd-navbar-dropdown">

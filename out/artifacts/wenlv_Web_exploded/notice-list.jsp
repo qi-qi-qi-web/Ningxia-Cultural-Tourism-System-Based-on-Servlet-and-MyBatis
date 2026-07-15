@@ -37,7 +37,7 @@
         <h4 class="breadcrumbs-custom-title">通知公告</h4>
         <ul class="breadcrumbs-custom-path">
             <li><a href="index.jsp">首页</a></li>
-            <li><a href="AboutNingXia.jsp">资讯</a></li>
+            <li><a href="Information.jsp">资讯</a></li>
             <li class="active">通知公告</li>
         </ul>
     </div>

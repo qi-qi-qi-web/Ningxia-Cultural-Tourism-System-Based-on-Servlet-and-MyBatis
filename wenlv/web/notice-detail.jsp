@@ -49,7 +49,7 @@
         <h4 class="breadcrumbs-custom-title">${notice.title}</h4>
         <ul class="breadcrumbs-custom-path">
             <li><a href="index.jsp">首页</a></li>
-            <li><a href="AboutNingXia.jsp">资讯</a></li>
+            <li><a href="Information.jsp">资讯</a></li>
             <li><a href="notice-list.jsp">通知公告</a></li>
             <li class="active">详情</li>
         </ul>

@@ -48,7 +48,7 @@
         <h4 class="breadcrumbs-custom-title">${news.title}</h4>
         <ul class="breadcrumbs-custom-path">
             <li><a href="index.jsp">首页</a></li>
-            <li><a href="AboutNingXia.jsp">资讯</a></li>
+            <li><a href="Information.jsp">资讯</a></li>
             <li><a href="news-list.jsp">新闻动态</a></li>
             <li class="active">详情</li>
         </ul>

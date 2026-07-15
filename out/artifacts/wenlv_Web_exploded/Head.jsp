@@ -45,7 +45,7 @@
                                 <ul class="rd-navbar-nav">
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="index.jsp">首页</a>
                                     </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="AboutNingXia.jsp">资讯</a>
+                                    <li class="rd-nav-item"><a class="rd-nav-link" href="Information.jsp">资讯</a>
                                     </li>
                                     <li class="rd-nav-item"><a class="rd-nav-link" href="ScenicService.jsp">景区服务</a>
                                     </li>
