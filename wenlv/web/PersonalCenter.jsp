@@ -734,19 +734,17 @@
 
 <!-- ========== 订单评价弹窗 ========== -->
 <div id="order-comment-modal" class="modal" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">评价商品</h4>
-                <button type="button" class="close" onclick="closeOrderCommentModal()">
-                    <span>&times;</span>
-                </button>
+    <div class="modal-dialog" style="max-width: 420px; margin-top: 10vh;">
+        <div class="modal-content" style="border-radius:12px;">
+            <div class="modal-header" style="padding:12px 20px;">
+                <h5 class="modal-title" style="font-size:15px;">评价商品</h5>
+                <button type="button" class="close" onclick="closeOrderCommentModal()"><span>&times;</span></button>
             </div>
-            <div class="modal-body" style="padding: 25px;">
+            <div class="modal-body" style="padding: 12px 20px 16px;">
                 <input type="hidden" id="comment-order-id">
-                <div class="form-group-custom" style="text-align:center;margin-bottom:15px;">
-                    <div class="form-label-custom">评分</div>
-                    <div id="star-rating" style="font-size:32px;color:#ddd;cursor:pointer;">
+                <div style="text-align:center;margin-bottom:10px;">
+                    <div style="font-size:12px;color:#666;margin-bottom:4px;">评分</div>
+                    <div id="star-rating" style="font-size:28px;color:#ddd;cursor:pointer;">
                         <span data-star="1" onmouseover="highlightStars(1)" onmouseout="resetStars()" onclick="setRating(1)">★</span>
                         <span data-star="2" onmouseover="highlightStars(2)" onmouseout="resetStars()" onclick="setRating(2)">★</span>
                         <span data-star="3" onmouseover="highlightStars(3)" onmouseout="resetStars()" onclick="setRating(3)">★</span>
@@ -755,13 +753,13 @@
                     </div>
                     <input type="hidden" id="comment-rating" value="5">
                 </div>
-                <div class="form-group-custom">
-                    <div class="form-label-custom">评价内容</div>
-                    <textarea class="form-input-custom" id="comment-content-text" rows="4" placeholder="分享您的购买体验..." style="resize: vertical;"></textarea>
+                <div style="margin-bottom:8px;">
+                    <div style="font-size:12px;color:#666;margin-bottom:4px;">评价内容</div>
+                    <textarea class="form-input-custom" id="comment-content-text" rows="3" placeholder="分享您的购买体验..." style="resize: vertical;"></textarea>
                 </div>
-                <div style="margin-top: 20px; text-align: right;">
-                    <button class="btn-secondary-custom" onclick="closeOrderCommentModal()" style="margin-right: 10px;">取消</button>
-                    <button class="btn-primary-custom" onclick="submitOrderComment()">提交评价</button>
+                <div style="text-align: right;">
+                    <button class="btn-secondary-custom" onclick="closeOrderCommentModal()" style="margin-right:8px;font-size:13px;">取消</button>
+                    <button class="btn-primary-custom" onclick="submitOrderComment()" style="font-size:13px;padding:5px 16px;">提交评价</button>
                 </div>
             </div>
         </div>
@@ -858,20 +856,16 @@
 
 <!-- ========== 确认收货后弹窗 ========== -->
 <div id="confirm-receipt-popup" class="modal" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">已确认收货！</h4>
-                <button type="button" class="close" onclick="closeConfirmReceiptPopup()">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="padding: 25px; text-align: center;">
+    <div class="modal-dialog" style="max-width: 320px; margin-top: 15vh;">
+        <div class="modal-content" style="border-radius: 12px;">
+            <div class="modal-body" style="padding: 16px 24px; text-align: center;">
                 <input type="hidden" id="popup-order-id">
-                <p style="font-size: 15px; color: #555; margin-bottom: 20px;">感谢您的购买！请选择后续操作：</p>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn-primary-custom" onclick="popupCompleteOrder()" style="min-width: 130px;">完成订单</button>
-                    <button class="btn-secondary-custom" onclick="popupGoReturn()" style="min-width: 130px; background: #f0ad4e; border-color: #f0ad4e; color: #fff;">我要退货</button>
+                <div style="font-size: 32px; margin-bottom: 8px;">✅</div>
+                <h5 style="color: #333; margin-bottom: 4px;font-size:15px;">已确认收货</h5>
+                <p style="font-size: 12px; color: #999; margin-bottom: 12px;">请选择后续操作</p>
+                <div style="display: flex; gap: 8px; justify-content: center;">
+                    <button class="btn-primary-custom" onclick="popupCompleteOrder()" style="padding:5px 18px;font-size:13px;">完成订单</button>
+                    <button onclick="popupGoReturn()" style="padding:5px 14px;font-size:12px;background:none;border:1px solid #ddd;border-radius:6px;color:#888;cursor:pointer;">我要退货</button>
                 </div>
             </div>
         </div>
