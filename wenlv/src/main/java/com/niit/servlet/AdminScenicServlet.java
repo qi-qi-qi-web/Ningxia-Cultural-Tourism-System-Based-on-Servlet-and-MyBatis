@@ -60,11 +60,13 @@ public class AdminScenicServlet extends HttpServlet {
             ScenicSpot sc = s.getMapper(ScenicSpotMapper.class).findById(id);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(String.format(
-                "{\"id\":%d,\"name\":\"%s\",\"description\":\"%s\",\"address\":\"%s\",\"city\":\"%s\",\"openingHours\":\"%s\",\"contactPhone\":\"%s\",\"coverImage\":\"%s\",\"images\":\"%s\",\"minPrice\":%s,\"status\":\"%s\"}",
+                "{\"id\":%d,\"name\":\"%s\",\"description\":\"%s\",\"address\":\"%s\",\"city\":\"%s\",\"openingHours\":\"%s\",\"contactPhone\":\"%s\",\"coverImage\":\"%s\",\"images\":\"%s\",\"longitude\":%s,\"latitude\":%s,\"minPrice\":%s,\"status\":\"%s\"}",
                 sc.getId(), esc(sc.getName()), esc(sc.getDescription()), esc(sc.getAddress()),
                 esc(sc.getCity()), esc(sc.getOpeningHours()), esc(sc.getContactPhone()),
                 esc(sc.getCoverImage()), esc(sc.getImages()),
-                sc.getMinPrice()==null?"null":sc.getMinPrice().toString(), esc(sc.getStatus())
+                sc.getLongitude()==null?"null":sc.getLongitude().toPlainString(),
+                sc.getLatitude()==null?"null":sc.getLatitude().toPlainString(),
+                sc.getMinPrice()==null?"null":sc.getMinPrice().toPlainString(), esc(sc.getStatus())
             ));
         }
     }
@@ -101,6 +103,8 @@ public class AdminScenicServlet extends HttpServlet {
             sc.setImages(images);
 
             try { sc.setMinPrice(new BigDecimal(request.getParameter("minPrice"))); } catch(Exception e){}
+            try { sc.setLongitude(new BigDecimal(request.getParameter("longitude"))); } catch(Exception e){}
+            try { sc.setLatitude(new BigDecimal(request.getParameter("latitude"))); } catch(Exception e){}
             sc.setStatus(request.getParameter("status")!=null?request.getParameter("status"):"OPEN");
 
             if (idStr != null && !idStr.isEmpty()) {

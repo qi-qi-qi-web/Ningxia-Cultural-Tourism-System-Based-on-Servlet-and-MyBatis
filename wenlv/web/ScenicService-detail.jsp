@@ -47,8 +47,8 @@
     <div class="container">
         <div class="row row-30 offset-lg">
             <div class="col-xl-5">
-                <div class="scenic-cover">
-                    <img src="${empty scenic.coverImage ? 'images/single-tour-1-470x464.jpg' : scenic.coverImage}" alt="${scenic.name}" style="max-width:100%;height:auto;"/>
+                <div class="scenic-cover" style="cursor:pointer;" onclick="openLightbox('${empty scenic.coverImage ? 'images/single-tour-1-470x464.jpg' : scenic.coverImage}')">
+                    <img src="${empty scenic.coverImage ? 'images/single-tour-1-470x464.jpg' : scenic.coverImage}" alt="${scenic.name}" style="width:100%;height:350px;object-fit:cover;border-radius:10px;"/>
                 </div>
                 <div class="scenic-stats mt-4 d-flex justify-content-around">
                     <div class="stat-item text-center">

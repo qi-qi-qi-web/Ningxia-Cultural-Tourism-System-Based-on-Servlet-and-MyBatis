@@ -30,7 +30,7 @@
                         <c:forEach items="${scenics}" var="s" varStatus="st">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".${st.index % 10}s">
                     <div class="service-box-creative" style="display:flex;flex-direction:column;height:100%;">
-                        <a class="service-box-creative__media" href="ScenicService-detail.jsp?id=${s.id}"><img src="${empty s.coverImage ? 'images/tour-1-370x284.jpg' : s.coverImage}" alt="${s.name}" width="370" height="284"/></a>
+                        <a class="service-box-creative__media" href="ScenicService-detail.jsp?id=${s.id}"><img src="${empty s.coverImage ? 'images/tour-1-370x284.jpg' : s.coverImage}" alt="${s.name}" width="370" height="284" style="width:100%;height:220px;object-fit:cover;"/></a>
                         <div class="service-box-creative__caption" style="flex:1;display:flex;flex-direction:column;">
                             <h5><a href="ScenicService-detail.jsp?id=${s.id}">${s.name}</a></h5>
                             <div class="price-group"><span class="price-group__sale">¥${empty s.minPrice ? '--' : s.minPrice}</span></div>

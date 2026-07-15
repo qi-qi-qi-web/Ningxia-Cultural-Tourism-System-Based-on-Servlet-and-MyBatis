@@ -27,11 +27,12 @@
     <c:if test="${not empty sessionScope.msg}"><div class="alert alert-info alert-dismissible fade show" role="alert">${sessionScope.msg}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><c:remove var="msg" scope="session"/></c:if>
 
     <table class="table table-striped table-hover">
-        <thead><tr><th>ID</th><th>名称</th><th>城市</th><th>票价</th><th>浏览量</th><th>收藏量</th><th>状态</th><th>操作</th></tr></thead>
+        <thead><tr><th>ID</th><th>名称</th><th>城市</th><th>票价</th><th>浏览量</th><th>收藏量</th><th>经度</th><th>纬度</th><th>状态</th><th>操作</th></tr></thead>
         <tbody>
             <c:if test="${ed > 0}"><c:forEach items="${scenicList}" var="s" begin="${st}" end="${ed - 1}">
             <tr>
                 <td>${s.id}</td><td>${s.name}</td><td>${empty s.city?'-':s.city}</td><td>¥${empty s.minPrice?'-':s.minPrice}</td><td>${s.viewCount}</td><td>${s.favoriteCount}</td>
+                <td>${empty s.longitude?'-':s.longitude}</td><td>${empty s.latitude?'-':s.latitude}</td>
                 <td>
                     <c:choose><c:when test="${s.status=='OPEN'}"><span class="badge bg-success">开放</span></c:when><c:when test="${s.status=='CLOSED'}"><span class="badge bg-danger">关闭</span></c:when><c:otherwise><span class="badge bg-warning">维护</span></c:otherwise></c:choose>
                 </td>
@@ -62,6 +63,7 @@
             <div class="mb-2"><label>描述</label><textarea class="form-control" name="description" id="s-desc" rows="3"></textarea></div>
             <div class="row mb-2"><div class="col-6"><label>城市</label><input class="form-control" name="city" id="s-city"></div><div class="col-6"><label>地址</label><input class="form-control" name="address" id="s-addr"></div></div>
             <div class="row mb-2"><div class="col-4"><label>票价</label><input class="form-control" name="minPrice" id="s-price" step="0.01"></div><div class="col-4"><label>开放时间</label><input class="form-control" name="openingHours" id="s-hours" placeholder="08:00-18:00"></div><div class="col-4"><label>状态</label><select class="form-control" name="status" id="s-status"><option value="OPEN">开放</option><option value="CLOSED">关闭</option><option value="MAINTENANCE">维护中</option></select></div></div>
+            <div class="row mb-2"><div class="col-6"><label>经度 <span style="color:red;">*</span></label><input class="form-control" name="longitude" id="s-lng" type="number" step="any" required placeholder="例如: 106.0025"></div><div class="col-6"><label>纬度 <span style="color:red;">*</span></label><input class="form-control" name="latitude" id="s-lat" type="number" step="any" required placeholder="例如: 38.4350"></div></div>
             <div class="mb-2"><label>联系电话</label><input class="form-control" name="contactPhone" id="s-phone"></div>
             <div class="mb-2"><label>封面图（可上传文件或填写URL）</label><input class="form-control" type="file" name="coverImageFile" id="s-cover-file" accept="image/*" style="margin-bottom:5px;"></div>
             <div class="mb-2"><input class="form-control" name="coverImage" id="s-cover" placeholder="或填写图片URL"></div>
@@ -99,11 +101,12 @@ function openEdit(id) {
             document.getElementById('s-addr').value=d.address||''; document.getElementById('s-hours').value=d.openingHours||'';
             document.getElementById('s-price').value=d.minPrice||''; document.getElementById('s-phone').value=d.contactPhone||'';
             document.getElementById('s-cover').value=d.coverImage||''; document.getElementById('s-imgs').value=d.images||'';
+            document.getElementById('s-lng').value=d.longitude||''; document.getElementById('s-lat').value=d.latitude||'';
             document.getElementById('s-status').value=d.status;
         }).catch(function(){alert('加载失败');});
     } else {
         document.getElementById('modal-title').textContent='新增景区';
-        ['s-id','s-name','s-desc','s-city','s-addr','s-hours','s-price','s-phone','s-cover','s-imgs'].forEach(function(f){document.getElementById(f).value='';});
+        ['s-id','s-name','s-desc','s-city','s-addr','s-hours','s-price','s-phone','s-cover','s-imgs','s-lng','s-lat'].forEach(function(f){document.getElementById(f).value='';});
         document.getElementById('s-status').value='OPEN';
     }
 }
