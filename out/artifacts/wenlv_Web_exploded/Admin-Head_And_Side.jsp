@@ -25,7 +25,7 @@
 <script>
 var _adminLogout = logout;
 logout = function() {
-    localStorage.clear();
+    sessionStorage.clear();
     window.location.href = '${pageContext.request.contextPath}/index.jsp';
 };
 </script>

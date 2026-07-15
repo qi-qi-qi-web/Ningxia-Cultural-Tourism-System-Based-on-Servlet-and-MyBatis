@@ -12,11 +12,12 @@
         <result property="createdAt" column="created_at"/>
         <result property="userName" column="user_name"/>
         <result property="avatar" column="avatar"/>
+        <result property="nickname" column="nickname"/>
         <result property="targetName" column="target_name"/>
     </resultMap>
 
     <select id="findByTarget" resultMap="CommentMap">
-        SELECT c.*, u.username AS user_name, u.avatar,
+        SELECT c.*, u.username AS user_name, u.avatar, u.nickname,
                COALESCE(ss.name, h.name, tg.title, sp.name) AS target_name
         FROM comment c
         LEFT JOIN sys_user u ON c.user_id = u.id
@@ -29,7 +30,7 @@
     </select>
 
     <select id="findByUserId" resultMap="CommentMap">
-        SELECT c.*, u.username AS user_name, u.avatar,
+        SELECT c.*, u.username AS user_name, u.avatar, u.nickname,
                COALESCE(ss.name, h.name, tg.title, sp.name) AS target_name
         FROM comment c
         LEFT JOIN sys_user u ON c.user_id = u.id
@@ -42,7 +43,7 @@
     </select>
 
     <select id="findAll" resultMap="CommentMap">
-        SELECT c.*, u.username AS user_name, u.avatar,
+        SELECT c.*, u.username AS user_name, u.avatar, u.nickname,
                COALESCE(ss.name, h.name, tg.title, sp.name) AS target_name
         FROM comment c
         LEFT JOIN sys_user u ON c.user_id = u.id

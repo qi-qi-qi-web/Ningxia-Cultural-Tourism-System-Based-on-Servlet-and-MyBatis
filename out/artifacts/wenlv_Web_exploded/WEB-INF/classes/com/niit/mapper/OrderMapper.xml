@@ -94,4 +94,11 @@
         UPDATE order_main SET status='REFUNDED', completed_at=NOW() WHERE id=#{id} AND status='RETURNING'
     </update>
 
+    <select id="hasPaidSpecialtyOrder" resultType="int">
+        SELECT COUNT(*) FROM order_main om
+        INNER JOIN order_item oi ON om.id = oi.order_id
+        WHERE om.user_id = #{userId}
+          AND oi.specialty_id = #{specialtyId}
+          AND om.status IN ('PAID','SHIPPED','RECEIVED','COMPLETED')
+    </select>
 </mapper>

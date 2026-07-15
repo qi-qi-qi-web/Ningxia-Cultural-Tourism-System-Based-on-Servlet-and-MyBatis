@@ -105,9 +105,11 @@
                         </c:forEach>
 
                         <div class="d-flex align-items-center">
-                            <div class="review-avatar" style="width: 40px; height: 40px; font-size: 16px;">${fn:substring(guide.userName, 0, 1)}</div>
+                            <c:set var="avatarSrc" value="${empty guide.avatar ? 'images/avatar-1.png' : guide.avatar}"/>
+                            <c:set var="displayName" value="${empty guide.nickname ? (empty guide.userName ? '匿名用户' : guide.userName) : guide.nickname}"/>
+                            <img src="${avatarSrc}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;" onerror="this.src='images/avatar-1.png'"/>
                             <div style="margin-left: 12px;">
-                                <div style="font-weight: bold; color: #333;">${empty guide.userName ? '匿名用户' : guide.userName}</div>
+                                <div style="font-weight: bold; color: #333;">${displayName}</div>
                             </div>
                         </div>
 
@@ -131,7 +133,7 @@
             </div>
 
             <div class="col-xl-4">
-                <div class="box-classic sticky-top" style="top: 20px;">
+                <div class="box-classic sticky-top" style="top: 80px; z-index: 0;">
                     <div class="p-4 bg-gray-50 rounded-lg mb-4">
                         <h5 style="font-weight: bold; color: #333; margin-bottom: 16px;">攻略信息</h5>
                         <div class="space-y-3">
@@ -351,11 +353,12 @@
             if (list.length === 0) { html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论</div>'; }
             else {
                 list.forEach(function(c){
-                    var avatarChar = (c.userName || '匿').charAt(0);
+                    var displayName = c.nickname || c.userName || '匿名';
+                    var avatarSrc = c.avatar || 'images/avatar-1.png';
                     html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
-                        '<div style="width:36px;height:36px;border-radius:50%;background:#00a8a8;color:#fff;text-align:center;line-height:36px;font-size:14px;font-weight:bold;flex-shrink:0;">' + avatarChar + '</div>' +
+                        '<img src="' + avatarSrc + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.src=\'images/avatar-1.png\'"/>' +
                         '<div style="margin-left:12px;flex:1;">' +
-                        '<div style="font-weight:bold;color:#333;font-size:14px;">' + (c.userName||'匿名') + '</div>' +
+                        '<div style="font-weight:bold;color:#333;font-size:14px;">' + displayName + '</div>' +
                         '<div style="color:#666;margin-top:4px;line-height:1.6;">' + escHtml(c.content) + '</div>' +
                         '<div style="color:#bbb;font-size:12px;margin-top:4px;">' + (c.createdAt||'').substring(0,16) + '</div>' +
                         '</div></div>';
@@ -481,8 +484,8 @@
     }
 
     function toggleHelpful(index, element) {
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
         
         if (!isLoggedIn && !isAdminLoggedIn) {
             alert('请先登录后再进行操作！');
@@ -507,8 +510,8 @@
     }
 
     function showReplyInput(index) {
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
         
         if (!isLoggedIn && !isAdminLoggedIn) {
             alert('请先登录后再进行操作！');
@@ -540,7 +543,7 @@
             return;
         }
         
-        var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '游客';
+        var username = sessionStorage.getItem('username') || sessionStorage.getItem('adminUsername') || '游客';
         var now = new Date();
         var timeStr = now.getFullYear() + '-' + 
             String(now.getMonth() + 1).padStart(2, '0') + '-' + 
@@ -563,8 +566,8 @@
     }
 
     function showWriteReviewModal() {
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
         
         if (!isLoggedIn && !isAdminLoggedIn) {
             alert('请先登录后再发表点评！');
@@ -594,7 +597,7 @@
             return;
         }
         
-        var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '游客';
+        var username = sessionStorage.getItem('username') || sessionStorage.getItem('adminUsername') || '游客';
         var avatar = username.charAt(0);
         var now = new Date();
         var timeStr = now.getFullYear() + '-' + 
@@ -621,8 +624,8 @@
     }
 
     function showAskModal() {
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
         
         if (!isLoggedIn && !isAdminLoggedIn) {
             alert('请先登录后再提问！');

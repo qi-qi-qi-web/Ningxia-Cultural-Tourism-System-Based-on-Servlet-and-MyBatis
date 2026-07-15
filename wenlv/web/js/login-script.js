@@ -19,14 +19,14 @@ function showToast(message, type) {
 
 // 检测登录状态，切换右上角登录按钮/用户下拉菜单
 function checkLoginStatus() {
-    var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
     var container = document.getElementById('navbar-login-container');
 
     if (!container) return;
 
     if (isAdminLoggedIn) {
-        var username = localStorage.getItem('adminUsername') || '管理员';
+        var username = sessionStorage.getItem('adminUsername') || '管理员';
         container.innerHTML = '<div class="user-dropdown">' +
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + username + ' <i class="fa fa-caret-down"></i></a>' +
             '<div class="user-dropdown-menu">' +
@@ -37,8 +37,8 @@ function checkLoginStatus() {
             '</div>' +
             '</div>';
     } else if (isLoggedIn) {
-        var nickname = localStorage.getItem('userNickname');
-        var username = localStorage.getItem('userUsername') || '用户';
+        var nickname = sessionStorage.getItem('userNickname');
+        var username = sessionStorage.getItem('userUsername') || '用户';
         var displayName = (nickname && nickname.trim() !== '') ? nickname : username;
         container.innerHTML = '<div class="user-dropdown">' +
             '<a href="#" class="rd-nav-link user-dropdown-toggle" onclick="toggleUserDropdown(event)">欢迎，' + displayName + ' <i class="fa fa-caret-down"></i></a>' +
@@ -79,7 +79,7 @@ function goToPersonalCenter() {
     var personalCenterPath = '/personalCenter';
     
     if (currentPath !== personalCenterPath && currentPath !== '/PersonalCenter.jsp') {
-        localStorage.setItem('previousPage', currentUrl);
+        sessionStorage.setItem('previousPage', currentUrl);
     }
     
     window.location.href = 'personalCenter';
@@ -87,17 +87,17 @@ function goToPersonalCenter() {
 
 // 退出登录，清空本地存储
 function logout() {
-    var previousPage = localStorage.getItem('previousPage') || 'index.jsp';
+    var previousPage = sessionStorage.getItem('previousPage') || 'index.jsp';
     
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('isAdminLoggedIn');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userUsername');
-    localStorage.removeItem('userNickname');
-    localStorage.removeItem('userPhone');
-    localStorage.removeItem('userAvatar');
-    localStorage.removeItem('adminUsername');
-    localStorage.removeItem('previousPage');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('isAdminLoggedIn');
+    sessionStorage.removeItem('userEmail');
+    sessionStorage.removeItem('userUsername');
+    sessionStorage.removeItem('userNickname');
+    sessionStorage.removeItem('userPhone');
+    sessionStorage.removeItem('userAvatar');
+    sessionStorage.removeItem('adminUsername');
+    sessionStorage.removeItem('previousPage');
     
     showToast('已退出登录', 'info');
     window.location.href = previousPage;
@@ -144,13 +144,13 @@ function handleLogin() {
     .then(function(res) { return res.json(); })
     .then(function(data) {
         if (data.success) {
-            // 后端验证通过 → 保存登录态到 localStorage
-            localStorage.setItem('userUsername', data.username || email);
-            localStorage.setItem('userNickname', data.nickname || '');
-            localStorage.setItem('userPhone', data.phone || '');
-            localStorage.setItem('userEmail', data.email || '');
-            localStorage.setItem('userAvatar', data.avatar || '');
-            localStorage.setItem('isLoggedIn', 'true');
+            // 后端验证通过 → 保存登录态到 sessionStorage
+            sessionStorage.setItem('userUsername', data.username || email);
+            sessionStorage.setItem('userNickname', data.nickname || '');
+            sessionStorage.setItem('userPhone', data.phone || '');
+            sessionStorage.setItem('userEmail', data.email || '');
+            sessionStorage.setItem('userAvatar', data.avatar || '');
+            sessionStorage.setItem('isLoggedIn', 'true');
 
             closeModal('login-modal');
             showToast('登录成功！欢迎回来', 'success');
@@ -198,8 +198,8 @@ function handleAdminLogin(event) {
     .then(function(res) { return res.json(); })
     .then(function(data) {
         if (data.success) {
-            localStorage.setItem('adminUsername', username);
-            localStorage.setItem('isAdminLoggedIn', 'true');
+            sessionStorage.setItem('adminUsername', username);
+            sessionStorage.setItem('isAdminLoggedIn', 'true');
             closeModal('admin-login-modal');
             showToast('管理员登录成功！', 'success');
             setTimeout(function () {
@@ -261,12 +261,12 @@ function handleRegister(event) {
     .then(function(res) { return res.json(); })
     .then(function(data) {
         if (data.success) {
-            localStorage.setItem('userUsername', data.username || username);
-            localStorage.setItem('userNickname', '');  // 新注册用户未设置昵称
-            localStorage.setItem('userPhone', data.phone || phone);
-            localStorage.setItem('userEmail', '');  // 新注册用户未设置邮箱
-            localStorage.setItem('userAvatar', '');
-            localStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('userUsername', data.username || username);
+            sessionStorage.setItem('userNickname', '');  // 新注册用户未设置昵称
+            sessionStorage.setItem('userPhone', data.phone || phone);
+            sessionStorage.setItem('userEmail', '');  // 新注册用户未设置邮箱
+            sessionStorage.setItem('userAvatar', '');
+            sessionStorage.setItem('isLoggedIn', 'true');
 
             closeModal('register-modal');
             showToast('注册成功！欢迎加入', 'success');

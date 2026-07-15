@@ -23,20 +23,20 @@ function showSection(sectionId) {
 }
 
 function logout() {
-    localStorage.removeItem('adminUsername');
-    localStorage.removeItem('isAdminLoggedIn');
+    sessionStorage.removeItem('adminUsername');
+    sessionStorage.removeItem('isAdminLoggedIn');
     window.location.href = 'index.html';
 }
 
 window.onload = function () {
-    const adminName = localStorage.getItem('adminUsername');
+    const adminName = sessionStorage.getItem('adminUsername');
     const adminNameElement = document.getElementById('admin-name');
     if (adminNameElement) {
         adminNameElement.textContent = adminName || '';
     }
 
     // 暂时跳过登录检查，方便开发调试
-    // if (!localStorage.getItem('isAdminLoggedIn')) {
+    // if (!sessionStorage.getItem('isAdminLoggedIn')) {
     //     window.location.href = 'index.html';
     //     return;
     // }

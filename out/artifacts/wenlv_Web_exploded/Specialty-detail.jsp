@@ -119,29 +119,12 @@
                     </form>
                 </div>
 
-                <!-- 评论 & 收藏按钮 -->
-                <div style="margin-top:15px;display:flex;justify-content:space-between;align-items:center;">
-                    <button onclick="toggleCommentForm()" style="background:none;border:1px solid #e0e0e0;border-radius:20px;padding:8px 20px;cursor:pointer;color:#666;font-size:14px;" id="comment-btn">
-                        评论
-                    </button>
-                    <button onclick="toggleFavorite(${food.id})" style="background:none;border:1px solid #e0e0e0;border-radius:20px;padding:8px 20px;cursor:pointer;color:#666;font-size:14px;" id="fav-btn">
-                        <span id="fav-icon">&#9825;</span> <span id="fav-text">收藏</span>
-                    </button>
+                <!-- 评论区（只读展示，评论在个人中心完成） -->
+                <div id="comment-section" style="margin-top:15px;border-top:1px solid #eee;padding-top:15px;">
+                    <h5 style="margin-bottom:12px;font-size:15px;color:#333;">用户评论</h5>
+                    <div id="comment-list" style="margin-bottom:15px;"></div>
+                    <p style="font-size:12px;color:#999;">购买后可前往<a href="personalCenter" style="color:#00a8a8;">个人中心</a>发表评论</p>
                 </div>
-
-                <!-- 评论区域 -->
-                <div id="comment-section" style="display:none;margin-top:15px;border-top:1px solid #eee;padding-top:15px;">
-                    <div class="comment-form">
-                        <h5 style="margin-bottom:12px;font-size:15px;color:#333;">发表评论</h5>
-                        <textarea id="comment-content" class="form-control" rows="3" placeholder="分享您的购买体验..." style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;resize:vertical;font-size:14px;"></textarea>
-                        <div style="margin-top:10px;text-align:right;">
-                            <button onclick="submitComment()" style="background:#00a8a8;border:none;border-radius:6px;padding:8px 24px;color:#fff;font-size:14px;cursor:pointer;">提交评论</button>
-                        </div>
-                    </div>
-                    <div class="comment-list" style="margin-top:15px;">
-                        <h5 style="margin-bottom:12px;font-size:15px;color:#333;">全部评论 <span style="font-size:12px;color:#999;" id="comment-count">(0)</span></h5>
-                        <div id="comments-container"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -227,7 +210,7 @@ function submitOrder(e, id, name, price) {
     e.preventDefault();
 
     // 检查登录状态
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
         alert('请先登录后再下单！');
         return false;
     }
@@ -298,90 +281,32 @@ function toggleFavorite(id) {
         icon.innerHTML = '&#9825;'; text.textContent = '收藏';
         btn.style.color = '#666'; btn.style.borderColor = '#e0e0e0';
 	}
-}
+	}
 
-// 评论功能
-function escHtml(s) {
-    if (!s) return '';
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-var comments = [
-    { author: '王小明', avatar: '王', content: '味道非常好，家人特别喜欢！发货也很快，包装很用心。', time: '2026-06-20 14:30' },
-    { author: '李芳', avatar: '李', content: '第一次买宁夏特产，品质超出预期。枸杞颗粒饱满，真空包装很新鲜。', time: '2026-06-18 09:15' },
-    { author: '张大叔', avatar: '张', content: '八宝茶味道正宗，跟去宁夏旅游时喝到的一样。已经回购好几次了。', time: '2026-06-15 20:45' }
-];
-
-function toggleCommentForm() {
-    var section = document.getElementById('comment-section');
-    var btn = document.getElementById('comment-btn');
-    if (section.style.display === 'none' || section.style.display === '') {
-        section.style.display = 'block';
-        btn.style.color = '#00a8a8';
-        btn.style.borderColor = '#00a8a8';
-        renderComments();
-    } else {
-        section.style.display = 'none';
-        btn.style.color = '#666';
-        btn.style.borderColor = '#e0e0e0';
+    // 评论功能 - 后端联动
+    function loadComments() {
+        var sid = '${food.id}';
+        fetch('/comment?action=list&targetType=SPECIALTY&targetId=' + sid)
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            var html = '';
+            if (list.length === 0) html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论，购买后即可评论</div>';
+            else list.forEach(function(c){
+                var displayName = c.nickname || c.userName || '匿名';
+                var avatarSrc = c.avatar || 'images/avatar-1.png';
+                html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
+                    '<img src="' + avatarSrc + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.src=\'images/avatar-1.png\'"/>' +
+                    '<div style="margin-left:12px;flex:1;"><div style="font-weight:bold;color:#333;font-size:14px;">'+displayName+'</div>' +
+                    '<div style="color:#666;margin-top:4px;line-height:1.6;">'+escHtml(c.content)+'</div>' +
+                    '<div style="color:#bbb;font-size:12px;margin-top:4px;">'+(c.createdAt||'').substring(0,16)+'</div></div></div>';
+            });
+            document.getElementById('comment-list').innerHTML = html;
+        });
     }
-}
+    function escHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    loadComments();
 
-function renderComments() {
-    var container = document.getElementById('comments-container');
-    if (!container) return;
-    var html = '';
-    if (comments.length === 0) {
-        html = '<div style="text-align:center;color:#999;padding:20px;">暂无评论，快来发表第一条评论吧！</div>';
-    } else {
-        for (var i = 0; i < comments.length; i++) {
-            var c = comments[i];
-            html += '<div class="comment-item">' +
-                '<div class="comment-avatar">' + c.avatar + '</div>' +
-                '<div class="comment-body">' +
-                '<div class="comment-header">' +
-                '<span class="comment-author">' + escHtml(c.author) + '</span>' +
-                '<span class="comment-time">' + c.time + '</span>' +
-                '</div>' +
-                '<div class="comment-text">' + escHtml(c.content) + '</div>' +
-                '</div></div>';
-        }
-    }
-    container.innerHTML = html;
-    document.getElementById('comment-count').textContent = '(' + comments.length + ')';
-}
-
-function submitComment() {
-    var content = document.getElementById('comment-content').value.trim();
-    if (!content) {
-        alert('请输入评论内容！');
-        return;
-    }
-    if (content.length < 5) {
-        alert('评论内容至少5个字');
-        return;
-    }
-    var username = localStorage.getItem('username') || localStorage.getItem('adminUsername') || '匿名用户';
-    var avatar = username.charAt(0);
-    var now = new Date();
-    var timeStr = now.getFullYear() + '-' +
-        String(now.getMonth() + 1).padStart(2, '0') + '-' +
-        String(now.getDate()).padStart(2, '0') + ' ' +
-        String(now.getHours()).padStart(2, '0') + ':' +
-        String(now.getMinutes()).padStart(2, '0');
-
-    comments.unshift({
-        author: username,
-        avatar: avatar,
-        content: content,
-        time: timeStr
-    });
-
-    document.getElementById('comment-content').value = '';
-    renderComments();
-    alert('评论发表成功！');
-}
-
-// Image lightbox
+    // Image lightbox
 function openLightbox(src) {
     document.getElementById('lightboxImage').src = src;
     document.getElementById('lightboxOverlay').style.display = 'flex';

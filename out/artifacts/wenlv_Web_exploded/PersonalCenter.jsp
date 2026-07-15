@@ -2,8 +2,8 @@
 <%@page contentType="text/html;charset=UTF-8"%>
 
 <script>
-    var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+    var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
     if (!isLoggedIn && !isAdminLoggedIn) {
         alert('请先登录！');
         window.location.href = 'index.jsp';
@@ -1092,11 +1092,11 @@
     })();
 
     function openEditModal() {
-        // 从 serverUser 或 localStorage 读取真实数据，避免将 "未填写" 带入编辑框
-        var username = (serverUser && serverUser.username) ? serverUser.username : (localStorage.getItem('userUsername') || '');
-        var nickname = (serverUser && serverUser.nickname) ? serverUser.nickname : (localStorage.getItem('userNickname') || '');
-        var phone = (serverUser && serverUser.phone) ? serverUser.phone : (localStorage.getItem('userPhone') || '');
-        var email = (serverUser && serverUser.email) ? serverUser.email : (localStorage.getItem('userEmail') || '');
+        // 从 serverUser 或 sessionStorage 读取真实数据，避免将 "未填写" 带入编辑框
+        var username = (serverUser && serverUser.username) ? serverUser.username : (sessionStorage.getItem('userUsername') || '');
+        var nickname = (serverUser && serverUser.nickname) ? serverUser.nickname : (sessionStorage.getItem('userNickname') || '');
+        var phone = (serverUser && serverUser.phone) ? serverUser.phone : (sessionStorage.getItem('userPhone') || '');
+        var email = (serverUser && serverUser.email) ? serverUser.email : (sessionStorage.getItem('userEmail') || '');
 
         document.getElementById('edit-username').value = username;
         document.getElementById('edit-nickname').value = nickname;
@@ -1125,10 +1125,10 @@
 
         // 先乐观更新本地显示
         var username = document.getElementById('edit-username').value;
-        localStorage.setItem('userUsername', username);
-        localStorage.setItem('userNickname', nickname);
-        localStorage.setItem('userPhone', phone);
-        localStorage.setItem('userEmail', email);
+        sessionStorage.setItem('userUsername', username);
+        sessionStorage.setItem('userNickname', nickname);
+        sessionStorage.setItem('userPhone', phone);
+        sessionStorage.setItem('userEmail', email);
 
         // 同步更新 serverUser
         if (serverUser) {
@@ -1194,38 +1194,38 @@
     }
 
     function handleLogout() {
-        var previousPage = localStorage.getItem('previousPage') || 'index.jsp';
+        var previousPage = sessionStorage.getItem('previousPage') || 'index.jsp';
         
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('userUsername');
-        localStorage.removeItem('userNickname');
-        localStorage.removeItem('userPhone');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userAvatar');
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userStatus');
-        localStorage.removeItem('userCreatedAt');
-        localStorage.removeItem('userUpdatedAt');
-        localStorage.removeItem('previousPage');
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('userUsername');
+        sessionStorage.removeItem('userNickname');
+        sessionStorage.removeItem('userPhone');
+        sessionStorage.removeItem('userEmail');
+        sessionStorage.removeItem('userAvatar');
+        sessionStorage.removeItem('userRole');
+        sessionStorage.removeItem('userStatus');
+        sessionStorage.removeItem('userCreatedAt');
+        sessionStorage.removeItem('userUpdatedAt');
+        sessionStorage.removeItem('previousPage');
         
         window.location.href = previousPage;
     }
 
     function loadUserInfo() {
-        // 优先使用服务端数据，其次 localStorage，最后默认值
-        var username = serverUser && serverUser.username ? serverUser.username : (localStorage.getItem('userUsername') || 'admin');
-        var nickname = serverUser && serverUser.nickname ? serverUser.nickname : (localStorage.getItem('userNickname') || '');
-        var phone = serverUser && serverUser.phone ? serverUser.phone : (localStorage.getItem('userPhone') || '');
-        var email = serverUser && serverUser.email ? serverUser.email : (localStorage.getItem('userEmail') || '');
-        var role = serverUser && serverUser.role ? (serverUser.role === 'ADMIN' ? '管理员' : '普通用户') : (localStorage.getItem('userRole') || '普通用户');
+        // 优先使用服务端数据，其次 sessionStorage，最后默认值
+        var username = serverUser && serverUser.username ? serverUser.username : (sessionStorage.getItem('userUsername') || 'admin');
+        var nickname = serverUser && serverUser.nickname ? serverUser.nickname : (sessionStorage.getItem('userNickname') || '');
+        var phone = serverUser && serverUser.phone ? serverUser.phone : (sessionStorage.getItem('userPhone') || '');
+        var email = serverUser && serverUser.email ? serverUser.email : (sessionStorage.getItem('userEmail') || '');
+        var role = serverUser && serverUser.role ? (serverUser.role === 'ADMIN' ? '管理员' : '普通用户') : (sessionStorage.getItem('userRole') || '普通用户');
 
-        // 将服务端数据回写到 localStorage，保证后续刷新也有效
+        // 将服务端数据回写到 sessionStorage，保证后续刷新也有效
         if (serverUser && serverUser.username) {
-            localStorage.setItem('userUsername', username);
-            localStorage.setItem('userNickname', nickname);
-            localStorage.setItem('userPhone', phone);
-            localStorage.setItem('userEmail', email);
-            localStorage.setItem('userRole', serverUser.role === 'ADMIN' ? '管理员' : '普通用户');
+            sessionStorage.setItem('userUsername', username);
+            sessionStorage.setItem('userNickname', nickname);
+            sessionStorage.setItem('userPhone', phone);
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userRole', serverUser.role === 'ADMIN' ? '管理员' : '普通用户');
         }
 
         var usernameText = document.getElementById('info-username-text');
@@ -1244,16 +1244,16 @@
         var userRoleEl = document.getElementById('user-role');
         if (userRoleEl) userRoleEl.textContent = role;
 
-        // 加载头像：服务端 > localStorage > 默认
+        // 加载头像：服务端 > sessionStorage > 默认
         var profileImg = document.getElementById('profile-avatar-img');
         var avatarSrc = null;
 
         if (serverUser && serverUser.avatar && serverUser.avatar.length > 0) {
             avatarSrc = serverUser.avatar;
-            localStorage.setItem('userAvatar', avatarSrc);
+            sessionStorage.setItem('userAvatar', avatarSrc);
             console.log('使用服务器头像:', avatarSrc);
         } else {
-            avatarSrc = localStorage.getItem('userAvatar') || 'images/avatar-1.png';
+            avatarSrc = sessionStorage.getItem('userAvatar') || 'images/avatar-1.png';
             console.log('无服务器头像，使用:', avatarSrc, 'serverUser.avatar=', serverUser && serverUser.avatar);
         }
 
@@ -1395,7 +1395,7 @@
         if (profileImg) {
             profileImg.src = selectedAvatar;
         }
-        localStorage.setItem('userAvatar', selectedAvatar);
+        sessionStorage.setItem('userAvatar', selectedAvatar);
 
         // 发送 AJAX 请求到后端保存
         var xhr = new XMLHttpRequest();

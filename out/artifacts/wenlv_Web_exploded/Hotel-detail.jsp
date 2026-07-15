@@ -255,11 +255,12 @@ function loadComments() {
         if (list.length === 0) { html = '<div style="color:#999;text-align:center;padding:20px;">暂无评论</div>'; }
         else {
             list.forEach(function(c){
-                var avatarChar = (c.userName || '匿').charAt(0);
+                var displayName = c.nickname || c.userName || '匿名';
+                var avatarSrc = c.avatar || 'images/avatar-1.png';
                 html += '<div style="display:flex;padding:14px 0;border-bottom:1px solid #f0f0f0;">' +
-                    '<div style="width:36px;height:36px;border-radius:50%;background:#00a8a8;color:#fff;text-align:center;line-height:36px;font-size:14px;font-weight:bold;flex-shrink:0;">' + avatarChar + '</div>' +
+                    '<img src="' + avatarSrc + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;" onerror="this.src=\'images/avatar-1.png\'"/>' +
                     '<div style="margin-left:12px;flex:1;">' +
-                    '<div style="font-weight:bold;color:#333;font-size:14px;">' + (c.userName||'匿名') + '</div>' +
+                    '<div style="font-weight:bold;color:#333;font-size:14px;">' + displayName + '</div>' +
                     '<div style="color:#666;margin-top:4px;line-height:1.6;">' + escHtml(c.content) + '</div>' +
                     '<div style="color:#bbb;font-size:12px;margin-top:4px;">' + (c.createdAt||'').substring(0,16) + '</div>' +
                     '</div></div>';

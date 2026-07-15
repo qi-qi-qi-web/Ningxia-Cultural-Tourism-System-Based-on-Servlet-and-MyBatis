@@ -1,6 +1,7 @@
 package com.niit.servlet;
 
 import com.niit.mapper.CommentMapper;
+import com.niit.mapper.OrderMapper;
 import com.niit.pojo.Comment;
 import com.niit.pojo.User;
 import com.niit.utils.DBUtil;
@@ -52,6 +53,17 @@ public class CommentServlet extends HttpServlet {
             return;
         }
 
+        // 特产评论需校验用户是否已购买并支付
+        if ("SPECIALTY".equals(targetType)) {
+            try (SqlSession s = DBUtil.getSession()) {
+                int count = s.getMapper(OrderMapper.class).hasPaidSpecialtyOrder(user.getId(), Long.parseLong(targetId));
+                if (count == 0) {
+                    response.getWriter().write("{\"ok\":false,\"msg\":\"请先购买并完成支付后再评论\"}");
+                    return;
+                }
+            }
+        }
+
         try (SqlSession s = DBUtil.getSession(false)) {
             CommentMapper m = s.getMapper(CommentMapper.class);
             Comment c = new Comment();
@@ -80,8 +92,8 @@ public class CommentServlet extends HttpServlet {
                 if (i > 0) sb.append(",");
                 Comment c = list.get(i);
                 sb.append(String.format(
-                    "{\"id\":%d,\"userName\":\"%s\",\"avatar\":\"%s\",\"content\":\"%s\",\"createdAt\":\"%s\"}",
-                    c.getId(), esc(c.getUserName()), esc(c.getAvatar()), esc(c.getContent()),
+                    "{\"id\":%d,\"userName\":\"%s\",\"nickname\":\"%s\",\"avatar\":\"%s\",\"content\":\"%s\",\"createdAt\":\"%s\"}",
+                    c.getId(), esc(c.getUserName()), esc(c.getNickname()), esc(c.getAvatar()), esc(c.getContent()),
                     c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""
                 ));
             }

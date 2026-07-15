@@ -395,9 +395,9 @@ public class PersonalCenterServlet extends HttpServlet {
                     case "SPECIALTY": typeName = "特产"; break;
                 }
                 sb.append(String.format(
-                    "{\"id\":%d,\"content\":\"%s\",\"targetType\":\"%s\",\"targetTypeName\":\"%s\",\"targetId\":%d,\"targetName\":\"%s\",\"createdAt\":\"%s\"}",
+                    "{\"id\":%d,\"content\":\"%s\",\"targetType\":\"%s\",\"targetTypeName\":\"%s\",\"targetId\":%d,\"targetName\":\"%s\",\"nickname\":\"%s\",\"createdAt\":\"%s\"}",
                     c.getId(), esc(c.getContent()), esc(c.getTargetType()),
-                    typeName, c.getTargetId(), esc(c.getTargetName()),
+                    typeName, c.getTargetId(), esc(c.getTargetName()), esc(c.getNickname()),
                     c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""
                 ));
             }

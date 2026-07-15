@@ -17,24 +17,26 @@
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <result property="userName" column="user_name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="avatar" column="avatar"/>
     </resultMap>
 
     <select id="findAll" resultMap="GuideMap">
-        SELECT tg.*, u.username AS user_name
+        SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
         ORDER BY tg.id ASC
     </select>
 
     <select id="findById" resultMap="GuideMap">
-        SELECT tg.*, u.username AS user_name
+        SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
         WHERE tg.id = #{id}
     </select>
 
     <select id="findPublished" resultMap="GuideMap">
-        SELECT tg.*, u.username AS user_name
+        SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
         WHERE tg.status = 'PUBLISHED'
@@ -42,7 +44,7 @@
     </select>
 
     <select id="findByUserId" resultMap="GuideMap">
-        SELECT tg.*, u.username AS user_name
+        SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
         WHERE tg.user_id = #{userId}

@@ -49,7 +49,8 @@
                 <c:otherwise>
                     <c:forEach items="${guideList}" var="g" varStatus="vs">
                         <c:set var="delay" value="${(vs.index % 3) * 0.1 + 0.1}"/>
-                        <c:set var="iconChar" value="${fn:substring(g.userName, 0, 1)}"/>
+                        <c:set var="displayName" value="${empty g.nickname ? (empty g.userName ? '匿名用户' : g.userName) : g.nickname}"/>
+                        <c:set var="avatarSrc" value="${empty g.avatar ? 'images/avatar-1.png' : g.avatar}"/>
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="${delay}s">
                             <div class="service-box-creative">
                                 <a class="service-box-creative__media" href="TravelGuide-detail.jsp?id=${g.id}" style="display:block;height:220px;overflow:hidden;">
@@ -64,8 +65,8 @@
                                 </a>
                                 <div class="service-box-creative__caption">
                                     <div class="d-flex align-items-center mb-2">
-                                        <div style="width: 36px; height: 36px; background: #00a8a8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: bold;">${empty iconChar ? '旅' : iconChar}</div>
-                                        <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">${empty g.userName ? '匿名用户' : g.userName}</div>
+                                        <img src="${avatarSrc}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" onerror="this.src='images/avatar-1.png'"/>
+                                        <div style="margin-left: 10px; font-weight: bold; color: #333; font-size: 14px;">${displayName}</div>
                                     </div>
                                     <h5><a href="TravelGuide-detail.jsp?id=${g.id}">${g.title}</a></h5>
                                     <c:if test="${not empty g.tags}">
@@ -222,8 +223,8 @@
     var guideSelectedTags = {};
 
     function showPublishGuideModal() {
-        var isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        var isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+        var isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+        var isAdminLoggedIn = sessionStorage.getItem('isAdminLoggedIn') === 'true';
         
         if (!isLoggedIn && !isAdminLoggedIn) {
             alert('请先登录后再发布攻略！');

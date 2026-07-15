@@ -19,4 +19,5 @@ public interface OrderMapper {
     int completeOrder(@Param("id") Long id);
     int requestReturn(@Param("id") Long id, @Param("reason") String reason);
     int confirmRefund(@Param("id") Long id);
+    int hasPaidSpecialtyOrder(@Param("userId") Long userId, @Param("specialtyId") Long specialtyId);
 }

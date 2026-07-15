@@ -26,4 +26,6 @@ public class TravelGuide {
 
     // 关联
     private String userName;
+    private String nickname;
+    private String avatar;
 }

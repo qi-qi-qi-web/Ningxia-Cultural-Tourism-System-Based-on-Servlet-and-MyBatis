@@ -19,6 +19,7 @@ public class Comment {
     private Date createdAt;
     // 关联
     private String userName;
+    private String nickname;
     private String avatar;
     private String targetName;
 }
