@@ -3,6 +3,7 @@ package com.niit.servlet;
 import com.niit.mapper.OrderItemMapper;
 import com.niit.mapper.OrderMapper;
 import com.niit.mapper.CommentMapper;
+import com.niit.mapper.FavoriteMapper;
 import com.niit.mapper.TravelGuideMapper;
 import com.niit.pojo.OrderItem;
 import com.niit.pojo.OrderMain;
@@ -59,6 +60,11 @@ public class PersonalCenterServlet extends HttpServlet {
 
         if ("myComments".equals(action)) {
             handleMyComments(request, response);
+            return;
+        }
+
+        if ("myFavorites".equals(action)) {
+            handleMyFavorites(request, response);
             return;
         }
 
@@ -266,6 +272,41 @@ public class PersonalCenterServlet extends HttpServlet {
         String escaped = message.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r");
         String json = "{\"success\":" + success + ",\"message\":\"" + escaped + "\"}";
         response.getWriter().write(json);
+    }
+
+    private void handleMyFavorites(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.getWriter().write("[]");
+            return;
+        }
+        User user = (User) session.getAttribute("user");
+        try (SqlSession s = DBUtil.getSession()) {
+            java.util.List<java.util.Map<String, Object>> list = s.getMapper(FavoriteMapper.class).findByUserId(user.getId());
+            StringBuilder sb = new StringBuilder("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                java.util.Map<String, Object> m = list.get(i);
+                String typePageMap = "";
+                String tt = (String) m.get("targetType");
+                if ("SCENIC".equals(tt)) typePageMap = "ScenicService-detail.jsp";
+                else if ("HOTEL".equals(tt)) typePageMap = "Hotel-detail.jsp";
+                else if ("GUIDE".equals(tt)) typePageMap = "TravelGuide-detail.jsp";
+                else typePageMap = "Specialty-detail.jsp";
+                sb.append(String.format(
+                    "{\"favId\":%s,\"targetType\":\"%s\",\"targetId\":%s,\"targetName\":\"%s\",\"coverImage\":\"%s\",\"detailUrl\":\"%s\"}",
+                    String.valueOf(m.get("favId")), esc(tt), String.valueOf(m.get("targetId")),
+                    esc((String) m.get("targetName")), esc((String) m.get("coverImage")),
+                    esc(typePageMap + "?id=" + m.get("targetId"))
+                ));
+            }
+            sb.append("]");
+            response.getWriter().write(sb.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().write("[]");
+        }
     }
 
     private void handleMyGuides(HttpServletRequest request, HttpServletResponse response) throws IOException {

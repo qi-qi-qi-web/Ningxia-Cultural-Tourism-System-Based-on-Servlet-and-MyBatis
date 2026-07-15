@@ -18,4 +18,6 @@ public interface SpecialtyMapper {
     int decrementStock(@Param("id") Long id, @Param("qty") int qty);
     int restoreStock(@Param("id") Long id, @Param("qty") int qty);
     java.util.List<java.util.Map<String,Object>> selectCategories();
+    int incrementFavoriteCount(@Param("id") Long id);
+    int decrementFavoriteCount(@Param("id") Long id);
 }

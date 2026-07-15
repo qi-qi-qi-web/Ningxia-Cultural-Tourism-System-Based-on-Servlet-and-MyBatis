@@ -624,138 +624,14 @@
                     <div class="content-card">
                         <div class="content-title">我的收藏</div>
                         <div class="collection-filter">
-                            <button class="filter-btn active" onclick="switchCollection('scenic')">景区收藏</button>
-                            <button class="filter-btn" onclick="switchCollection('product')">特产收藏</button>
-                            <button class="filter-btn" onclick="switchCollection('hotel')">酒店收藏</button>
-                            <button class="filter-btn" onclick="switchCollection('guide')">攻略收藏</button>
+                            <button class="filter-btn active" onclick="switchFavCollection('ALL', this)">全部</button>
+                            <button class="filter-btn" onclick="switchFavCollection('SCENIC', this)">景区收藏</button>
+                            <button class="filter-btn" onclick="switchFavCollection('SPECIALTY', this)">特产收藏</button>
+                            <button class="filter-btn" onclick="switchFavCollection('HOTEL', this)">酒店收藏</button>
+                            <button class="filter-btn" onclick="switchFavCollection('GUIDE', this)">攻略收藏</button>
                         </div>
-                        <div id="collection-scenic" class="collection-grid">
-                            <div class="collection-item">
-                                <img src="images/img-1-720x400.jpg" alt="沙坡头景区" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">沙坡头景区</div>
-                                    <div class="collection-desc">国家5A级景区，沙漠与黄河交汇的奇观</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/img-2-720x400.jpg" alt="西夏王陵" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">西夏王陵</div>
-                                    <div class="collection-desc">神秘的东方金字塔，探寻西夏文明</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/img-3-720x400.jpg" alt="沙湖景区" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">沙湖景区</div>
-                                    <div class="collection-desc">沙水相依的美景，候鸟的天堂</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="collection-product" class="collection-grid" style="display: none;">
-                            <div class="collection-item">
-                                <img src="images/service-1-370x389.jpg" alt="宁夏枸杞" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">宁夏枸杞</div>
-                                    <div class="collection-desc">中宁特产，滋补养生佳品</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/service-2-370x389.jpg" alt="盐池滩羊肉" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">盐池滩羊肉</div>
-                                    <div class="collection-desc">肉质鲜嫩，无膻味，舌尖上的美味</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/service-3-370x389.jpg" alt="贺兰山东麓葡萄酒" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">贺兰山东麓葡萄酒</div>
-                                    <div class="collection-desc">中国葡萄酒之乡，品质卓越</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="collection-hotel" class="collection-grid" style="display: none;">
-                            <div class="collection-item">
-                                <img src="images/service-4-370x389.jpg" alt="黄河宿集·西坡" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">黄河宿集·西坡</div>
-                                    <div class="collection-desc">网红民宿聚集地，体验慢生活</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/service-5-370x389.jpg" alt="银川凯宾斯基酒店" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">银川凯宾斯基酒店</div>
-                                    <div class="collection-desc">国际品牌，尊享奢华体验</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/service-6-370x389.jpg" alt="腾格里沙漠营地" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">腾格里沙漠营地</div>
-                                    <div class="collection-desc">星空下的沙漠露营，极致体验</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="collection-guide" class="collection-grid" style="display: none;">
-                            <div class="collection-item">
-                                <img src="images/img-1-720x400.jpg" alt="宁夏三日游攻略" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">宁夏三日游攻略</div>
-                                    <div class="collection-desc">经典路线，玩转宁夏精华景点</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/img-2-720x400.jpg" alt="沙漠穿越攻略" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">沙漠穿越攻略</div>
-                                    <div class="collection-desc">挑战自我，征服腾格里沙漠</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collection-item">
-                                <img src="images/img-3-720x400.jpg" alt="美食探店攻略" class="collection-img">
-                                <div class="collection-info">
-                                    <div class="collection-title">美食探店攻略</div>
-                                    <div class="collection-desc">寻味宁夏，舌尖上的西北风情</div>
-                                    <div class="collection-actions">
-                                        <button class="btn-secondary-custom" onclick="removeCollection(this)">取消收藏</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="fav-collection-grid" class="collection-grid">
+                            <div class="text-center" style="padding:40px 0;color:#999;">加载中...</div>
                         </div>
                     </div>
                 </div>
@@ -1060,11 +936,12 @@
             loadMyGuides();
         }
         // 切换到"我的订单"时加载数据
-        if (tabName === 'orders') {
-            loadMyOrders();
-        }
-        if (tabName === 'posts') { loadMyGuides(); }
-        if (tabName === 'comments') { loadMyComments(); }
+    if (tabName === 'orders') {
+        loadMyOrders();
+    }
+    if (tabName === 'collections') { loadMyFavorites(); }
+    if (tabName === 'posts') { loadMyGuides(); }
+    if (tabName === 'comments') { loadMyComments(); }
     }
 
     function showEditProfile() {
@@ -1182,15 +1059,6 @@
 
         closeEditModal();
         return false;
-    }
-
-    function removeCollection(btn) {
-        var item = btn.closest('.collection-item');
-        item.style.opacity = '0';
-        setTimeout(function() {
-            item.remove();
-        }, 300);
-        showToastLocal('已取消收藏', 'info');
     }
 
     function handleLogout() {
@@ -1451,20 +1319,79 @@
         });
     });
 
-    function switchCollection(type) {
-        var filters = document.querySelectorAll('.filter-btn');
-        filters.forEach(function(btn) {
-            btn.classList.remove('active');
-        });
-        
-        event.target.classList.add('active');
-        
-        var collections = ['scenic', 'product', 'hotel', 'guide'];
-        collections.forEach(function(col) {
-            var el = document.getElementById('collection-' + col);
-            if (el) {
-                el.style.display = (col === type) ? 'grid' : 'none';
+    var allFavs = [];
+    var favCurrentPage = 1;
+    var favPageSize = 10;
+    var favCurrentFilter = 'ALL';
+    function loadMyFavorites() {
+        var grid = document.getElementById('fav-collection-grid');
+        if (!grid) return;
+        grid.innerHTML = '<div class="text-center" style="padding:40px 0;color:#999;">加载中...</div>';
+        fetch('/personalCenter?action=myFavorites')
+        .then(function(r){ return r.json(); })
+        .then(function(list){
+            allFavs = list;
+            favCurrentPage = 1;
+            if (list.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-heart"></i></div><div class="empty-text">暂无收藏</div></div>';
+                return;
             }
+            renderFavGrid(list);
+        })
+        .catch(function(){ grid.innerHTML = '<div class="empty-state">加载失败</div>'; });
+    }
+    function renderFavGrid(list) {
+        var grid = document.getElementById('fav-collection-grid');
+        var totalPages = Math.ceil(list.length / favPageSize);
+        if (favCurrentPage > totalPages) favCurrentPage = totalPages;
+        if (favCurrentPage < 1) favCurrentPage = 1;
+        var start = (favCurrentPage - 1) * favPageSize;
+        var pageItems = list.slice(start, start + favPageSize);
+        var html = '';
+        pageItems.forEach(function(f){
+            var img = f.coverImage || 'images/avatar-1.png';
+            html += '<div class="collection-item" data-type="' + (f.targetType||'') + '">' +
+                '<a href="' + escHtml(f.detailUrl||'#') + '" target="_blank"><img src="' + escHtml(img) + '" alt="' + escHtml(f.targetName||'') + '" class="collection-img" onerror="this.src=\'images/avatar-1.png\'"></a>' +
+                '<div class="collection-info">' +
+                '<div class="collection-title">' + escHtml(f.targetName||'--') + '</div>' +
+                '<div class="collection-actions">' +
+                '<button class="btn-secondary-custom" onclick="removeFav(\'' + f.targetType + '\',' + f.targetId + ', this)">取消收藏</button>' +
+                '</div></div></div>';
+        });
+        var paginationHtml = '';
+        if (totalPages > 1) {
+            paginationHtml = '<div style="grid-column:1/-1;text-align:center;margin-top:15px;padding:10px 0;">' +
+                (favCurrentPage > 1 ? '<button onclick="favGoPage(' + (favCurrentPage-1) + ')" style="padding:4px 12px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;margin:0 4px;">上一页</button>' : '') +
+                '<span style="margin:0 8px;color:#666;font-size:13px;">第 ' + favCurrentPage + ' / ' + totalPages + ' 页</span>' +
+                (favCurrentPage < totalPages ? '<button onclick="favGoPage(' + (favCurrentPage+1) + ')" style="padding:4px 12px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;margin:0 4px;">下一页</button>' : '') +
+                '</div>';
+        }
+        grid.innerHTML = (html || '<div class="empty-state">暂无收藏</div>') + paginationHtml;
+    }
+    function favGoPage(page) {
+        favCurrentPage = page;
+        var filtered = (favCurrentFilter === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === favCurrentFilter; });
+        renderFavGrid(filtered);
+    }
+    function switchFavCollection(type, btn) {
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        if (btn) btn.classList.add('active');
+        favCurrentFilter = type;
+        favCurrentPage = 1;
+        var filtered = (type === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === type; });
+        renderFavGrid(filtered);
+    }
+    function removeFav(targetType, targetId, btn) {
+        fetch('/fav?type=' + targetType + '&id=' + targetId)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+            if (d.ok) {
+                allFavs = allFavs.filter(function(f){ return !(f.targetType === targetType && f.targetId == targetId); });
+                var filtered = (favCurrentFilter === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === favCurrentFilter; });
+                if (favCurrentPage > Math.ceil(filtered.length / favPageSize)) favCurrentPage = Math.max(1, Math.ceil(filtered.length / favPageSize));
+                renderFavGrid(filtered);
+                showToastLocal('已取消收藏', 'info');
+            } else if (d.msg) { alert(d.msg); }
         });
     }
 

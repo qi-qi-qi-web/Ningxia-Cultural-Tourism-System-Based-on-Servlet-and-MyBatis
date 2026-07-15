@@ -81,7 +81,7 @@
                                     </c:if>
                                     <ul class="icon-list">
                                         <li><span class="icon linearicons-eye"></span><span>${g.viewCount} 浏览</span></li>
-                                        <li style="cursor:pointer;" onclick="toggleFavList(${g.id}, this)"><span class="icon fa fa-heart" style="color:#ccc;"></span><span class="fav-text">${g.favoriteCount} 收藏</span></li>
+                                        <li style="cursor:pointer;" onclick="toggleFavList(${g.id}, this)" data-fav-id="${g.id}"><span class="icon fa fa-heart" style="color:#ccc;"></span><span class="fav-text">${g.favoriteCount} 收藏</span></li>
                                     </ul>
                                 </div>
                             </div>
@@ -328,7 +328,18 @@
             } else if (d.msg) { alert(d.msg); }
         });
     }
-</script>
+    (function(){
+        fetch('/fav?type=GUIDE&list=1')
+        .then(function(r){ return r.json(); })
+        .then(function(ids){
+            document.querySelectorAll('[data-fav-id]').forEach(function(el){
+                var gid = el.getAttribute('data-fav-id');
+                if (ids.indexOf(Number(gid)) >= 0) {
+                    el.querySelector('.fa-heart').style.color = '#e74c3c';
+                }
+            });
+        });
+    })();
 </script>
 </body>
 </html>

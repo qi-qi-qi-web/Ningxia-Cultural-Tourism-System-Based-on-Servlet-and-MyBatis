@@ -52,7 +52,7 @@
                                     </c:choose>
                                 </a>
                                 <h5><a href="Specialty-detail.jsp?id=${food.id}">${food.name}</a></h5>
-                                <div style="cursor:pointer;font-size:13px;color:#999;margin:4px 0;" onclick="toggleFavSpecialty(${food.id}, this)" data-fav-id="${food.id}"><span class="icon fa fa-heart" style="color:#ccc;"></span> <span class="fav-cnt">${food.favoriteCount}</span> 收藏</div>
+                                <div style="cursor:pointer;font-size:13px;color:#999;margin:4px 0;" onclick="toggleFavSpecialty(${food.id}, this)"><span class="icon fa fa-heart" style="color:#ccc;"></span> <span class="fav-cnt">${food.favoriteCount}</span> 收藏</div>
                                 <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${food.description}</p>
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
                                     <span style="font-size:18px;color:#e74c3c;font-weight:bold;">¥${food.price}</span>
@@ -86,18 +86,6 @@ function toggleFavSpecialty(sid, el) {
         } else if (d.msg) { alert(d.msg); }
     });
 }
-(function(){
-    fetch('/fav?type=SPECIALTY&list=1')
-    .then(function(r){ return r.json(); })
-    .then(function(ids){
-        document.querySelectorAll('[data-fav-id]').forEach(function(el){
-            var fid = el.getAttribute('data-fav-id');
-            if (ids.indexOf(Number(fid)) >= 0) {
-                el.querySelector('.fa-heart').style.color = '#e74c3c';
-            }
-        });
-    });
-})();
 </script>
 </body>
 </html>

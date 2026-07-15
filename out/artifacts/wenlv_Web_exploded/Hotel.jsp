@@ -41,7 +41,7 @@
                         <h5><a href="Hotel-detail.jsp?id=${h.id}">${h.name}</a></h5>
                         <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${h.description}</p>
                         <div class="card-classic__actions" style="margin-top:auto;"><a class="button button-primary-2 button-md" href="Hotel-detail.jsp?id=${h.id}">了解更多</a>
-                            <span style="cursor:pointer;font-size:14px;color:#999;font-style:normal;" onclick="toggleFavHotel(${h.id}, this)"><span class="fav-heart" style="color:#ccc;margin-right:4px;">♥</span><span class="fav-cnt">${h.favoriteCount}</span> 收藏</span>
+                            <span style="cursor:pointer;font-size:14px;color:#999;font-style:normal;" onclick="toggleFavHotel(${h.id}, this)" data-fav-id="${h.id}"><span class="icon fa fa-heart fav-heart" style="color:#ccc;margin-right:4px;"></span><span class="fav-cnt">${h.favoriteCount}</span> 收藏</span>
                             <span class="card-classic__price"><span class="card-classic__price-currency">￥</span><span class="card-classic__price-amount">${empty h.minPrice ? '299' : h.minPrice}</span><span class="card-classic__price-starting">起</span></span></div>
                     </article>
                 </div>
@@ -63,13 +63,25 @@ function toggleFavHotel(hid, el) {
     .then(function(r){ return r.json(); })
     .then(function(d){
         if (d.ok) {
-            var icon = el.querySelector('.fav-heart');
+            var icon = el.querySelector('.fa-heart');
             var cnt = el.querySelector('.fav-cnt');
             icon.style.color = d.faved ? '#e74c3c' : '#ccc';
             cnt.textContent = d.count;
         } else if (d.msg) { alert(d.msg); }
     });
 }
+(function(){
+    fetch('/fav?type=HOTEL&list=1')
+    .then(function(r){ return r.json(); })
+    .then(function(ids){
+        document.querySelectorAll('[data-fav-id]').forEach(function(el){
+            var hid = el.getAttribute('data-fav-id');
+            if (ids.indexOf(Number(hid)) >= 0) {
+                el.querySelector('.fa-heart').style.color = '#e74c3c';
+            }
+        });
+    });
+})();
 </script>
 </body>
 </html>

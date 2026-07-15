@@ -71,12 +71,10 @@
                     库存 <strong>${food.stock}</strong> 件
                 </p>
 
-                <!-- 价格区 -->
-                <div style="background:#f9fafb;border-radius:8px;padding:20px;margin:20px 0;">
+                <!-- 价格区 + 收藏 -->
+                <div style="background:#f9fafb;border-radius:8px;padding:20px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;">
                     <span style="font-size:32px;color:#e74c3c;font-weight:bold;">¥${food.price}</span>
-                    <c:if test="${food.favoriteCount > 0}">
-                        <span style="color:#999;font-size:13px;margin-left:10px;">${food.favoriteCount} 人收藏</span>
-                    </c:if>
+                    <span onclick="toggleFavDetail()" style="cursor:pointer;font-size:15px;color:#999;" id="fav-area"><span class="icon fa fa-heart" id="fav-icon-detail" style="color:#ccc;"></span> <span id="fav-count-detail">${food.favoriteCount}</span> 收藏</span>
                 </div>
 
                 <!-- 描述 -->
@@ -270,18 +268,25 @@ function submitOrder(e, id, name, price) {
     return false;
 }
 
-function toggleFavorite(id) {
-    var btn = document.getElementById('fav-btn');
-    var icon = document.getElementById('fav-icon');
-    var text = document.getElementById('fav-text');
-    if (text.textContent === '收藏') {
-        icon.innerHTML = '&#9829;'; text.textContent = '已收藏';
-        btn.style.color = '#e74c3c'; btn.style.borderColor = '#e74c3c';
-    } else {
-        icon.innerHTML = '&#9825;'; text.textContent = '收藏';
-        btn.style.color = '#666'; btn.style.borderColor = '#e0e0e0';
-	}
-	}
+function toggleFavDetail() {
+    var sid = '${food.id}';
+    fetch('/fav?type=SPECIALTY&id=' + sid)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.ok) {
+            document.getElementById('fav-icon-detail').style.color = d.faved ? '#e74c3c' : '#ccc';
+            document.getElementById('fav-count-detail').textContent = d.count;
+        } else if (d.msg) { alert(d.msg); }
+    });
+}
+(function(){
+    var sid = '${food.id}';
+    if (sid) fetch('/fav?type=SPECIALTY&id=' + sid + '&check=1')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.faved) document.getElementById('fav-icon-detail').style.color = '#e74c3c';
+    });
+})();
 
     // 评论功能 - 后端联动
     function loadComments() {

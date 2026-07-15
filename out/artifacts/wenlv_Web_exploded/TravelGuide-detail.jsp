@@ -142,7 +142,7 @@
                                 <span class="font-weight-bold" id="view-count">${guide.viewCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center" style="cursor:pointer;" onclick="toggleFav()">
-                                <span class="text-gray-500"><span id="fav-icon" class="icon fa fa-heart" style="color:#e74c3c;"></span> 收藏</span>
+                                <span class="text-gray-500"><span id="fav-icon" class="icon fa fa-heart" style="color:#ccc;"></span> 收藏</span>
                                 <span class="font-weight-bold" id="fav-count">${guide.favoriteCount}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center">

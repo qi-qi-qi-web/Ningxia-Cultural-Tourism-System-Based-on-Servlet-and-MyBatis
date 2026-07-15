@@ -1320,9 +1320,6 @@
     });
 
     var allFavs = [];
-    var favCurrentPage = 1;
-    var favPageSize = 10;
-    var favCurrentFilter = 'ALL';
     function loadMyFavorites() {
         var grid = document.getElementById('fav-collection-grid');
         if (!grid) return;
@@ -1331,7 +1328,6 @@
         .then(function(r){ return r.json(); })
         .then(function(list){
             allFavs = list;
-            favCurrentPage = 1;
             if (list.length === 0) {
                 grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa fa-heart"></i></div><div class="empty-text">暂无收藏</div></div>';
                 return;
@@ -1342,13 +1338,8 @@
     }
     function renderFavGrid(list) {
         var grid = document.getElementById('fav-collection-grid');
-        var totalPages = Math.ceil(list.length / favPageSize);
-        if (favCurrentPage > totalPages) favCurrentPage = totalPages;
-        if (favCurrentPage < 1) favCurrentPage = 1;
-        var start = (favCurrentPage - 1) * favPageSize;
-        var pageItems = list.slice(start, start + favPageSize);
         var html = '';
-        pageItems.forEach(function(f){
+        list.forEach(function(f){
             var img = f.coverImage || 'images/avatar-1.png';
             html += '<div class="collection-item" data-type="' + (f.targetType||'') + '">' +
                 '<a href="' + escHtml(f.detailUrl||'#') + '" target="_blank"><img src="' + escHtml(img) + '" alt="' + escHtml(f.targetName||'') + '" class="collection-img" onerror="this.src=\'images/avatar-1.png\'"></a>' +
@@ -1358,26 +1349,11 @@
                 '<button class="btn-secondary-custom" onclick="removeFav(\'' + f.targetType + '\',' + f.targetId + ', this)">取消收藏</button>' +
                 '</div></div></div>';
         });
-        var paginationHtml = '';
-        if (totalPages > 1) {
-            paginationHtml = '<div style="grid-column:1/-1;text-align:center;margin-top:15px;padding:10px 0;">' +
-                (favCurrentPage > 1 ? '<button onclick="favGoPage(' + (favCurrentPage-1) + ')" style="padding:4px 12px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;margin:0 4px;">上一页</button>' : '') +
-                '<span style="margin:0 8px;color:#666;font-size:13px;">第 ' + favCurrentPage + ' / ' + totalPages + ' 页</span>' +
-                (favCurrentPage < totalPages ? '<button onclick="favGoPage(' + (favCurrentPage+1) + ')" style="padding:4px 12px;border:1px solid #ddd;border-radius:4px;background:#fff;cursor:pointer;margin:0 4px;">下一页</button>' : '') +
-                '</div>';
-        }
-        grid.innerHTML = (html || '<div class="empty-state">暂无收藏</div>') + paginationHtml;
-    }
-    function favGoPage(page) {
-        favCurrentPage = page;
-        var filtered = (favCurrentFilter === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === favCurrentFilter; });
-        renderFavGrid(filtered);
+        grid.innerHTML = html || '<div class="empty-state">暂无收藏</div>';
     }
     function switchFavCollection(type, btn) {
         document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
         if (btn) btn.classList.add('active');
-        favCurrentFilter = type;
-        favCurrentPage = 1;
         var filtered = (type === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === type; });
         renderFavGrid(filtered);
     }
@@ -1387,9 +1363,7 @@
         .then(function(d){
             if (d.ok) {
                 allFavs = allFavs.filter(function(f){ return !(f.targetType === targetType && f.targetId == targetId); });
-                var filtered = (favCurrentFilter === 'ALL') ? allFavs : allFavs.filter(function(f){ return f.targetType === favCurrentFilter; });
-                if (favCurrentPage > Math.ceil(filtered.length / favPageSize)) favCurrentPage = Math.max(1, Math.ceil(filtered.length / favPageSize));
-                renderFavGrid(filtered);
+                renderFavGrid(allFavs);
                 showToastLocal('已取消收藏', 'info');
             } else if (d.msg) { alert(d.msg); }
         });

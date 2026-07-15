@@ -34,6 +34,7 @@
                         <div class="service-box-creative__caption" style="flex:1;display:flex;flex-direction:column;">
                             <h5><a href="ScenicService-detail.jsp?id=${s.id}">${s.name}</a></h5>
                             <div class="price-group"><span class="price-group__sale">¥${empty s.minPrice ? '--' : s.minPrice}</span></div>
+                            <div style="cursor:pointer;font-size:13px;color:#999;margin:6px 0;" onclick="toggleFavScenic(${s.id}, this)" data-fav-id="${s.id}"><span class="icon fa fa-heart" style="color:#ccc;"></span> <span class="fav-cnt">${s.favoriteCount}</span> 收藏</div>
                             <p style="flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;min-height:3.6em;">${s.description}</p>
                             <ul class="icon-list" style="margin-top:auto;">
                                 <li><span class="icon linearicons-clock3"></span><span>${empty s.openingHours ? '全天' : s.openingHours}</span></li>
@@ -67,5 +68,32 @@
 <div class="snackbars" id="form-output-global"></div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
+<script>
+function toggleFavScenic(sid, el) {
+    fetch('/fav?type=SCENIC&id=' + sid)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+        if (d.ok) {
+            var icon = el.querySelector('.fa-heart');
+            var cnt = el.querySelector('.fav-cnt');
+            icon.style.color = d.faved ? '#e74c3c' : '#ccc';
+            cnt.textContent = d.count;
+        } else if (d.msg) { alert(d.msg); }
+    });
+}
+// 页面加载时检查收藏状态
+(function(){
+    fetch('/fav?type=SCENIC&list=1')
+    .then(function(r){ return r.json(); })
+    .then(function(ids){
+        document.querySelectorAll('[data-fav-id]').forEach(function(el){
+            var sid = el.getAttribute('data-fav-id');
+            if (ids.indexOf(Number(sid)) >= 0) {
+                el.querySelector('.fa-heart').style.color = '#e74c3c';
+            }
+        });
+    });
+})();
+</script>
 </body>
 </html>
