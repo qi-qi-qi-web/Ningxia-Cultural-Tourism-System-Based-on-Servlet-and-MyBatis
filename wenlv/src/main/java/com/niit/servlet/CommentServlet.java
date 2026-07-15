@@ -44,6 +44,12 @@ public class CommentServlet extends HttpServlet {
         }
         User user = (User) session.getAttribute("user");
 
+        // 检查用户是否被禁用
+        if (user.getStatus() != null && user.getStatus() == 0) {
+            response.getWriter().write("{\"ok\":false,\"msg\":\"账号已被禁用，无法发布评论\"}");
+            return;
+        }
+
         String content = request.getParameter("content");
         String targetType = request.getParameter("targetType");
         String targetId = request.getParameter("targetId");

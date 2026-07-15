@@ -103,6 +103,10 @@ public class GuideServlet extends HttpServlet {
         }
 
         User user = (User) session.getAttribute("user");
+        if (user.getStatus() != null && user.getStatus() == 0) {
+            response.getWriter().write("{\"success\":false,\"message\":\"账号已被禁用，无法发布攻略\"}");
+            return;
+        }
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String tags = request.getParameter("tags");

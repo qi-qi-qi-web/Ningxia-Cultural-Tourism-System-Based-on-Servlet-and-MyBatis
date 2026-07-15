@@ -32,14 +32,14 @@
         SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
-        WHERE tg.id = #{id}
+        WHERE tg.id = #{id} AND u.status = 1
     </select>
 
     <select id="findPublished" resultMap="GuideMap">
         SELECT tg.*, u.username AS user_name, u.nickname, u.avatar
         FROM travel_guide tg
         LEFT JOIN sys_user u ON tg.user_id = u.id
-        WHERE tg.status = 'PUBLISHED'
+        WHERE tg.status = 'PUBLISHED' AND u.status = 1
         ORDER BY tg.created_at DESC
     </select>
 

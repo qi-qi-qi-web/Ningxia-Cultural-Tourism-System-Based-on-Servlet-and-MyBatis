@@ -25,7 +25,7 @@
         LEFT JOIN hotel h ON c.target_type = 'HOTEL' AND c.target_id = h.id
         LEFT JOIN travel_guide tg ON c.target_type = 'GUIDE' AND c.target_id = tg.id
         LEFT JOIN specialty sp ON c.target_type = 'SPECIALTY' AND c.target_id = sp.id
-        WHERE c.target_type = #{targetType} AND c.target_id = #{targetId} AND c.status = 1
+        WHERE c.target_type = #{targetType} AND c.target_id = #{targetId} AND c.status = 1 AND u.status = 1
         ORDER BY c.created_at DESC
     </select>
 
@@ -38,7 +38,7 @@
         LEFT JOIN hotel h ON c.target_type = 'HOTEL' AND c.target_id = h.id
         LEFT JOIN travel_guide tg ON c.target_type = 'GUIDE' AND c.target_id = tg.id
         LEFT JOIN specialty sp ON c.target_type = 'SPECIALTY' AND c.target_id = sp.id
-        WHERE c.user_id = #{userId}
+        WHERE c.user_id = #{userId} AND u.status = 1
         ORDER BY c.created_at DESC
     </select>
 
@@ -51,6 +51,7 @@
         LEFT JOIN hotel h ON c.target_type = 'HOTEL' AND c.target_id = h.id
         LEFT JOIN travel_guide tg ON c.target_type = 'GUIDE' AND c.target_id = tg.id
         LEFT JOIN specialty sp ON c.target_type = 'SPECIALTY' AND c.target_id = sp.id
+        WHERE u.status = 1
         ORDER BY c.created_at DESC
     </select>
 
