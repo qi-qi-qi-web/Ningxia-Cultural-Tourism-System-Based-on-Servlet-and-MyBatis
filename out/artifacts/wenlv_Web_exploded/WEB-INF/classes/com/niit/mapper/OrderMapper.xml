@@ -74,6 +74,10 @@
         UPDATE order_main SET status='CANCELLED' WHERE id=#{id} AND status='PLACED'
     </update>
 
+    <update id="cancelPaidOrder">
+        UPDATE order_main SET status='CANCELLED', return_reason=#{reason} WHERE id=#{id} AND status='PAID'
+    </update>
+
     <update id="shipOrder">
         UPDATE order_main SET status='SHIPPED', shipped_at=NOW() WHERE id=#{id} AND status='PAID'
     </update>

@@ -210,7 +210,7 @@
                     var resp = JSON.parse(xhr.responseText);
                     if (resp.success) {
                         setTimeout(function() {
-                            alert(isManual ? '订单已取消，库存已回滚' : '支付超时，订单已自动取消');
+                            alert(isManual ? '订单已取消' : '支付超时，订单已自动取消');
                             window.location.href = 'personalCenter#orders';
                         }, 500);
                     }
@@ -221,7 +221,7 @@
     }
 
     function manualCancel() {
-        if (!confirm('确认取消订单？取消后库存将回滚。')) return;
+        if (!confirm('确认取消订单？')) return;
         clearInterval(timerInterval);
         expired = true;
         var btn = document.getElementById('pay-btn');

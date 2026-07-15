@@ -768,6 +768,49 @@
     </div>
 </div>
 
+<!-- ========== 取消订单原因弹窗 ========== -->
+<div id="cancel-reason-modal" class="modal" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">取消订单</h4>
+                <button type="button" class="close" onclick="closeCancelReasonModal()">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <input type="hidden" id="cancel-order-id">
+                <div class="form-group-custom">
+                    <div class="form-label-custom">取消原因</div>
+                    <div id="cancel-reason-options" style="display:flex;flex-direction:column;gap:8px;">
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="cancel-reason" value="不想要了" style="margin-right:8px;"> 不想要了
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="cancel-reason" value="下单错误" style="margin-right:8px;"> 下单错误
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="cancel-reason" value="长时间未发货" style="margin-right:8px;"> 长时间未发货
+                        </label>
+                        <label style="cursor:pointer;padding:10px 15px;border:1px solid #e0e0e0;border-radius:6px;display:flex;align-items:center;">
+                            <input type="radio" name="cancel-reason" value="其他" style="margin-right:8px;"> 其他
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group-custom" style="margin-top: 10px;">
+                    <div class="form-label-custom">补充说明（选填）</div>
+                    <textarea class="form-input-custom" id="cancel-reason-detail" rows="3" placeholder="如需补充，请在此说明..." style="resize: vertical;"></textarea>
+                </div>
+                <p style="font-size:12px;color:#999;margin-top:10px;">取消后款项将退回原支付方式</p>
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="btn-secondary-custom" onclick="closeCancelReasonModal()" style="margin-right: 10px;">返回</button>
+                    <button class="btn-primary-custom" onclick="submitCancelRequest()" style="background:#e74c3c;border-color:#e74c3c;">确认取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ========== 退货原因弹窗 ========== -->
 <div id="return-reason-modal" class="modal" style="display: none;">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
@@ -1865,11 +1908,11 @@
                 html += '<a href="Pay.jsp?orderId=' + o.id + '" class="btn-primary-custom" style="display:inline-block;margin-left:8px;text-decoration:none;padding:8px 16px;">去付款</a>';
             } else if (o.status === 'PAID') {
                 html += '<span style="color:#2196f3;font-size:13px;">等待卖家发货</span>';
+                html += '<button class="btn-secondary-custom" onclick="openCancelReasonModal(' + o.id + ')" style="margin-left:8px;font-size:12px;color:#e74c3c;border-color:#e74c3c;">取消订单</button>';
             } else if (o.status === 'SHIPPED') {
                 html += '<button class="btn-primary-custom" onclick="confirmReceipt(' + o.id + ')" style="margin-left:8px;">确认收货</button>';
             } else if (o.status === 'RECEIVED') {
                 html += '<button class="btn-primary-custom" onclick="completeOrderDirect(' + o.id + ')" style="margin-left:8px;">完成订单</button>';
-                html += '<button class="btn-primary-custom" onclick="openOrderCommentModal(' + o.id + ')" style="margin-left:8px;">评价商品</button>';
                 html += '<button class="btn-secondary-custom" onclick="openReturnReasonModal(' + o.id + ')" style="margin-left:8px;background:#f0ad4e;border-color:#f0ad4e;color:#fff;">申请退货</button>';
             } else if (o.status === 'RETURNING') {
                 html += '<span style="color:#e91e63;font-size:13px;">等待管理员处理退货</span>';
@@ -2028,6 +2071,51 @@
         xhr.send('action=completeWithComment&id=' + encodeURIComponent(orderId)
             + '&rating=' + encodeURIComponent(rating)
             + '&content=' + encodeURIComponent(content));
+    }
+
+    /* ========== 取消订单（PAID状态） ========== */
+    function openCancelReasonModal(orderId) {
+        document.getElementById('cancel-order-id').value = orderId;
+        document.getElementById('cancel-reason-detail').value = '';
+        var radios = document.querySelectorAll('input[name="cancel-reason"]');
+        for (var i = 0; i < radios.length; i++) { radios[i].checked = false; }
+        document.getElementById('cancel-reason-modal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeCancelReasonModal() {
+        document.getElementById('cancel-reason-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function submitCancelRequest() {
+        var orderId = document.getElementById('cancel-order-id').value;
+        var selected = document.querySelector('input[name="cancel-reason"]:checked');
+        if (!selected) { showToastLocal('请选择取消原因', 'error'); return; }
+        var reason = '【用户取消】' + selected.value;
+        var detail = document.getElementById('cancel-reason-detail').value.trim();
+        if (detail) { reason += ' - ' + detail; }
+
+        if (!confirm('确认取消订单？款项将退回原支付方式。')) return;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/order?action=cancelPaid&id=' + encodeURIComponent(orderId)
+            + '&reason=' + encodeURIComponent(reason), true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                try {
+                    var resp = JSON.parse(xhr.responseText);
+                    if (resp.success) {
+                        closeCancelReasonModal();
+                        showToastLocal('订单已取消，款项将退回', 'success');
+                    } else {
+                        showToastLocal(resp.message || '操作失败', 'error');
+                    }
+                    loadMyOrders();
+                } catch(e) { showToastLocal('服务器返回异常', 'error'); }
+            }
+        };
+        xhr.send();
     }
 
     /* ========== 申请退货 ========== */

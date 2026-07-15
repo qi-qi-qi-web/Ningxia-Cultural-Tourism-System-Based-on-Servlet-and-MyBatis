@@ -14,6 +14,7 @@ public interface OrderMapper {
     int updateStatus(@Param("id") Long id, @Param("status") String status);
     int payOrder(@Param("id") Long id);
     int cancelByUser(@Param("id") Long id);
+    int cancelPaidOrder(@Param("id") Long id, @Param("reason") String reason);
     int shipOrder(@Param("id") Long id);
     int confirmReceipt(@Param("id") Long id);
     int completeOrder(@Param("id") Long id);

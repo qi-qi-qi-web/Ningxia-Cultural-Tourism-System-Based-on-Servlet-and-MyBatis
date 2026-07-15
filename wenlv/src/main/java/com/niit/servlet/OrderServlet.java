@@ -60,6 +60,9 @@ public class OrderServlet extends HttpServlet {
             case "cancelByUser":
                 handleCancelByUser(response, orderId);
                 break;
+            case "cancelPaid":
+                handleCancelPaid(response, user, orderId, request.getParameter("reason"));
+                break;
             case "confirmReceipt":
                 handleConfirmReceipt(response, user, orderId);
                 break;
@@ -263,6 +266,48 @@ public class OrderServlet extends HttpServlet {
                 }
                 s.commit();
                 sendJson(response, true, "订单已取消", orderId);
+            } else {
+                sendJson(response, false, "取消失败", null);
+                s.rollback();
+            }
+        } catch (Exception e) {
+            if (s != null) { try { s.rollback(); } catch (Exception ignored) {} }
+            sendJson(response, false, "系统错误：" + e.getMessage(), null);
+        } finally {
+            if (s != null) { try { s.close(); } catch (Exception ignored) {} }
+        }
+    }
+
+    private void handleCancelPaid(HttpServletResponse response, User user, Long orderId, String reason) throws IOException {
+        if (reason == null || reason.trim().isEmpty()) {
+            sendJson(response, false, "请选择取消原因", null);
+            return;
+        }
+        SqlSession s = null;
+        try {
+            s = DBUtil.getSession(false);
+            OrderMapper m = s.getMapper(OrderMapper.class);
+            OrderMain order = m.findById(orderId);
+            if (order == null) { sendJson(response, false, "订单不存在", null); return; }
+            if (!order.getUserId().equals(user.getId())) {
+                sendJson(response, false, "无权操作此订单", null); return;
+            }
+            if (!"PAID".equals(order.getStatus())) {
+                sendJson(response, false, "当前订单状态不允许取消", null); return;
+            }
+
+            // 回滚库存
+            List<OrderItem> items = s.getMapper(OrderItemMapper.class).findByOrderId(orderId);
+            int rows = m.cancelPaidOrder(orderId, reason.trim());
+            if (rows > 0) {
+                SpecialtyMapper sm = s.getMapper(SpecialtyMapper.class);
+                if (items != null) {
+                    for (OrderItem it : items) {
+                        sm.restoreStock(it.getSpecialtyId(), it.getQuantity());
+                    }
+                }
+                s.commit();
+                sendJson(response, true, "订单已取消，款项将退回", orderId);
             } else {
                 sendJson(response, false, "取消失败", null);
                 s.rollback();
