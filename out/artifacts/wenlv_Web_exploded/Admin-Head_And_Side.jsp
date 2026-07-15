@@ -28,13 +28,23 @@ logout = function() {
     sessionStorage.clear();
     window.location.href = '${pageContext.request.contextPath}/index.jsp';
 };
+// 侧边栏当前页高亮
+(function(){
+    var path = window.location.pathname;
+    document.querySelectorAll('.admin-sidebar .nav-link').forEach(function(el){
+        var href = el.getAttribute('href');
+        if (href && path.indexOf(href.replace('${pageContext.request.contextPath}','').split('?')[0]) >= 0 && href !== '#') {
+            el.classList.add('active');
+        }
+    });
+})();
 </script>
 
 <div class="container-fluid">
     <div class="row">
         <!-- 左侧侧边栏 -->
-        <div class="col-md-3 admin-sidebar">
-            <div class="logo">宁夏智慧文旅管理后台</div>
+        <div class="col-md-2 admin-sidebar">
+            <div class="logo"><i class="fa fa-fort-awesome"></i>宁夏智慧文旅</div>
 
             <nav class="nav flex-column">
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/user">
@@ -67,14 +77,11 @@ logout = function() {
                 <a class="nav-link" href="${pageContext.request.contextPath}/admin/comment">
                     <i class="fa fa-comments"></i> 评论管理
                 </a>
-                <a class="nav-link" href="${pageContext.request.contextPath}/admin/log">
-                    <i class="fa fa-history"></i> 平台日志
-                </a>
             </nav>
         </div>
 
         <!-- 右侧主内容区 开始 -->
-        <div class="col-md-9 admin-main">
+        <div class="col-md-10 admin-main">
             <div class="admin-header">
                 <div class="welcome">欢迎管理员, <span id="admin-name">管理员</span></div>
                 <div>

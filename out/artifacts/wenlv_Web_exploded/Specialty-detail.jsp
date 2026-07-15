@@ -116,14 +116,14 @@
                         </button>
                     </form>
                 </div>
+                </div>
+            </div>
 
-                <!-- 评论区（只读展示，评论在个人中心完成） -->
-                <div id="comment-section" style="margin-top:15px;border-top:1px solid #eee;padding-top:15px;">
-                    <h5 style="margin-bottom:12px;font-size:15px;color:#333;">用户评论</h5>
-                    <div id="comment-list" style="margin-bottom:15px;"></div>
-                    <p style="font-size:12px;color:#999;">购买后可前往<a href="personalCenter" style="color:#00a8a8;">个人中心</a>发表评论</p>
-                </div>
-                </div>
+            <!-- 评论区（全宽，左边对齐图片） -->
+            <div id="comment-section" style="margin-top:30px;border-top:1px solid #eee;padding-top:20px;">
+                <h5 style="margin-bottom:12px;font-size:15px;color:#333;">用户评论</h5>
+                <div id="comment-list" style="margin-bottom:15px;"></div>
+                <p style="font-size:12px;color:#999;">购买后可前往<a href="personalCenter" style="color:#00a8a8;">个人中心</a>发表评论</p>
             </div>
         </div>
 

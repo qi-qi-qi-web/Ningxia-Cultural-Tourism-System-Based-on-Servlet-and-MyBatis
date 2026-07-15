@@ -22,19 +22,17 @@
 %>
 <%@include file="Head.jsp"%>
 
-<section class="breadcrumbs-custom-inset">
-    <div class="breadcrumbs-custom context-dark bg-overlay-60">
-        <div class="container">
-            <h2 class="breadcrumbs-custom-title">路线规划</h2>
-            <ul class="breadcrumbs-custom-path">
-                <li><a href="index.jsp">首页</a></li>
-                <li><a href="ScenicService.jsp">景区服务</a></li>
-                <c:if test="${not empty scenicId}">
-                    <li><a href="ScenicService-detail.jsp?id=${scenicId}">${fn:escapeXml(scenicName)}</a></li>
-                </c:if>
-                <li class="active">路线规划</li>
-            </ul>
-        </div>
+<section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);">
+    <div class="container">
+        <h4 class="breadcrumbs-custom-title">路线规划</h4>
+        <ul class="breadcrumbs-custom-path">
+            <li><a href="index.jsp">首页</a></li>
+            <li><a href="ScenicService.jsp">景区服务</a></li>
+            <c:if test="${not empty scenicId}">
+                <li><a href="ScenicService-detail.jsp?id=${scenicId}">${fn:escapeXml(scenicName)}</a></li>
+            </c:if>
+            <li class="active">路线规划</li>
+        </ul>
     </div>
 </section>
 

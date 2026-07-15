@@ -110,13 +110,15 @@
     .pay-method.selected { border-color: #00a8a8; background: #e8f8f8; color: #00a8a8; font-weight: 500; }
 </style>
 
-<div class="page-title" style="background:url('images/page-title-bg.jpg') center/cover no-repeat;padding:60px 0 50px;text-align:center;position:relative;">
-    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);"></div>
-    <div style="position:relative;z-index:1;">
-        <h1 style="color:#fff;font-size:32px;font-weight:700;margin:0;">确认付款</h1>
-        <p style="color:rgba(255,255,255,0.8);margin-top:10px;">请尽快完成支付，超时订单将自动取消</p>
+<section class="breadcrumbs-custom bg-image context-dark" style="background-image: url(images/breadcrumbs-bg.jpg);">
+    <div class="container">
+        <h4 class="breadcrumbs-custom-title">确认付款</h4>
+        <ul class="breadcrumbs-custom-path">
+            <li><a href="index.jsp">首页</a></li>
+            <li class="active">确认付款</li>
+        </ul>
     </div>
-</div>
+</section>
 
 <div class="pay-container">
     <% if (error != null) { %>
