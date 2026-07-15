@@ -69,7 +69,17 @@
             </div>
             <div class="col-xl-7">
                 <div class="single-service__caption">
-<div class="heading-4 text-xl mb-3">${scenic.name}</div>
+<div class="heading-4 text-xl mb-3">
+    ${scenic.name}
+    <c:set var="urlLat" value="${scenic.latitude != null ? scenic.latitude : ''}"/>
+    <c:set var="urlLng" value="${scenic.longitude != null ? scenic.longitude : ''}"/>
+    <a href="ScenicRoute.jsp?id=${scenic.id}&name=${fn:escapeXml(scenic.name)}&lat=${urlLat}&lng=${urlLng}&address=${fn:escapeXml(scenic.address)}"
+       class="button button-sm button-default-outline"
+       style="margin-left:12px; padding:4px 14px; font-size:14px; border-color:#00a8a8; color:#00a8a8; border-radius:20px; display:inline-block; text-decoration:none; vertical-align:middle;"
+       title="查看地图并规划路线">
+        <i class="fa fa-location-arrow" style="margin-right:4px;"></i> 到这里
+    </a>
+</div>
 <div class="price-group mb-4"><span class="price-group__sale">¥${empty scenic.minPrice ? '--' : scenic.minPrice}</span></div>
                     <div class="scenic-info-list mb-4">
                         <div class="info-item d-flex align-items-center py-2 border-bottom border-light">

@@ -7,7 +7,11 @@
         <result property="name" column="name"/>
         <result property="description" column="description"/>
         <result property="address" column="address"/>
+        <result property="province" column="province"/>
         <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
         <result property="openingHours" column="opening_hours"/>
         <result property="contactPhone" column="contact_phone"/>
         <result property="coverImage" column="cover_image"/>
