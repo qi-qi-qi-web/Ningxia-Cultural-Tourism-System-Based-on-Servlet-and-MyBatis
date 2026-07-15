@@ -145,9 +145,9 @@
                             <div class="row row-10 row-narrow-10 text-center">
                                 <c:choose>
                                     <c:when test="${not empty scenic.images}">
-                                        <c:forTokens items="${scenic.images}" delims='["],[]{} ' var="img">
+                                                <c:forTokens items="${scenic.images}" delims='["],[]{} ' var="img" varStatus="status">
                                             <c:if test="${not empty img && fn:length(img) > 5}">
-                                                <div class="col-lg-4 col-sm-6" style="margin-bottom:20px;"><img src="${img}" alt="" width="370" height="250" onclick="openLightbox('${img}')" style="cursor:pointer;width:100%;height:220px;object-fit:cover;border-radius:8px;"/></div>
+                                                <div class="col-lg-4 col-sm-6" style="margin-bottom:20px;"><img src="${img}" alt="" width="370" height="250" onclick="openGalleryLightbox(${status.index})" style="cursor:pointer;width:100%;height:220px;object-fit:cover;border-radius:8px;"/></div>
                                             </c:if>
                                         </c:forTokens>
                                     </c:when>
@@ -359,17 +359,79 @@
 
 <!-- 图片灯箱 -->
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;">
-    <span onclick="closeLightbox()" style="position:absolute;top:20px;right:30px;color:#fff;font-size:40px;cursor:pointer;z-index:10000;">&times;</span>
+    <span onclick="closeLightbox()" style="position:absolute;top:20px;right:30px;color:#fff;font-size:40px;cursor:pointer;z-index:10000;line-height:1;">&times;</span>
+    <span id="lightboxPrev" onclick="event.stopPropagation();prevGalleryImage()" style="display:none;position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#fff;font-size:48px;cursor:pointer;z-index:10001;padding:10px;user-select:none;line-height:1;">&#8249;</span>
+    <span id="lightboxNext" onclick="event.stopPropagation();nextGalleryImage()" style="display:none;position:absolute;right:20px;top:50%;transform:translateY(-50%);color:#fff;font-size:48px;cursor:pointer;z-index:10001;padding:10px;user-select:none;line-height:1;">&#8250;</span>
+    <span id="lightboxCounter" style="display:none;position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:16px;z-index:10001;background:rgba(0,0,0,0.5);padding:6px 16px;border-radius:20px;"></span>
     <img id="lightboxImage" src="" style="max-width:90%;max-height:90%;object-fit:contain;"/>
 </div>
 <script>
+// 图片画廊数据
+var galleryImages = [];
+<c:if test="${not empty scenic.images}">
+    <c:forTokens items="${scenic.images}" delims='["],[]{} ' var="img" varStatus="sta">
+        <c:if test="${not empty img && fn:length(img) > 5}">
+            galleryImages.push('${img}');
+        </c:if>
+    </c:forTokens>
+</c:if>
+var currentGalleryIndex = -1;
+
 function openLightbox(src) {
+    // 封面图专用：单图显示，不显示导航
+    document.getElementById('lightboxPrev').style.display = 'none';
+    document.getElementById('lightboxNext').style.display = 'none';
+    document.getElementById('lightboxCounter').style.display = 'none';
+    currentGalleryIndex = -1;
     document.getElementById('lightboxImage').src = src;
     document.getElementById('lightboxOverlay').style.display = 'flex';
 }
+
+function openGalleryLightbox(index) {
+    currentGalleryIndex = index;
+    updateGalleryImage();
+    document.getElementById('lightboxPrev').style.display = '';
+    document.getElementById('lightboxNext').style.display = '';
+    document.getElementById('lightboxCounter').style.display = '';
+    document.getElementById('lightboxOverlay').style.display = 'flex';
+}
+
+function updateGalleryImage() {
+    if (currentGalleryIndex < 0 || currentGalleryIndex >= galleryImages.length) return;
+    document.getElementById('lightboxImage').src = galleryImages[currentGalleryIndex];
+    document.getElementById('lightboxCounter').textContent = (currentGalleryIndex + 1) + ' / ' + galleryImages.length;
+    document.getElementById('lightboxPrev').style.opacity = currentGalleryIndex > 0 ? '1' : '0.3';
+    document.getElementById('lightboxNext').style.opacity = currentGalleryIndex < galleryImages.length - 1 ? '1' : '0.3';
+}
+
+function prevGalleryImage() {
+    if (currentGalleryIndex > 0) {
+        currentGalleryIndex--;
+        updateGalleryImage();
+    }
+}
+
+function nextGalleryImage() {
+    if (currentGalleryIndex < galleryImages.length - 1) {
+        currentGalleryIndex++;
+        updateGalleryImage();
+    }
+}
+
 function closeLightbox() {
     document.getElementById('lightboxOverlay').style.display = 'none';
+    currentGalleryIndex = -1;
 }
+
+// 键盘左右键切换
+document.addEventListener('keydown', function(e) {
+    var overlay = document.getElementById('lightboxOverlay');
+    if (overlay.style.display !== 'flex') return;
+    if (currentGalleryIndex < 0) return; // 封面图模式不响应方向键
+    if (e.key === 'ArrowLeft') { prevGalleryImage(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { nextGalleryImage(); e.preventDefault(); }
+    else if (e.key === 'Escape') { closeLightbox(); e.preventDefault(); }
+});
 </script>
 </c:if>
 </body></html>
