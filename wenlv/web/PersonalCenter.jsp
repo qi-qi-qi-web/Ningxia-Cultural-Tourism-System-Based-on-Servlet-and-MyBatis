@@ -1858,15 +1858,24 @@
         return method === 'DELIVERY' ? '快递配送' : '到店自取';
     }
 
-    function formatDate(dateStr) {
-        if (!dateStr) return '';
-        var d = new Date(dateStr);
-        var m = d.getMonth() + 1;
-        var day = d.getDate();
-        var h = d.getHours();
-        var min = d.getMinutes();
-        return m + '-' + (day < 10 ? '0' + day : day) + ' ' + (h < 10 ? '0' + h : h) + ':' + (min < 10 ? '0' + min : min);
-    }
+	    function formatDate(dateStr) {
+	        if (!dateStr) return '';
+	        // 手工解析 Java Date.toString() 格式: "EEE MMM dd HH:mm:ss zzz yyyy"
+	        // 例如: "Thu Jul 16 10:30:45 CST 2026"
+	        // 避免 new Date() 解析时 CST 时区歧义导致显示与数据库不一致
+	        var parts = dateStr.split(' ');
+	        if (parts.length >= 6) {
+	            var months = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+	            var m = months[parts[1]];
+	            var day = parts[2];
+	            var time = parts[3];
+	            if (m !== undefined) {
+	                return m + '-' + day + ' ' + time.substring(0, 5);
+	            }
+	        }
+	        // 兼容 ISO 格式兜底
+	        return dateStr.substring(0, 16);
+	    }
 
     function loadMyOrders() {
         var container = document.getElementById('my-orders-container');

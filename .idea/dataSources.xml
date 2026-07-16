@@ -13,7 +13,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="travel_system@localhost" uuid="010796f4-759f-452b-a780-2722a1e2da9f">
+    <data-source source="LOCAL" name="tourism_platform@localhost" uuid="010796f4-759f-452b-a780-2722a1e2da9f">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

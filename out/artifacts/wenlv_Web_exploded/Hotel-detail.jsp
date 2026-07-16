@@ -87,21 +87,21 @@
 	                        </div>
 	                        </c:if>
 
-	                        <!-- 酒店图片画廊 -->
-	                        <c:if test="${not empty hotel.images}">
-		                        <div class="blog-post-classic__media-group" style="padding-top:15px;">
-		                            <h4 style="border-left:4px solid #00a8a8;padding-left:12px;margin-bottom:15px;">实景展示</h4>
-	                            <div class="row row-30 justify-content-center" id="hotelGalleryContainer">
-	                                <c:forTokens items="${hotel.images}" delims='["],[]{} ' var="img">
-	                                    <c:if test="${not empty img && img.length() > 5}">
-                                        <div class="col-lg-3 col-md-4 col-sm-6" style="margin-bottom:20px;">
-                                            <img src="${img}" alt="实景" onclick="openLightbox('${img}')" style="width:100%;height:220px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'"/>
-                                        </div>
-	                                    </c:if>
-	                                </c:forTokens>
-	                            </div>
-	                        </div>
-	                        </c:if>
+		                        <!-- 酒店图片画廊 -->
+		                        <c:if test="${not empty hotel.images}">
+			                        <div class="blog-post-classic__media-group" style="padding-top:15px;">
+			                            <h4 style="border-left:4px solid #00a8a8;padding-left:12px;margin-bottom:15px;">实景展示</h4>
+		                            <div class="row row-30 justify-content-center" id="hotelGalleryContainer">
+		                                <c:forTokens items="${hotel.images}" delims='["],[]{} ' var="img" varStatus="status">
+		                                    <c:if test="${not empty img && img.length() > 5}">
+	                                        <div class="col-lg-3 col-md-4 col-sm-6" style="margin-bottom:20px;">
+	                                            <img src="${img}" alt="实景" onclick="openGalleryLightbox(${status.index})" style="width:100%;height:220px;object-fit:cover;border-radius:8px;cursor:pointer;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'"/>
+	                                        </div>
+		                                    </c:if>
+		                                </c:forTokens>
+		                            </div>
+		                        </div>
+		                        </c:if>
 	                        <!-- 评论区 -->
 	                        <div style="margin-top:30px;">
 	                            <h5 style="margin-bottom:16px;">用户评论</h5>
@@ -121,10 +121,13 @@
     <%@include file="Footer.jsp"%>
 </div>
 <div class="snackbars" id="form-output-global"></div>
-<!-- Image lightbox overlay -->
-<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-    <img class="lightbox-image" id="lightboxImage" src="" alt="">
+<!-- 图片灯箱（含上一张/下一张导航） -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;">
+    <span onclick="closeLightbox()" style="position:absolute;top:20px;right:30px;color:#fff;font-size:40px;cursor:pointer;z-index:10000;line-height:1;">&times;</span>
+    <span id="lightboxPrev" onclick="event.stopPropagation();prevGalleryImage()" style="display:none;position:absolute;left:20px;top:50%;transform:translateY(-50%);color:#fff;font-size:48px;cursor:pointer;z-index:10001;padding:10px;user-select:none;line-height:1;">&#8249;</span>
+    <span id="lightboxNext" onclick="event.stopPropagation();nextGalleryImage()" style="display:none;position:absolute;right:20px;top:50%;transform:translateY(-50%);color:#fff;font-size:48px;cursor:pointer;z-index:10001;padding:10px;user-select:none;line-height:1;">&#8250;</span>
+    <span id="lightboxCounter" style="display:none;position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:#fff;font-size:16px;z-index:10001;background:rgba(0,0,0,0.5);padding:6px 16px;border-radius:20px;"></span>
+    <img id="lightboxImage" src="" style="max-width:90%;max-height:90%;object-fit:contain;"/>
 </div>
 <script src="js/core.min.js"></script>
 <script src="js/script.js"></script>
@@ -207,15 +210,68 @@
     }
 })();
 
-// Image lightbox
+// ========== 图片画廊灯箱（含上一张/下一张/键盘导航） ==========
+var galleryImages = [];
+<c:if test="${not empty hotel.images}">
+    <c:forTokens items="${hotel.images}" delims='["],[]{} ' var="img" varStatus="sta">
+        <c:if test="${not empty img && img.length() > 5}">
+            galleryImages.push('${img}');
+        </c:if>
+    </c:forTokens>
+</c:if>
+var currentGalleryIndex = -1;
+
 function openLightbox(src) {
+    // 单图模式（分类画廊用），不显示导航
+    document.getElementById('lightboxPrev').style.display = 'none';
+    document.getElementById('lightboxNext').style.display = 'none';
+    document.getElementById('lightboxCounter').style.display = 'none';
+    currentGalleryIndex = -1;
     document.getElementById('lightboxImage').src = src;
     document.getElementById('lightboxOverlay').style.display = 'flex';
 }
+
+function openGalleryLightbox(index) {
+    currentGalleryIndex = index;
+    updateGalleryImage();
+    document.getElementById('lightboxPrev').style.display = '';
+    document.getElementById('lightboxNext').style.display = '';
+    document.getElementById('lightboxCounter').style.display = '';
+    document.getElementById('lightboxOverlay').style.display = 'flex';
+}
+
+function updateGalleryImage() {
+    if (currentGalleryIndex < 0 || currentGalleryIndex >= galleryImages.length) return;
+    document.getElementById('lightboxImage').src = galleryImages[currentGalleryIndex];
+    document.getElementById('lightboxCounter').textContent = (currentGalleryIndex + 1) + ' / ' + galleryImages.length;
+    document.getElementById('lightboxPrev').style.opacity = currentGalleryIndex > 0 ? '1' : '0.3';
+    document.getElementById('lightboxNext').style.opacity = currentGalleryIndex < galleryImages.length - 1 ? '1' : '0.3';
+}
+
+function prevGalleryImage() {
+    if (currentGalleryIndex > 0) { currentGalleryIndex--; updateGalleryImage(); }
+}
+
+function nextGalleryImage() {
+    if (currentGalleryIndex < galleryImages.length - 1) { currentGalleryIndex++; updateGalleryImage(); }
+}
+
 function closeLightbox() {
     document.getElementById('lightboxOverlay').style.display = 'none';
+    currentGalleryIndex = -1;
 }
-// Lightbox click via event delegation (works for dynamically added images too)
+
+// 键盘左右键切换
+document.addEventListener('keydown', function(e) {
+    var overlay = document.getElementById('lightboxOverlay');
+    if (overlay.style.display !== 'flex') return;
+    if (currentGalleryIndex < 0) return; // 单图模式不响应方向键
+    if (e.key === 'ArrowLeft') { prevGalleryImage(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { nextGalleryImage(); e.preventDefault(); }
+    else if (e.key === 'Escape') { closeLightbox(); e.preventDefault(); }
+});
+
+// 分类画廊点击（动态图片用 openLightbox 单图模式）
 document.addEventListener('click', function(e) {
     var target = e.target;
     if (target.matches('.hotel-gallery__item img')) {
