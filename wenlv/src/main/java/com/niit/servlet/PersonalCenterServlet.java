@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet("/personalCenter")
@@ -366,6 +367,7 @@ public class PersonalCenterServlet extends HttpServlet {
             OrderItemMapper itemMapper = s.getMapper(OrderItemMapper.class);
 
             StringBuilder sb = new StringBuilder("[");
+            SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (int i = 0; i < orders.size(); i++) {
                 if (i > 0) sb.append(",");
                 OrderMain o = orders.get(i);
@@ -403,7 +405,7 @@ public class PersonalCenterServlet extends HttpServlet {
                     .append("\"deliveryAddress\":\"").append(esc(deliveryAddress)).append("\",")
                     .append("\"status\":\"").append(esc(o.getStatus())).append("\",")
                     .append("\"returnReason\":\"").append(esc(returnReason)).append("\",")
-                    .append("\"createdAt\":\"").append(o.getCreatedAt() != null ? o.getCreatedAt().toString() : "").append("\",")
+                    .append("\"createdAt\":\"").append(o.getCreatedAt() != null ? dateFmt.format(o.getCreatedAt()) : "").append("\",")
                     .append("\"items\":").append(itemsJson.toString())
                     .append("}");
             }
@@ -439,7 +441,7 @@ public class PersonalCenterServlet extends HttpServlet {
                     "{\"id\":%d,\"content\":\"%s\",\"targetType\":\"%s\",\"targetTypeName\":\"%s\",\"targetId\":%d,\"targetName\":\"%s\",\"nickname\":\"%s\",\"createdAt\":\"%s\"}",
                     c.getId(), esc(c.getContent()), esc(c.getTargetType()),
                     typeName, c.getTargetId(), esc(c.getTargetName()), esc(c.getNickname()),
-                    c.getCreatedAt() != null ? c.getCreatedAt().toString() : ""
+                    c.getCreatedAt() != null ? new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.getCreatedAt()) : ""
                 ));
             }
             sb.append("]");
